@@ -13,6 +13,17 @@ server.use(cors({
 server.use(express.json())
 server.use(logger)
 
+// ROUTES
+const celestialBodiesRoutes = require('./routes/celestialbodies')
+server.use('/celestial-bodies', celestialBodiesRoutes)
+
+// ERROR MW
+const notFoundErrorHandler = require('./middlewares/notFoundErrorHandler')
+server.use(notFoundErrorHandler)
+
+const genericErrorHandler = require('./middlewares/genericErrorHandler')
+server.use(genericErrorHandler)
+
 dbInit()
 
 server.listen(PORT, () => {
