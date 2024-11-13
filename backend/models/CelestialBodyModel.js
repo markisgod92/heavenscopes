@@ -5,16 +5,10 @@ const CelestialBodySchema = new mongoose.Schema({
     primaryName: {
         type: String
     },
-    localizedNames: [
-        {
-            locale: {
-                type: String
-            },
-            localeName: {
-                type: String
-            }
-        }
-    ],
+    localizedNames: {
+        type: Map,
+        of: String
+    },
     bodyType: {
         type: String,
         enum: celestialBodyTypes
