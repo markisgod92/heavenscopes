@@ -1,61 +1,83 @@
-import React, { useEffect, useRef, useState } from "react"
-import { Canvas, useLoader, useFrame } from "@react-three/fiber"
-import { OrbitControls, useTexture, Sphere, Html } from "@react-three/drei"
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader"
-import * as THREE from "three"
+import React, { useEffect, useRef } from "react";
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-export const ModelConstructor = ({ model3D }) => {
-    const [loading, setLoading] = useState(true)
-    const { isCustomModel, modelUrl, textureUrl } = model3D
-    const texture = useTexture(textureUrl)
-    const gltf = isCustomModel ? useLoader(GLTFLoader, modelUrl) : null
-    const ref = useRef()
+const ModelConstructor = ({ model3D }) => {
+  const mountRef = useRef(null);
+  const { isCustomModel, modelUrl, textureUrl } = model3D;
 
-    useEffect(() => {
-        setLoading(true);
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping
-        texture.flipY = false
-        setLoading(false)
-    }, [texture, modelUrl, isCustomModel])
+  useEffect(() => {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, mountRef.current.clientWidth / mountRef.current.clientHeight, 0.1, 1000);
+    camera.position.set(0, 0, 3);
 
-    useFrame(() => {
-        if (ref.current) {
-            ref.current.rotation.y += 0.001
-        }
-    })
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
+    mountRef.current.appendChild(renderer.domElement);
 
-    return (
-        <>
-            {loading && <Html><p>Loading...</p></Html>}
-            {isCustomModel && gltf ? (
-                <primitive object={gltf.scene} ref={ref} />
-            ) : (
-                <Sphere ref={ref} args={[1, 64, 64]}>
-                    <meshStandardMaterial map={texture} />
-                </Sphere>
-            )}
-        </>
-    )
-}
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2);
+    scene.add(ambientLight);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableZoom = false;
+
+    let model;
+    const loader = new GLTFLoader();
+    const textureLoader = new THREE.TextureLoader();
+    let animationFrameId;
+
+    if (isCustomModel) {
+      loader.load(
+        modelUrl,
+        (gltf) => {
+          model = gltf.scene;
+          scene.add(model);
+        },
+        undefined,
+        (error) => console.error("Error loading GLTF model:", error)
+      );
+    } else {
+      const sphereGeometry = new THREE.SphereGeometry(1, 64, 64);
+      const texture = textureLoader.load(textureUrl, (tex) => {
+        tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+        tex.flipY = true;
+      });
+      const sphereMaterial = new THREE.MeshStandardMaterial({ map: texture });
+      model = new THREE.Mesh(sphereGeometry, sphereMaterial);
+      scene.add(model);
+    }
+
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+
+      if (model) {
+        model.rotation.y += 0.001;
+      }
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
+      camera.aspect = mountRef.current.clientWidth / mountRef.current.clientHeight;
+      camera.updateProjectionMatrix();
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("resize", handleResize);
+      scene.clear();
+      renderer.dispose();
+      if (mountRef.current) mountRef.current.removeChild(renderer.domElement);
+    };
+  }, [isCustomModel, modelUrl, textureUrl]);
+
+  return <div ref={mountRef} style={{ width: "100%", height: "100%", minHeight: "400px" }} />;
+};
 
 export const ModelViewer = ({ model3D }) => {
-    const { isCustomModel, modelUrl, textureUrl } = model3D
-
-    useEffect(() => {
-        return () => {}
-    }, [])
-
-    return (
-        <Canvas style={{ background: "none", width: '100%', height: '100%', minHeight: '400px' }} camera={{ position: [0, 0, 3], fov: 50 }}>
-            <ambientLight intensity={2} />
-            <pointLight position={[10, 10, 10]} />
-            <ModelConstructor
-                model3D={model3D}
-                isCustomModel={isCustomModel}
-                modelUrl={modelUrl}
-                textureUrl={textureUrl}
-            />
-            <OrbitControls enableZoom={false} />
-        </Canvas>
-    )
-}
+  return <ModelConstructor model3D={model3D} />;
+};

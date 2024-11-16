@@ -16,6 +16,7 @@ export const RealTimeData = ({ bodyName }) => {
         if(data && data[selectedTimeOffset]) {
             const selectedBody = data[selectedTimeOffset].data.find(item => item.name === bodyName)
             setReadingData({
+                updated: data.updated,
                 meta: data[selectedTimeOffset].meta,
                 body: selectedBody
             })

@@ -31,6 +31,7 @@ export const RealTimeDataProvider = ({ children }) => {
             ])
 
             setData({
+                updated: timeOffsets.now,
                 now: nowData,
                 threeH: threeHData,
                 sixH: sixHData,
