@@ -40,7 +40,7 @@ export const RealTimeData = ({ bodyName }) => {
                     <DataVisualization data={readingData}/>
                 </div>
             ) : (
-                <div>Data not available.</div>
+                <div className="h-100 d-flex justify-content-center align-items-center">Data not available.</div>
             )}
         </div>
     )

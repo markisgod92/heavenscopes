@@ -10,7 +10,7 @@ const ModelConstructor = ({ model3D }) => {
   useEffect(() => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, mountRef.current.clientWidth / mountRef.current.clientHeight, 0.1, 1000);
-    camera.position.set(0, 0, 3);
+    camera.position.set(0, 1, 3);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
@@ -75,7 +75,9 @@ const ModelConstructor = ({ model3D }) => {
     };
   }, [isCustomModel, modelUrl, textureUrl]);
 
-  return <div ref={mountRef} style={{ width: "100%", height: "100%", minHeight: "400px" }} />;
+  return (
+    <div ref={mountRef} style={{ width: "100%", height: "100%", minHeight: "400px" }} />
+  )
 };
 
 export const ModelViewer = ({ model3D }) => {

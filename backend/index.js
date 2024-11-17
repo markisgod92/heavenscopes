@@ -14,6 +14,9 @@ server.use(express.json())
 server.use(logger)
 
 // ROUTES
+const userRoutes = require('./routes/users')
+server.use('/user', userRoutes)
+
 const celestialBodiesRoutes = require('./routes/celestialbodies')
 server.use('/celestial-bodies', celestialBodiesRoutes)
 

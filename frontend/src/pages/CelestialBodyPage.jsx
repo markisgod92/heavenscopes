@@ -4,7 +4,7 @@ import { Col, Container, Row } from "react-bootstrap"
 import { ModelViewer } from "../components/celestial-body-components/model-3D/ModelViewer"
 import { MediaSwiper } from "../components/celestial-body-components/official-media-visualization/MediaSwiper"
 
-export const CelestialBodyPage = ({ bodyName = 'Mercury' }) => {
+export const CelestialBodyPage = ({ bodyName = 'Mars' }) => {
     const [realTimeData, setRealTimeData] = useState(null)
     console.log(realTimeData)
 

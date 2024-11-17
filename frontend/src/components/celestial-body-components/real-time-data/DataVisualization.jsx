@@ -47,6 +47,7 @@ export const DataVisualization = ({ data }) => {
                     <span>{makeDEString(body.declination)}</span>
                 </div>
             </div>
+
             <div className="pt-3 d-flex flex-column gap-2">
                 <div className="d-flex gap-3 fw-light">
                     <span>Updated:</span>
@@ -63,6 +64,12 @@ export const DataVisualization = ({ data }) => {
                     </div>
                 </div>
             </div>
+
+            <div className="fw-light fst-italic">
+                <span>Powered by </span>
+                <a href="https://github.com/csymlstd/visible-planets-api.git">csymlstd / visible-planets-api</a>
+            </div>
+            
         </div>
     )
 }
