@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Form, Button, Spinner } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
 
 export const LoginPage = () => {
     const [loginData, setLoginData] = useState({
@@ -7,7 +8,8 @@ export const LoginPage = () => {
         password: import.meta.env.VITE_TEST_PASSWORD
     })
     const [isLoading, setLoading] = useState(false)
-    const [errors, setErrors] = useState(null)
+    const [formMessages, setFormMessages] = useState(null)
+    const navigate = useNavigate()
 
     const handleDataChange = (e) => {
         const { name, value } = e.target
@@ -31,8 +33,14 @@ export const LoginPage = () => {
             isValid = false
         }
 
-        setErrors(tempErrors)
+        setFormMessages(tempErrors)
         return isValid
+    }
+
+    const redirect = () => {
+        setTimeout(() => {
+            navigate('/home')
+        }, 1000)
     }
 
     const login = async (e) => {
@@ -55,15 +63,19 @@ export const LoginPage = () => {
             const data = await response.json()
 
             if (!response.ok) {
-                setErrors({
+                setFormMessages({
                     fetch: data.message
                 })
             }
 
             const authToken = JSON.stringify(response.headers.get('Authorization'))
             localStorage.setItem('Authorization', authToken)
+            setFormMessages({
+                login: 'Login successful. Redirecting...'
+            })
+            redirect()
         } catch (error) {
-            setErrors({
+            setFormMessages({
                 fetch: error.message
             })
         } finally {
@@ -84,8 +96,8 @@ export const LoginPage = () => {
                     value={loginData.username}
                     onChange={handleDataChange}
                 />
-                {errors && errors.username && (
-                    <Form.Text className="text-danger text-end">{errors.username}</Form.Text>
+                {formMessages && formMessages.username && (
+                    <Form.Text className="text-danger text-end">{formMessages.username}</Form.Text>
                 )}
                 <Form.Control
                     type="password"
@@ -94,8 +106,8 @@ export const LoginPage = () => {
                     value={loginData.password}
                     onChange={handleDataChange}
                 />
-                {errors && errors.password && (
-                    <Form.Text className="text-danger text-end">{errors.password}</Form.Text>
+                {formMessages && formMessages.password && (
+                    <Form.Text className="text-danger text-end">{formMessages.password}</Form.Text>
                 )}
                 <div className="d-flex justify-content-center">
                     <Button type='Submit'>
@@ -110,8 +122,11 @@ export const LoginPage = () => {
                         <span>Login</span>
                     </Button>
                 </div>
-                {errors && errors.fetch && (
-                    <Form.Text className="text-danger text-center">{errors.fetch}</Form.Text>
+                {formMessages && formMessages.fetch && (
+                    <Form.Text className="text-danger text-center">{formMessages.fetch}</Form.Text>
+                )}
+                {formMessages && formMessages.login && (
+                    <Form.Text className="text-success text-center">{formMessages.login}</Form.Text>
                 )}
             </Form>
         </div>

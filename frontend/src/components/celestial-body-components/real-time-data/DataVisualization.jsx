@@ -24,7 +24,7 @@ export const DataVisualization = ({ data }) => {
                 <div className="d-flex gap-3">
                     <span>Altitude:</span>
                     <span>{body.altitude.toFixed(2)}°</span>
-                    {!body.aboveHorizon && <div className="text-danger">Not visible.</div>}
+                    {!body.aboveHorizon && <span className="text-danger">Not visible.</span>}
                 </div>
                 <div className="d-flex gap-3">
                     <span>Azimuth:</span>
@@ -48,28 +48,16 @@ export const DataVisualization = ({ data }) => {
                 </div>
             </div>
 
-            <div className="pt-3 d-flex flex-column gap-2">
-                <div className="d-flex gap-3 fw-light">
+            <div className="d-flex flex-column gap-1 fw-light">
+                <div className="d-flex gap-3">
                     <span>Updated:</span>
                     <span>{makeDateString(updated)}</span>
                 </div>
-                <div className="d-flex justify-content-between gap-2 fw-light">
-                    <div className="d-flex gap-1">
-                        <span>Location:</span>
-                        <span>{meta.latitude}° {meta.longitude}°</span>
-                    </div>
-                    <div className="d-flex gap-1">
-                        <span>Elevation:</span>
-                        <span>{meta.elevation}m</span>
-                    </div>
+                <div className="fst-italic">
+                    <span>Powered by </span>
+                    <a href="https://github.com/csymlstd/visible-planets-api.git">csymlstd / visible-planets-api</a>
                 </div>
             </div>
-
-            <div className="fw-light fst-italic">
-                <span>Powered by </span>
-                <a href="https://github.com/csymlstd/visible-planets-api.git">csymlstd / visible-planets-api</a>
-            </div>
-            
         </div>
     )
 }

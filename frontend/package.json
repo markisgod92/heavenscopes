@@ -14,9 +14,11 @@
     "@react-three/fiber": "^8.17.10",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.5",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
     "swiper": "^11.1.14",
     "three": "^0.170.0"
   },

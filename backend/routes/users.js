@@ -48,14 +48,18 @@ users.post('/login', async (req, res, next) => {
         }
         
         const token = jwt.sign(
-            { username: user.username, id: user._id },
+            { 
+                username: user.username, 
+                id: user._id,
+                settings: user.settings
+            },
             process.env.JWT_SECRET,
             { expiresIn: '15m' }
         )
         
         res.header('Authorization', token)
             .status(200)
-            .send({message: 'Log in successfull.'})
+            .send({message: 'Login successful.'})
     } catch (error) {
         next(error)
     }
