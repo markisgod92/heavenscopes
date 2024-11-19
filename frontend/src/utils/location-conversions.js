@@ -1,4 +1,4 @@
-const coordDecimalToDMS = (decimal) => {
+export const coordDecimalToDMS = (decimal) => {
     const isNegative = decimal < 0
     const degrees = Math.floor(decimal)
     const minutesDecimal = (decimal - degrees) * 60
@@ -7,7 +7,7 @@ const coordDecimalToDMS = (decimal) => {
 
     return {
         isNegative: isNegative,
-        degrees: degrees,
+        degrees: Math.abs(degrees),
         minutes: minutes,
         seconds: seconds
     }
@@ -28,6 +28,11 @@ export const coordDecimalToString = (decimal, isLat) => {
     }
 
     return `${degrees}° ${String(minutes).padStart(2, '0')}' ${String(seconds).padStart(2, '0')}" ${decimal !== 0 ? direction : ''}`
+}
+
+export const coordDMSToDecimal = (coords) => {
+    const decimal = Math.abs(coords.degrees) + (coords.minutes / 60) + (coords.seconds / 3600)
+    return coords.isNegative ? - decimal.toFixed(7) : decimal.toFixed(7)
 }
 
 export const mtToFt = (m) => {

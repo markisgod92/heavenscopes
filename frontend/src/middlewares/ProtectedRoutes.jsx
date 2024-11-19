@@ -9,7 +9,3 @@ export const ProtectedRoutes = () => {
     const isAuthorized = checkToken()
     return isAuthorized ? <Outlet /> : <LoginPage />
 }
-
-export const ProtectedRoutesWrapper = ({children}) => {
-    return <>{children}</>
-}

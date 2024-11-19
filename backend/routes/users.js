@@ -1,5 +1,6 @@
 const express = require('express')
 const UserModel = require('../models/UserModel')
+const {userPicsCloud} = require('./cloudinaryConfig')
 const users = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -46,20 +47,31 @@ users.post('/login', async (req, res, next) => {
             error.status = 401
             return next(error)
         }
-        
-        const token = jwt.sign(
-            { 
-                username: user.username, 
-                id: user._id,
-                settings: user.settings
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: '15m' }
-        )
+
+        const payload = {
+            username: user.username, 
+            id: user._id,
+            settings: user.settings
+        }
+
+        if(user.isAdmin) {
+            payload.adminPasskey = user.adminPasskey
+        }
+
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15m' })
         
         res.header('Authorization', token)
             .status(200)
             .send({message: 'Login successful.'})
+    } catch (error) {
+        next(error)
+    }
+})
+
+users.post('/upload', userPicsCloud.single('avatar'), async (req, res, next) => {
+    try {
+        res.status(200)
+            .json({ avatar: req.file.path })
     } catch (error) {
         next(error)
     }
@@ -78,7 +90,7 @@ users.post('/new', async (req, res, next) => {
         const user = await newUser.save()
 
         const token = jwt.sign(
-            { username: user.username, id: user._id },
+            { username: user.username, id: user._id, settings: user.settings },
             process.env.JWT_SECRET,
             { expiresIn: '15m' }
         )

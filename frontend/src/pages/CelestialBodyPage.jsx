@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { RealTimeData } from "../components/celestial-body-components/real-time-data/RealTimeData"
-import { Col, Container, Row } from "react-bootstrap"
+import { Button, Col, Container, Row } from "react-bootstrap"
 import { ModelViewer } from "../components/celestial-body-components/model-3D/ModelViewer"
 import { MediaSwiper } from "../components/celestial-body-components/official-media-visualization/MediaSwiper"
 import { LocationSettings } from "../components/location-settings/LocationSettings"
+import { ThemeContext } from "../contexts/ThemeContext"
 
-export const CelestialBodyPage = ({ bodyName = 'Mars' }) => {
+export const CelestialBodyPage = ({ bodyName = 'Mercury' }) => {
     const [celestialBodyData, setCelestialBodyData] = useState(null)
+    const { isNightModeOn, toggleNightMode } = useContext(ThemeContext)
 
     const getCelestialBodyData = async () => {
         try {
@@ -24,12 +26,21 @@ export const CelestialBodyPage = ({ bodyName = 'Mars' }) => {
 
     return (
         <Container>
+
+            {/* TEST */}
             <Row>
                 <LocationSettings />
             </Row>
+
+            <Row>
+                <Button onClick={toggleNightMode}>toggle night mode</Button>
+            </Row>
+            {/* END of TEST */}
+
             <Row>
                 <h2>{bodyName}</h2>
             </Row>
+
             <Row>
                 <Col sm={12} md={6}>
                     {celestialBodyData && (
@@ -41,11 +52,13 @@ export const CelestialBodyPage = ({ bodyName = 'Mars' }) => {
                     <RealTimeData bodyName={bodyName} />
                 </Col>
             </Row>
+
             {celestialBodyData && celestialBodyData.licensedMedia.length > 0 && (
                 <Row className="pt-5">
                     <h4>Official media</h4>
                     <MediaSwiper media={celestialBodyData.licensedMedia} />
                 </Row>
+
             )}
         </Container>
     )

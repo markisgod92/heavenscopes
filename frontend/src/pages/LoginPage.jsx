@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Form, Button, Spinner } from "react-bootstrap"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export const LoginPage = () => {
     const [loginData, setLoginData] = useState({
@@ -40,7 +40,7 @@ export const LoginPage = () => {
     const redirect = () => {
         setTimeout(() => {
             navigate('/home')
-        }, 1000)
+        }, 500)
     }
 
     const login = async (e) => {
@@ -84,7 +84,7 @@ export const LoginPage = () => {
     }
 
     return (
-        <div className="vh-100 d-flex justify-content-center align-items-center">
+        <div className="vh-100 d-flex flex-column justify-content-center align-items-center gap-5">
             <Form
                 onSubmit={login}
                 className="d-flex flex-column gap-3"
@@ -129,6 +129,8 @@ export const LoginPage = () => {
                     <Form.Text className="text-success text-center">{formMessages.login}</Form.Text>
                 )}
             </Form>
+
+            <Link to={'/register'} className="fw-bold">Create account</Link>
         </div>
     )
 }

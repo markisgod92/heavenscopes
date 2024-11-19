@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -9,26 +10,21 @@ const UserSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
     password: {
         type: String,
-        min: 8
+        min: 8,
+        required: true
     },
     profilePic: {
         type: String,
         default: 'https://picsum.photos/200'
     },
     bio: {
-        type: String
-    },
-    githubId: {
         type: String,
-        sparse: true
-    },
-    discordId: {
-        type: String,
-        sparse: true
+        max: 100
     },
     settings: {
         isMetric: {
@@ -90,7 +86,41 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
         sparse: true
+    },
+    adminPasskey: {
+        type: String,
+        sparse: true
     }
-}, {timestamps: true, strict: true})
+}, { timestamps: true, strict: true })
+
+UserSchema.pre('save', async function (next) {
+    if (this.isModified('isAdmin') && this.isAdmin) {
+        const passkey = `${this.username}${Math.random().toString(36).substring(2, 15)}`
+        const salt = 10
+        const hashedPasskey = await bcrypt.hash(passkey, salt)
+        this.adminPasskey = hashedPasskey
+    } else {
+        this.adminPasskey = undefined
+    }
+
+    next()
+})
+
+UserSchema.pre('updateOne', async function (next) {
+    const update = this.getUpdate()
+    if (update.isAdmin !== undefined) {
+        if (update.isAdmin === true) {
+            const passkey = `${update.username}${Math.random().toString(36).substring(2, 15)}`
+            const salt = 10
+            const hashedPasskey = await bcrypt.hash(passkey, salt)
+            update.adminPasskey = hashedPasskey
+        } else if (update.isAdmin === false) {
+            update.adminPasskey = undefined
+        }
+        this.setUpdate(update)
+    }
+
+    next()
+})
 
 module.exports = mongoose.model('userModel', UserSchema, 'users')
