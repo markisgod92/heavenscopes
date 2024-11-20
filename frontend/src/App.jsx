@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
+import "bootstrap-icons/font/bootstrap-icons.css";
 import './App.css'
 import { CelestialBodyPage } from './pages/CelestialBodyPage';
 import { RealTimeDataProvider } from './contexts/RealTimeDataContext';
@@ -9,6 +10,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { NavAndFooterProvider } from './contexts/NavAndFooterContext';
 import { CreateAccount } from './pages/CreateAccount';
 import { AccountCreated } from './pages/AccountCreated';
+import { HomePage } from './pages/HomePage';
 
 function App() {
   return (
@@ -25,7 +27,8 @@ function App() {
             </ThemeProvider>
           </RealTimeDataProvider>
         }>
-          <Route exact path='/home' element={<CelestialBodyPage />} />
+          <Route exact path='/home' element={<HomePage />} />
+          <Route path='/feed/:bodyName' element={<CelestialBodyPage />} />
           <Route path='/new-user-redirect' element={<AccountCreated />} />
         </Route>
       </Routes>

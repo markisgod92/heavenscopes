@@ -5,10 +5,11 @@ import { ModelViewer } from "../components/celestial-body-components/model-3D/Mo
 import { MediaSwiper } from "../components/celestial-body-components/official-media-visualization/MediaSwiper"
 import { LocationSettings } from "../components/location-settings/LocationSettings"
 import { ThemeContext } from "../contexts/ThemeContext"
+import { useParams } from "react-router-dom"
 
-export const CelestialBodyPage = ({ bodyName = 'Mercury' }) => {
+export const CelestialBodyPage = () => {
+    const {bodyName} = useParams()
     const [celestialBodyData, setCelestialBodyData] = useState(null)
-    const { isNightModeOn, toggleNightMode } = useContext(ThemeContext)
 
     const getCelestialBodyData = async () => {
         try {
@@ -22,22 +23,11 @@ export const CelestialBodyPage = ({ bodyName = 'Mercury' }) => {
 
     useEffect(() => {
         getCelestialBodyData()
-    }, [])
+    }, [bodyName])
 
     return (
-        <Container>
-
-            {/* TEST */}
-            <Row>
-                <LocationSettings />
-            </Row>
-
-            <Row>
-                <Button onClick={toggleNightMode}>toggle night mode</Button>
-            </Row>
-            {/* END of TEST */}
-
-            <Row>
+        <>
+            <Row className="pt-3">
                 <h2>{bodyName}</h2>
             </Row>
 
@@ -60,6 +50,6 @@ export const CelestialBodyPage = ({ bodyName = 'Mercury' }) => {
                 </Row>
 
             )}
-        </Container>
+        </>
     )
 }

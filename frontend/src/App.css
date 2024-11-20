@@ -1,3 +1,8 @@
 .bio-textarea {
     resize: none;
 }
+
+.body-container {
+    background-color: #082032;
+    color: #E3CCAE;
+}
