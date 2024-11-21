@@ -1,0 +1,33 @@
+.real-time-visibility {
+    background-color: #334756 !important;
+}
+
+.real-time-visibility-night {
+    background-color: black !important;
+}
+
+.real-time-visibility caption {
+    color: #E3CCAE !important;
+    font-style: italic;
+}
+
+.real-time-visibility-night caption {
+    color: red !important;
+    font-style: italic;
+}
+
+.real-time-visibility .MuiTableCell-head, 
+.real-time-visibility .MuiTableCell-body {
+    color: #E3CCAE !important;
+    border-color: #E3CCAE !important;
+}
+
+.real-time-visibility-night .MuiTableCell-head, 
+.real-time-visibility-night .MuiTableCell-body {
+    color: red !important;
+    border-color: red !important;
+}
+
+.real-time-visibility .MuiTableCell-head {
+    font-weight: bold !important;
+}

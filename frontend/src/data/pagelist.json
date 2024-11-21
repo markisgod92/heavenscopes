@@ -6,6 +6,18 @@
         "url": "/home"
     },
     {
+        "title": "Sun",
+        "icon": "",
+        "symbol": "☉",
+        "url": "/feed/Sun"
+    },
+    {
+        "title": "Moon",
+        "icon": "",
+        "symbol": "☽",
+        "url": "/feed/Moon"
+    },
+    {
         "title": "Mercury",
         "icon": "",
         "symbol": "☿",
@@ -51,6 +63,6 @@
         "title": "Pluto",
         "icon": "",
         "symbol": "♇",
-        "url": "/feed/Pluto"
+        "url": "#"
     }
 ]

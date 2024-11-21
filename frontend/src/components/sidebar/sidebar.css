@@ -1,10 +1,22 @@
 .sidebar {
     width: 100%;
     height: 100%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar-normal {
     background-color: #334756;
     color: #E3CCAE;
-    padding-top: 20px;
-    transition: all 0.3s ease;
+}
+
+.sidebar-night {
+    background-color: black;
+    color: red;
 }
 
 .sidebar ul {
@@ -17,7 +29,14 @@
     display: flex;
     align-items: center;
     text-decoration: none;
+}
+
+.sidebar-normal li a {
     color: #E3CCAE;
+}
+
+.sidebar-night li a {
+    color: red;
 }
 
 .planet-icon {
@@ -29,12 +48,43 @@
     font-size: 20px;
 }
 
-.sidebar li:hover {
+.sidebar-normal li:hover {
     background-color: #E3CCAE;
 }
 
-.sidebar li:hover a {
+.sidebar-normal li:hover a {
     color: #334756;
+}
+
+.sidebar-night li:hover {
+    background-color: red;
+}
+
+.sidebar-night li:hover a {
+    color: black;
+}
+
+.sidebar .night-mode-switch {
+    align-self: center;
+}
+
+.sidebar-normal .night-mode-switch button {
+    color: #E3CCAE;
+    border-color: #E3CCAE;
+}
+.sidebar-normal .night-mode-switch .Mui-selected {
+    color: #334756;
+    background-color: #E3CCAE;
+}
+
+.sidebar-night .night-mode-switch button {
+    color: red;
+    border-color: red;
+}
+
+.sidebar-night .night-mode-switch .Mui-selected {
+    color: black;
+    background-color: red;
 }
 
 @media (max-width: 768px) {

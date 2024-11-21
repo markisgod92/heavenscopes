@@ -1,10 +1,8 @@
 import { useContext } from "react"
 import { Link } from "react-router-dom"
 import { ThemeContext } from "../../contexts/ThemeContext"
-import { Container, Form } from "react-bootstrap"
-import Switch from '@mui/material/Switch';
+import { Container } from "react-bootstrap"
 import './navbar.css'
-import { FormControlLabel } from "@mui/material";
 
 export const NavBar = () => {
     const { isNightModeOn, toggleNightMode } = useContext(ThemeContext)
@@ -20,16 +18,7 @@ export const NavBar = () => {
                             className="nav-logo"
                         />
                     </Link>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={isNightModeOn}
-                                onChange={toggleNightMode}
-                            />
-                        }
-                        label='night mode'
-                        labelPlacement="bottom"
-                    />
+                
                 </div>
             </Container>
         </nav>

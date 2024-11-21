@@ -3,7 +3,7 @@ import { RealTimeDataContext } from "../../../contexts/RealTimeDataContext"
 import { TimeOffsetSelector } from "./TimeOffsetSelector"
 import { DataVisualization } from "./DataVisualization"
 
-export const RealTimeData = ({ bodyName }) => {
+export const BodyRealTimeData = ({ bodyName }) => {
     const { data, isLoading, error } = useContext(RealTimeDataContext)
     const [selectedTimeOffset, setSelectedTimeOffset] = useState('now')
     const [readingData, setReadingData] = useState(null)
@@ -26,6 +26,10 @@ export const RealTimeData = ({ bodyName }) => {
     useEffect(() => {
         makeReadingData()
     }, [data, selectedTimeOffset, bodyName])
+
+    useEffect(() => {
+        setSelectedTimeOffset('now')
+    }, [bodyName])
 
     return (
         <div className="h-100">

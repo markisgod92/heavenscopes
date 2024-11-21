@@ -1,10 +1,8 @@
-import { useContext, useEffect, useState } from "react"
-import { RealTimeData } from "../components/celestial-body-components/real-time-data/RealTimeData"
-import { Button, Col, Container, Row } from "react-bootstrap"
+import { useEffect, useState } from "react"
+import { BodyRealTimeData } from "../components/celestial-body-components/real-time-data/BodyRealTimeData"
+import { Col, Row } from "react-bootstrap"
 import { ModelViewer } from "../components/celestial-body-components/model-3D/ModelViewer"
 import { MediaSwiper } from "../components/celestial-body-components/official-media-visualization/MediaSwiper"
-import { LocationSettings } from "../components/location-settings/LocationSettings"
-import { ThemeContext } from "../contexts/ThemeContext"
 import { useParams } from "react-router-dom"
 
 export const CelestialBodyPage = () => {
@@ -39,7 +37,7 @@ export const CelestialBodyPage = () => {
 
                 </Col>
                 <Col sm={12} md={6}>
-                    <RealTimeData bodyName={bodyName} />
+                    <BodyRealTimeData bodyName={bodyName} />
                 </Col>
             </Row>
 

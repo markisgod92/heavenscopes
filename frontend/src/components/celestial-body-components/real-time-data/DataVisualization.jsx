@@ -21,6 +21,12 @@ export const DataVisualization = ({ data }) => {
         <div className="h-100 d-flex flex-column justify-content-between">
 
             <div className="d-flex flex-column gap-2">
+                {body.name === 'Moon' && (
+                     <div className="d-flex gap-3">
+                     <span>Phase:</span>
+                     <span>{parseInt(body.phase)}%</span>
+                 </div>
+                )}
                 <div className="d-flex gap-3">
                     <span>Altitude:</span>
                     <span>{body.altitude.toFixed(2)}°</span>

@@ -21,12 +21,12 @@ export const NavAndFooterProvider = ({ children }) => {
                 }>
                     <NavBar />
                     <LocationSettings />
-                    <Container className="h-100">
+                    <Container fluid className="h-100 ps-0">
                         <Row className="h-100">
-                            <Col xs={2} lg={3}>
+                            <Col xs={2} lg={2}>
                                 <SideBar />
                             </Col>
-                            <Col xs={10} lg={9}>
+                            <Col xs={10} lg={10}>
                                 {children}
                             </Col>
                         </Row>
