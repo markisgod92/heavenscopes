@@ -21,17 +21,19 @@ export const LocationSettings = () => {
     }, [])
 
     return (
-        <Container fluid className={isNightModeOn ? 'bg-black' : 'location-settings'}>
-            <div className='d-flex justify-content-between'>
-                <div className="d-flex gap-3">
-                    <div>Current settings:</div>
-                    <div>Latitude: {coordDecimalToString(sessionLocation.lat, true)}</div>
-                    <div>Longitude: {coordDecimalToString(sessionLocation.lon, false)}</div>
-                    <div>Elevation: {isMetric ? `${sessionElevation}m` : `${parseInt(mtToFt(sessionElevation))}ft`}</div>
-                </div>
+        <div className={isNightModeOn ? 'bg-black' : 'location-settings'}>
+            <Container >
+                <div className='d-flex justify-content-between'>
+                    <div className="d-flex gap-3">
+                        <div>Current settings:</div>
+                        <div>Latitude: {coordDecimalToString(sessionLocation.lat, true)}</div>
+                        <div>Longitude: {coordDecimalToString(sessionLocation.lon, false)}</div>
+                        <div>Elevation: {isMetric ? `${sessionElevation}m` : `${parseInt(mtToFt(sessionElevation))}ft`}</div>
+                    </div>
 
-                <button className="link-button">Change settings</button>
-            </div>
-        </Container>
+                    <button className="link-button">Change settings</button>
+                </div>
+            </Container>
+        </div>
     )
 }

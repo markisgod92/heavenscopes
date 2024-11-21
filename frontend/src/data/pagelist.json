@@ -1,0 +1,56 @@
+[
+    {
+        "title": "Home",
+        "icon": "bi bi-house",
+        "symbol": "",
+        "url": "/home"
+    },
+    {
+        "title": "Mercury",
+        "icon": "",
+        "symbol": "☿",
+        "url": "/feed/Mercury"
+    },
+    {
+        "title": "Venus",
+        "icon": "",
+        "symbol": "♀",
+        "url": "/feed/Venus"
+    },
+    {
+        "title": "Mars",
+        "icon": "",
+        "symbol": "♂",
+        "url": "/feed/Mars"
+    },
+    {
+        "title": "Jupiter",
+        "icon": "",
+        "symbol": "♃",
+        "url": "/feed/Jupiter"
+    },
+    {
+        "title": "Saturn",
+        "icon": "",
+        "symbol": "♄",
+        "url": "/feed/Saturn"
+    },
+    {
+        "title": "Uranus",
+        "icon": "",
+        "symbol": "♅",
+        "url": "/feed/Uranus"
+    },
+    {
+        "title": "Neptune",
+        "icon": "",
+        "symbol": "♆",
+        "url": "/feed/Neptune"
+    },
+    {
+        "title": "Pluto",
+        "icon": "",
+        "symbol": "♇",
+        "url": "/feed/Pluto"
+    }
+]

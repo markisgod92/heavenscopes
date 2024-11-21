@@ -1,0 +1,50 @@
+.sidebar {
+    width: 100%;
+    height: 100%;
+    background-color: #334756;
+    color: #E3CCAE;
+    padding-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar li a {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #E3CCAE;
+}
+
+.planet-icon {
+    font-size: 24px;
+}
+
+.menu-text {
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+.sidebar li:hover {
+    background-color: #E3CCAE;
+}
+
+.sidebar li:hover a {
+    color: #334756;
+}
+
+@media (max-width: 768px) {
+    .sidebar li .menu-text {
+        display: none;
+    }
+}
+
+@media (min-width: 769px) {
+    .sidebar li .menu-text {
+        display: block;
+    }
+}
