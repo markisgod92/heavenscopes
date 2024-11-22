@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { RealTimeDataContext } from "../../../contexts/RealTimeDataContext"
-import { TimeOffsetSelector } from "../../celestial-body-components/real-time-data/TimeOffsetSelector"
+import { TimeOffsetSelector } from "../../time-offset-selector/TimeOffsetSelector"
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,25 +10,35 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import './realtimevisibility.css'
 import { ThemeContext } from "../../../contexts/ThemeContext";
+import { CircularProgress, IconButton } from "@mui/material";
 
 export const RealTimeVisibility = () => {
-    const { data, isLoading, error } = useContext(RealTimeDataContext)
+    const { data, isLoading, error, forceReload } = useContext(RealTimeDataContext)
     const [selectedTimeOffset, setSelectedTimeOffset] = useState('now')
     const { isNightModeOn } = useContext(ThemeContext)
 
-    const handleTimeOffset = (value) => {
-        setSelectedTimeOffset(value)
-    }
-
     return (
         <div className="h-100">
-            {isLoading && !error && <div>loading...</div>}
+            {isLoading && !error && (
+                <div className="pt-5 h-100 d-flex flex-column gap-3 align-items-center align-items-center">
+                    <CircularProgress />
+                    <span>Loading visibility data...</span>
+                </div>
+            )}
 
-            {!isLoading && error && <div>{error}</div>}
+            {!isLoading && error && (
+                <div className="pt-5 h-100 d-flex flex-column gap-1 align-items-center align-items-center">
+                    {error}
+                    <IconButton onClick={forceReload}>
+                        <i className="bi bi-arrow-clockwise text-white"></i>
+                    </IconButton>
+                    <span>Try again</span>
+                </div>
+            )}
 
-            {!isLoading && !error && data ? (
-                <div className="h-100 d-flex flex-column gap-5">
-                    <TimeOffsetSelector selectedTimeOffset={selectedTimeOffset} handleTimeOffset={handleTimeOffset} />
+            {!isLoading && !error && data && (
+                <div className="h-100 d-flex flex-column">
+                    <TimeOffsetSelector selectedTimeOffset={selectedTimeOffset} setTimeOffset={setSelectedTimeOffset} />
 
                     <TableContainer component={Paper} className={isNightModeOn ? 'real-time-visibility-night' : 'real-time-visibility'}>
                         <Table sx={{ minWidth: 650 }} size="small">
@@ -64,8 +74,6 @@ export const RealTimeVisibility = () => {
                         </Table>
                     </TableContainer>
                 </div>
-            ) : (
-                <div className="h-100 d-flex justify-content-center align-items-center">Data not available.</div>
             )}
         </div>
     )

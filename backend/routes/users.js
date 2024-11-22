@@ -51,7 +51,8 @@ users.post('/login', async (req, res, next) => {
         const payload = {
             username: user.username, 
             id: user._id,
-            settings: user.settings
+            settings: user.settings,
+            profilePic: user.profilePic
         }
 
         if(user.isAdmin) {
@@ -89,8 +90,15 @@ users.post('/new', async (req, res, next) => {
     try {
         const user = await newUser.save()
 
+        const payload = {
+            username: user.username, 
+            id: user._id,
+            settings: user.settings,
+            profilePic: user.profilePic
+        }
+
         const token = jwt.sign(
-            { username: user.username, id: user._id, settings: user.settings },
+            payload,
             process.env.JWT_SECRET,
             { expiresIn: '15m' }
         )

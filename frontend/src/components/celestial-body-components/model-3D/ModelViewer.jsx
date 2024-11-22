@@ -43,6 +43,7 @@ const ModelConstructor = ({ model3D }) => {
         tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
         tex.flipY = true;
       });
+      texture.colorSpace = THREE.SRGBColorSpace
       const sphereMaterial = new THREE.MeshStandardMaterial({ map: texture });
       model = new THREE.Mesh(sphereGeometry, sphereMaterial);
       scene.add(model);

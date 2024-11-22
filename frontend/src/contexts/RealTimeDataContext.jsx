@@ -37,10 +37,14 @@ export const RealTimeDataProvider = ({ children }) => {
                 twelveH: twelveHData
             })
         } catch (error) {
-            setError('Real time data fetch error.')
+            setError('Real time data not available.')
         } finally {
             setLoading(false)
         }
+    }
+
+    const forceReload = () => {
+        loadData()
     }
 
     useEffect(() => {
@@ -49,7 +53,7 @@ export const RealTimeDataProvider = ({ children }) => {
 
     return (
         <RealTimeDataContext.Provider
-            value={{ data, isLoading, error }}
+            value={{ data, isLoading, error, forceReload }}
         >
             { children }
         </RealTimeDataContext.Provider>

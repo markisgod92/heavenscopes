@@ -3,9 +3,12 @@ import { Link } from "react-router-dom"
 import { ThemeContext } from "../../contexts/ThemeContext"
 import { Container } from "react-bootstrap"
 import './navbar.css'
+import { Avatar } from "@mui/material"
+import { useSession } from "../../custom-hooks/useSession"
 
 export const NavBar = () => {
     const { isNightModeOn, toggleNightMode } = useContext(ThemeContext)
+    const session = useSession()
 
     return (
         <nav className={`py-3 px-5 ${isNightModeOn ? 'navbar-night' : 'navbar-normal'}`}>
@@ -19,6 +22,11 @@ export const NavBar = () => {
                         />
                     </Link>
                 
+                    <Avatar 
+                        src={session.profilePic} 
+                        alt={session.username}
+                        sx={{ width: 56, height: 56 }}
+                    />
                 </div>
             </Container>
         </nav>

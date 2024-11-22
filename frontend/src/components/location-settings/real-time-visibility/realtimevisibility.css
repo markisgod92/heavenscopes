@@ -1,9 +1,11 @@
 .real-time-visibility {
     background-color: #334756 !important;
+    border: 1px solid var(--detail);
 }
 
 .real-time-visibility-night {
     background-color: black !important;
+    border: 1px solid red;
 }
 
 .real-time-visibility caption {

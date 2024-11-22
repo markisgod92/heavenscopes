@@ -1,34 +1,38 @@
-import { ToggleButton, ToggleButtonGroup } from "react-bootstrap"
+import { ToggleButtonGroup, ToggleButton } from '@mui/material'
+import './timeoffsetselector.css'
+import { useContext } from 'react'
+import { ThemeContext } from '../../contexts/ThemeContext'
 
-export const TimeOffsetSelector = ({ selectedTimeOffset, handleTimeOffset }) => {
+export const TimeOffsetSelector = ({ selectedTimeOffset, setTimeOffset }) => {
+    const {isNightModeOn} = useContext(ThemeContext)
+
+    const changeTimeOffset = (event, value) => {
+        setTimeOffset(value)
+    }
+
     return (
-        <div className="d-flex align-items-center gap-1">
+        <div className={`d-flex justify-content-end ${isNightModeOn ? 'time-selector-night' : 'time-selector'}`}>
             <ToggleButtonGroup
-                type="radio"
-                name="timeOffset"
                 value={selectedTimeOffset}
-                onChange={handleTimeOffset}
+                exclusive
+                onChange={changeTimeOffset}
             >
                 <ToggleButton
-                    id="now-btn"
                     value={'now'}
                 >
                     Now
                 </ToggleButton>
                 <ToggleButton
-                    id="threeH-btn"
                     value={'threeH'}
                 >
                     +3h
                 </ToggleButton>
                 <ToggleButton
-                    id="sixH-btn"
                     value={'sixH'}
                 >
                     +6h
                 </ToggleButton>
                 <ToggleButton
-                    id="twelveH-btn"
                     value={'twelveH'}
                 >
                     +12h

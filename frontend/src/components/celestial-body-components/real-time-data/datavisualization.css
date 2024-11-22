@@ -1,0 +1,10 @@
+.body-data-visualization {
+    background-color: var(--container);
+    border: 1px solid;
+    border-color: var(--detail);
+}
+
+.night-data-visualization {
+    background-color: black;
+    border: 1px solid red;
+}
