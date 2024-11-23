@@ -1,0 +1,52 @@
+.modify-avatar-modal .modal-header {
+    background-color: var(--container);
+    color: var(--detail);
+    border-bottom: 0;
+}
+
+.modify-avatar-modal .modal-body {
+    background-color: var(--background);
+}
+
+.modify-avatar-modal input {
+    background-color: var(--detail);
+    color: var(--container);
+}
+
+.modify-avatar-modal button {
+    background-color: var(--container);
+    color: var(--detail);
+    border: none;
+}
+
+.modify-avatar-modal button:disabled {
+    background-color: var(--background);
+    color: var(--container);
+    border: none;
+}
+
+.modify-avatar-night .modal-content {
+    border: 1px solid red;
+}
+
+.modify-avatar-night .modal-header {
+    background-color: black;
+    color: red;
+    border-bottom: 1px solid red;
+}
+
+.modify-avatar-night .modal-body {
+    background-color: black;
+}
+
+.modify-avatar-night button {
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+.modify-avatar-night button:disabled {
+    background-color: var(--black);
+    color: var(--container);
+    border: none;
+}

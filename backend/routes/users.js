@@ -8,12 +8,11 @@ const verifyToken = require('../middlewares/verifyToken')
 const verifyOwner = require('../middlewares/verifyOwner')
 require('dotenv').config()
 
-users.get('/me', verifyToken, verifyOwner, async (req, res, next) => {
-    const token = req.header('Authorization')
+users.get('/me/:userId', verifyToken, verifyOwner, async (req, res, next) => {
+    const token = req.user
 
     try {
-        const tokenData = jwt.decode(token)
-        const user = await UserModel.findById(tokenData.id)
+        const user = await UserModel.findById(token.id).lean()
 
         if(!user) {
             const error = new Error('User not found')
@@ -21,11 +20,32 @@ users.get('/me', verifyToken, verifyOwner, async (req, res, next) => {
             return next(error)
         }
 
-        const { password, ...userData } = user
+        const { password, adminPasskey, ...data } = user
 
         res.status(200)
-            .json({userData})
+            .json(data)
     } catch {
+        next(error)
+    }
+})
+
+users.get('/:userId', verifyToken, async (req, res, next) => {
+    const {userId} = req.params
+
+    try {
+        const user = await UserModel.findById(userId).lean()
+
+        if(!user) {
+            const error = new Error('User not found')
+            error.status = 400
+            return next(error)
+        }
+
+        const { email, password, settings, postsLikes, mediaLikes, isAdmin, adminPasskey, ...data } = user
+
+        res.status(200)
+            .json(data)
+    } catch (error) {
         next(error)
     }
 })
@@ -123,10 +143,16 @@ users.patch('/:userId', verifyToken, verifyOwner, async (req, res, next) => {
 
     try {
         const newData = req.body
-        const updatedUser = await UserModel.findByIdAndUpdate(userId, newData, {new: true})
+        const updatedUser = await UserModel.findByIdAndUpdate(userId, {$set: newData}, {new: true})
 
+        const payload = {
+            username: updatedUser.username, 
+            id: updatedUser._id,
+            settings: updatedUser.settings,
+            profilePic: updatedUser.profilePic
+        }
         const token = jwt.sign(
-            { username: updatedUser.username, id: updatedUser._id },
+            payload,
             process.env.JWT_SECRET,
             { expiresIn: '15m' }
         )

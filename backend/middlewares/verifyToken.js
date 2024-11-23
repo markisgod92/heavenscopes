@@ -5,7 +5,7 @@ const verifyToken = (req, res, next) => {
 
     if(!token) {
         const error = new Error('Authentication required.')
-        error.status(403)
+        error.status = 403
         return next(error)
     }
 

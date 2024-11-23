@@ -11,6 +11,7 @@ import { NavAndFooterProvider } from './contexts/NavAndFooterContext';
 import { CreateAccount } from './pages/CreateAccount';
 import { AccountCreated } from './pages/AccountCreated';
 import { HomePage } from './pages/HomePage';
+import { UserPage } from './pages/UserPage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route exact path='/home' element={<HomePage />} />
           <Route path='/feed/:bodyName' element={<CelestialBodyPage />} />
           <Route path='/new-user-redirect' element={<AccountCreated />} />
+          <Route path='/profile/:userId' element={<UserPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

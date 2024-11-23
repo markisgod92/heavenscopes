@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
-import { RealTimeDataContext } from "../../../contexts/RealTimeDataContext"
-import { TimeOffsetSelector } from "../../time-offset-selector/TimeOffsetSelector"
+import { RealTimeDataContext } from "../../contexts/RealTimeDataContext"
+import { TimeOffsetSelector } from "../time-offset-selector/TimeOffsetSelector"
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,7 +9,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import './realtimevisibility.css'
-import { ThemeContext } from "../../../contexts/ThemeContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { CircularProgress, IconButton } from "@mui/material";
 
 export const RealTimeVisibility = () => {

@@ -19,3 +19,10 @@
     background-color: #082032;
     color: #E3CCAE;
 }
+
+.modify-avatar-button {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    color: lightgrey;
+}

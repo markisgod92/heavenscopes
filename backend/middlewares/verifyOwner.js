@@ -1,15 +1,13 @@
 const jwt = require('jsonwebtoken')
 
 const verifyOwner = (req, res, next) => {
-    const token = req.header('Authorization')
-    const {userId} = req.params
-
+    const token = req.user
+    const { userId } = req.params
+    
     try {
-        const userToken = jwt.decode(token)
-
-        if(userToken.id !== userId) {
+        if (token.id !== userId) {
             const error = new Error('Unhautorized')
-            error.status(401)
+            error.status = 401
             return next(error)
         }
 

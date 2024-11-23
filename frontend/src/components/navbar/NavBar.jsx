@@ -7,7 +7,7 @@ import { Avatar } from "@mui/material"
 import { useSession } from "../../custom-hooks/useSession"
 
 export const NavBar = () => {
-    const { isNightModeOn, toggleNightMode } = useContext(ThemeContext)
+    const { isNightModeOn } = useContext(ThemeContext)
     const session = useSession()
 
     return (
@@ -21,12 +21,14 @@ export const NavBar = () => {
                             className="nav-logo"
                         />
                     </Link>
-                
-                    <Avatar 
-                        src={session.profilePic} 
-                        alt={session.username}
-                        sx={{ width: 56, height: 56 }}
-                    />
+
+                    <Link to={`/profile/${session.id}`}>
+                        <Avatar
+                            src={session.profilePic}
+                            alt={session.username}
+                            sx={{ width: 56, height: 56 }}
+                        />
+                    </Link>
                 </div>
             </Container>
         </nav>
