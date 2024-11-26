@@ -1,10 +1,7 @@
-import { useContext } from 'react'
 import './datavisualization.css'
-import { ThemeContext } from '../../../contexts/ThemeContext'
 
 export const DataVisualization = ({ data }) => {
     const { updated, meta, body } = data
-    const {isNightModeOn} = useContext(ThemeContext)
 
     const makeRAString = (value) => {
         const { hours, minutes, seconds } = value
@@ -23,7 +20,7 @@ export const DataVisualization = ({ data }) => {
     }
 
     return (
-        <div className={`h-100 p-3 d-flex flex-column justify-content-between ${isNightModeOn ? 'night-data-visualization' : 'body-data-visualization'}`}>
+        <div className='h-100 p-3 d-flex flex-column justify-content-between body-data-visualization'>
 
             <div className="d-flex flex-column gap-2">
                 {body.name === 'Moon' && (

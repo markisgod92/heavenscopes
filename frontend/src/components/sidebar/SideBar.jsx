@@ -17,8 +17,8 @@ export const SideBar = () => {
     }
 
     return (
-        <div className={`sidebar ${isNightModeOn ? 'sidebar-night' : 'sidebar-normal'}`}>
-            <ul>
+        <div className='sidebar'>
+            <ul className='list-unstyled ps-3 d-flex flex-column gap-3'>
                 {pages.map(page => (
                     <li key={`menu-${page.title}`}>
                         <Link to={page.url}>

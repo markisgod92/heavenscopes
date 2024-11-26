@@ -1,6 +1,6 @@
 .location-settings {
-    background-color: #E3CCAE;
-    color: #334756;
+    background-color: var(--detail);
+    color: var(--container);
 }
 
 .link-button {

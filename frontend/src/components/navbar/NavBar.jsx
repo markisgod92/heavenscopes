@@ -11,7 +11,7 @@ export const NavBar = () => {
     const session = useSession()
 
     return (
-        <nav className={`py-3 px-5 ${isNightModeOn ? 'navbar-night' : 'navbar-normal'}`}>
+        <nav className='py-3 px-5 custom-navbar'>
             <Container fluid>
                 <div className="d-flex justify-content-between align-items-center">
                     <Link to={'/home'}>

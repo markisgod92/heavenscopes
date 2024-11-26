@@ -1,15 +1,13 @@
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useSession } from "../../custom-hooks/useSession"
 import { coordDecimalToString, mtToFt } from "../../utils/location-conversions"
 import './locationsettings.css'
-import { ThemeContext } from "../../contexts/ThemeContext"
 import { Container } from "react-bootstrap"
 
 export const LocationSettings = () => {
     const [sessionLocation, setSessionLocation] = useState({})
     const [sessionElevation, setSessionElevation] = useState(0)
     const { settings: { isMetric, location, elevation } } = useSession()
-    const { isNightModeOn } = useContext(ThemeContext)
 
     const getDefaultSettings = () => {
         setSessionLocation(location)
@@ -21,7 +19,7 @@ export const LocationSettings = () => {
     }, [])
 
     return (
-        <div className={isNightModeOn ? 'bg-black' : 'location-settings'}>
+        <div className='location-settings'>
             <Container >
                 <div className='d-flex justify-content-between'>
                     <div className="d-flex gap-3">

@@ -22,28 +22,3 @@
     height: 10%;
     background-color: var(--container);
 }
-
-.time-selector-night button {
-    color: red !important;
-    border-color: red !important;
-    background-color: black !important;
-}
-
-.time-selector-night .Mui-selected {
-    color: red !important;
-    border-bottom: none !important;
-    background-color: black !important;
-    font-weight: bold !important;
-    position: relative;
-}
-
-.time-selector-night .Mui-selected::after {
-    content: '';
-    position: absolute;
-    bottom: -5%;
-    z-index: 1;
-    left: 0;
-    width: 100%;
-    height: 10%;
-    background-color: black;
-}

@@ -8,6 +8,7 @@ import { MediaCard } from './MediaCard';
 export const MediaSwiper = ({ media }) => {
     return (
         <Swiper
+            className='h-100'
             modules={[Navigation]}
             spaceBetween={50}
             breakpoints={{

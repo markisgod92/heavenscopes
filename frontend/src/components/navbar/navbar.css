@@ -1,9 +1,5 @@
-.navbar-normal {
-    background-color: #334756;
-}
-
-.navbar-night {
-    background-color: black;
+.custom-navbar {
+    background-color: var(--container);
 }
 
 .nav-logo {

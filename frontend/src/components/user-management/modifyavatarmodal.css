@@ -24,29 +24,3 @@
     color: var(--container);
     border: none;
 }
-
-.modify-avatar-night .modal-content {
-    border: 1px solid red;
-}
-
-.modify-avatar-night .modal-header {
-    background-color: black;
-    color: red;
-    border-bottom: 1px solid red;
-}
-
-.modify-avatar-night .modal-body {
-    background-color: black;
-}
-
-.modify-avatar-night button {
-    background-color: red;
-    color: white;
-    border: none;
-}
-
-.modify-avatar-night button:disabled {
-    background-color: var(--black);
-    color: var(--container);
-    border: none;
-}

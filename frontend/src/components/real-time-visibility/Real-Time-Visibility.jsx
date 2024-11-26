@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { RealTimeDataContext } from "../../contexts/RealTimeDataContext"
 import { TimeOffsetSelector } from "../time-offset-selector/TimeOffsetSelector"
 import Table from '@mui/material/Table';
@@ -9,13 +9,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import './realtimevisibility.css'
-import { ThemeContext } from "../../contexts/ThemeContext";
 import { CircularProgress, IconButton } from "@mui/material";
 
 export const RealTimeVisibility = () => {
     const { data, isLoading, error, forceReload } = useContext(RealTimeDataContext)
     const [selectedTimeOffset, setSelectedTimeOffset] = useState('now')
-    const { isNightModeOn } = useContext(ThemeContext)
 
     return (
         <div className="h-100">
@@ -40,7 +38,7 @@ export const RealTimeVisibility = () => {
                 <div className="h-100 d-flex flex-column">
                     <TimeOffsetSelector selectedTimeOffset={selectedTimeOffset} setTimeOffset={setSelectedTimeOffset} />
 
-                    <TableContainer component={Paper} className={isNightModeOn ? 'real-time-visibility-night' : 'real-time-visibility'}>
+                    <TableContainer component={Paper} className='real-time-visibility'>
                         <Table sx={{ minWidth: 650 }} size="small">
                             <caption>
                                 <span>Powered by </span>

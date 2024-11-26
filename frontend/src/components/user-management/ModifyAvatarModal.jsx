@@ -1,12 +1,10 @@
-import { useContext, useState } from "react"
+import { useState } from "react"
 import { Button, Form, Modal, Spinner } from "react-bootstrap"
-import {ThemeContext} from '../../contexts/ThemeContext'
 import './modifyavatarmodal.css'
 import { CustomError } from "../../utils/custom-error"
 
 export const ModifyAvatarModal = ({ userId, show, handleClose }) => {
     const [file, setFile] = useState(null)
-    const {isNightModeOn} = useContext(ThemeContext)
     const [isLoading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
@@ -63,7 +61,7 @@ export const ModifyAvatarModal = ({ userId, show, handleClose }) => {
     }
 
     return (
-        <Modal centered show={show} onHide={handleClose} className={isNightModeOn ? 'modify-avatar-night' : 'modify-avatar-modal'}>
+        <Modal centered show={show} onHide={handleClose} className='modify-avatar-modal'>
             <Modal.Header closeButton>
                 <Modal.Title>
                     Change profile picture

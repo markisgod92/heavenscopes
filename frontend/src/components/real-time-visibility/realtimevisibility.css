@@ -1,33 +1,17 @@
 .real-time-visibility {
-    background-color: #334756 !important;
+    background-color: var(--container) !important;
     border: 1px solid var(--detail);
 }
 
-.real-time-visibility-night {
-    background-color: black !important;
-    border: 1px solid red;
-}
-
 .real-time-visibility caption {
-    color: #E3CCAE !important;
-    font-style: italic;
-}
-
-.real-time-visibility-night caption {
-    color: red !important;
+    color: var(--detail) !important;
     font-style: italic;
 }
 
 .real-time-visibility .MuiTableCell-head, 
 .real-time-visibility .MuiTableCell-body {
-    color: #E3CCAE !important;
-    border-color: #E3CCAE !important;
-}
-
-.real-time-visibility-night .MuiTableCell-head, 
-.real-time-visibility-night .MuiTableCell-body {
-    color: red !important;
-    border-color: red !important;
+    color: var(--detail) !important;
+    border-color: var(--detail) !important;
 }
 
 .real-time-visibility .MuiTableCell-head {
