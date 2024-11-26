@@ -1,5 +1,8 @@
 .custom-navbar {
     background-color: var(--container);
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
 .nav-logo {

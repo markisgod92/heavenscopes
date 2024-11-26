@@ -12,25 +12,27 @@ export const NavAndFooterProvider = ({ children }) => {
         <NavAndFooterContext.Provider
             value={''}
         >
-            <div className="vh-100 d-flex flex-column justify-content-between">
+            <div className="vh-100 d-flex flex-column">
 
                 <NavBar />
+                <div className="main-content flex-grow-1 d-flex flex-column overflow-hidden">
 
-                <LocationSettings />
+                    <LocationSettings />
 
-                <Container fluid className="h-100 ps-0 flex-grow-1">
-                    <Row className="h-100">
+                    <Container fluid className="h-100 ps-0 flex-grow-1">
+                        <Row className="h-100 overflow-auto">
 
-                        <Col xs={2} className="h-100">
-                            <SideBar />
-                        </Col>
+                            <Col xs={2} className="h-100 d-flex">
+                                <SideBar />
+                            </Col>
 
-                        <Col xs={10} className="h-100 overflow-y-scroll">
+                            <Col xs={10} className="h-100 overflow-y-scroll pb-5">
                                 {children}
-                        </Col>
+                            </Col>
 
-                    </Row>
-                </Container>
+                        </Row>
+                    </Container>
+                </div>
 
                 <Footer />
 

@@ -14,6 +14,7 @@ export const HomePage = () => {
             <Row className="pt-3">
                 <RealTimeVisibility />
             </Row>
+            
         </>
     )
 }
