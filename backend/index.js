@@ -20,6 +20,9 @@ server.use('/user', userRoutes)
 const celestialBodiesRoutes = require('./routes/celestialbodies')
 server.use('/celestial-bodies', celestialBodiesRoutes)
 
+const postRoutes = require('./routes/posts')
+server.use('/post', postRoutes)
+
 // ERROR MW
 const notFoundErrorHandler = require('./middlewares/notFoundErrorHandler')
 server.use(notFoundErrorHandler)
