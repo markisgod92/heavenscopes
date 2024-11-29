@@ -5,6 +5,8 @@ import { Row, Col, Button, Form } from "react-bootstrap"
 import { Avatar, CircularProgress, IconButton } from "@mui/material"
 import { ModifyAvatarModal } from "../components/user-management/ModifyAvatarModal"
 import { BioForm } from "../components/user-management/BioForm"
+import { CreateNewPost } from "../components/post-components/CreateNewPost"
+import { PostFeed } from '../components/post-components/PostFeed'
 
 export const UserPage = () => {
     const [userData, setUserData] = useState(null)
@@ -56,6 +58,7 @@ export const UserPage = () => {
     }, [userId])
 
     return (
+        <>
         <Row className="pt-5">
             {isLoading && !error && (
                 <div className="h-100 d-flex flex-column gap-3 align-items-center align-items-center">
@@ -111,5 +114,14 @@ export const UserPage = () => {
                 </>
             )}
         </Row>
+
+        <Row className="p-3">
+            <CreateNewPost />
+        </Row>
+
+        <Row className="p-3">
+            <PostFeed type={'by-user'} id={userId}/>
+        </Row>
+        </>
     )
 }

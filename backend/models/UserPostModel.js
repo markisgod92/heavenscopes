@@ -5,24 +5,26 @@ const UserPostSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'userModel'
     },
-    reference: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'celestialBodyModel'
-    },
+    reference: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'celestialBodyModel'
+        }
+    ],
     textContent: {
         type: String
     },
     media: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'userMediaModel'
+            /* type: mongoose.Schema.Types.ObjectId,
+            ref: 'userMediaModel' */
+            type: String
         }
     ],
     likes: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'userModel',
-            unique
+            ref: 'userModel'
         }
     ],
     comments: [
@@ -38,7 +40,12 @@ const UserPostSchema = new mongoose.Schema({
                 type: Date
             }
         }
-    ]
+    ],
+    isPublic: {
+        type: Boolean,
+        required: true,
+        default: true
+    }
 }, { timestamps: true, strict: true })
 
 module.exports = mongoose.model('postModel', UserPostSchema, 'posts')

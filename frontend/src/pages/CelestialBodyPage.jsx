@@ -4,6 +4,8 @@ import { Col, Row } from "react-bootstrap"
 import { ModelViewer } from "../components/celestial-body-components/model-3D/ModelViewer"
 import { MediaSwiper } from "../components/celestial-body-components/official-media-visualization/MediaSwiper"
 import { useParams } from "react-router-dom"
+import { CreateNewPost } from "../components/post-components/CreateNewPost"
+import { PostFeed } from "../components/post-components/PostFeed"
 
 export const CelestialBodyPage = () => {
     const {bodyName} = useParams()
@@ -11,7 +13,11 @@ export const CelestialBodyPage = () => {
 
     const getCelestialBodyData = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/celestial-bodies/by-name/${bodyName.toLowerCase()}?media=true`)
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/celestial-bodies/by-name/${bodyName}?media=true`, {
+                headers: {
+                    'Authorization': JSON.parse(localStorage.getItem('Authorization'))
+                }
+            })
             const data = await response.json()
             setCelestialBodyData(data)
         } catch (error) {
@@ -48,6 +54,18 @@ export const CelestialBodyPage = () => {
                 </Row>
 
             )}
+
+            <Row className="p-3">
+                {celestialBodyData && (
+                <CreateNewPost bodyId={celestialBodyData._id}/>
+            )}
+            </Row>
+
+            <Row className="p-3">
+            {celestialBodyData && (
+                <PostFeed type={'by-body'} id={celestialBodyData._id}/>
+            )}
+            </Row>
         </>
     )
 }

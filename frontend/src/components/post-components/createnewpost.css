@@ -1,0 +1,36 @@
+.new-post-div {
+    border: 5px solid var(--detail);
+    background-color: var(--container);
+}
+
+.tag-selector {
+    border: 1px solid var(--detail);
+    padding: 0.6em;
+    cursor: pointer;
+    position: relative;
+}
+
+.tag-selector input {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+}
+
+.tag-selector:has(input:checked) {
+    background-color: var(--detail);
+    color: var(--container)
+}
+
+.new-post-div textarea {
+    resize: none;
+}
+
+.new-post-div button {
+    background-color: var(--detail) !important;
+    border-color: var(--detail) !important;
+    color: var(--container) !important;
+}

@@ -6,7 +6,7 @@ const verifyToken = require('../middlewares/verifyToken')
 const verifyOwner = require('../middlewares/verifyOwner')
 require('dotenv').config()
 
-posts.get('/:postId', verifyToken, async (req, res, next) => {
+posts.get('/single/:postId', verifyToken, async (req, res, next) => {
     const { postId } = req.params
 
     try {
@@ -40,6 +40,7 @@ posts.get('/by-user/:userId', verifyToken, async (req, res, next) => {
 
     try {
         const user = await UserModel.findById(userId)
+            .sort({ createdAt: -1 })
 
         if (!user) {
             const error = new Error('User not found')
@@ -48,6 +49,7 @@ posts.get('/by-user/:userId', verifyToken, async (req, res, next) => {
         }
 
         const posts = await UserPostModel.find({ userId: userId })
+            .sort({ createdAt: -1 })
             .populate([
                 { path: 'userId', select: '_id username profilePic' },
                 { path: 'reference', select: '_id primaryName' },
@@ -73,10 +75,11 @@ posts.get('/by-user/:userId', verifyToken, async (req, res, next) => {
 })
 
 posts.get('/by-body/:bodyId', verifyToken, async (req, res, next) => {
-    const { bodyId } = req.params
+    const {bodyId} = req.params
 
     try {
-        const posts = await UserPostModel.find({ reference: bodyId })
+        const posts = await UserPostModel.find({ reference: { $in: [bodyId] } })
+            .sort({ createdAt: -1 })
             .populate([
                 { path: 'userId', select: '_id username profilePic' },
                 { path: 'reference', select: '_id primaryName' },
@@ -101,6 +104,50 @@ posts.get('/by-body/:bodyId', verifyToken, async (req, res, next) => {
     }
 })
 
+posts.get('/feed', verifyToken, async (req, res, next) => {
+    const token = req.user
+
+    try {
+        const user = await UserModel.findById(token.id).select('following')
+
+        if (!user) {
+            const error = new Error('User not found')
+            error.status = 404
+            return next(error)
+        }
+
+        const posts = await UserPostModel.find({
+            $or: [
+                { isPublic: true },
+                { userId: { $in: user.following } },
+                { userId: token.id }
+            ]
+        })
+            .sort({ createdAt: -1 })
+            .populate([
+                { path: 'userId', select: '_id username profilePic' },
+                { path: 'reference', select: '_id primaryName' },
+                { path: 'media' },
+                { path: 'likes', select: '_id username profilePic' },
+                {
+                    path: 'comments.userId',
+                    select: '_id username profilePic'
+                }
+            ])
+
+        if (posts.length === 0) {
+            const error = new Error('Posts not found')
+            error.status = 404
+            return next(error)
+        }
+
+        res.status(200)
+            .json(posts)
+    } catch (error) {
+        next(error)
+    }
+})
+
 posts.get('/following', verifyToken, async (req, res, next) => {
     const token = req.user
 
@@ -114,6 +161,7 @@ posts.get('/following', verifyToken, async (req, res, next) => {
         }
 
         const posts = await UserPostModel.find({ userId: { $in: user.following } })
+            .sort({ createdAt: -1 })
             .populate([
                 { path: 'userId', select: '_id username profilePic' },
                 { path: 'reference', select: '_id primaryName' },
@@ -154,7 +202,8 @@ posts.post('/new', verifyToken, async (req, res, next) => {
 
         res.status(200)
             .send({
-                message: 'Post created successfully'
+                message: 'Post created successfully',
+                savedPost
             })
     } catch (error) {
         next(error)

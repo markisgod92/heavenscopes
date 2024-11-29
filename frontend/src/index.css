@@ -1,13 +1,15 @@
 :root {
     --background: #082032;
     --container: #334756;
-    --detail: #E3CCAE; 
+    --detail: #E3CCAE;
+    --text-input-bg: white;
 }
 
 .night-mode {
     --background: black;
     --container: black;
     --detail: red;
+    --text-input-bg: rgb(34, 34, 34);
 }
 
 html, body {
