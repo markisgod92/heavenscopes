@@ -1,0 +1,20 @@
+.single-post {
+    background-color: var(--container);
+}
+
+.like-btn {
+    color: var(--detail) !important;
+    border-color: var(--detail) !important;
+    background-color: transparent;
+}
+
+.add-comment-btn {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    color: var(--detail) !important;
+    font-size: 1.3rem;
+}
+
+.add-comment-btn:hover {
+    border-color: var(--detail) !important;
+}

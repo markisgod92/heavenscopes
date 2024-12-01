@@ -15,7 +15,6 @@ posts.get('/single/:postId', verifyToken, async (req, res, next) => {
                 { path: 'userId', select: '_id username profilePic' },
                 { path: 'reference', select: '_id primaryName' },
                 { path: 'media' },
-                { path: 'likes', select: '_id username profilePic' },
                 {
                     path: 'comments.userId',
                     select: '_id username profilePic'
@@ -54,7 +53,6 @@ posts.get('/by-user/:userId', verifyToken, async (req, res, next) => {
                 { path: 'userId', select: '_id username profilePic' },
                 { path: 'reference', select: '_id primaryName' },
                 { path: 'media' },
-                { path: 'likes', select: '_id username profilePic' },
                 {
                     path: 'comments.userId',
                     select: '_id username profilePic'
@@ -84,7 +82,6 @@ posts.get('/by-body/:bodyId', verifyToken, async (req, res, next) => {
                 { path: 'userId', select: '_id username profilePic' },
                 { path: 'reference', select: '_id primaryName' },
                 { path: 'media' },
-                { path: 'likes', select: '_id username profilePic' },
                 {
                     path: 'comments.userId',
                     select: '_id username profilePic'
@@ -128,7 +125,6 @@ posts.get('/feed', verifyToken, async (req, res, next) => {
                 { path: 'userId', select: '_id username profilePic' },
                 { path: 'reference', select: '_id primaryName' },
                 { path: 'media' },
-                { path: 'likes', select: '_id username profilePic' },
                 {
                     path: 'comments.userId',
                     select: '_id username profilePic'
@@ -166,7 +162,6 @@ posts.get('/following', verifyToken, async (req, res, next) => {
                 { path: 'userId', select: '_id username profilePic' },
                 { path: 'reference', select: '_id primaryName' },
                 { path: 'media' },
-                { path: 'likes', select: '_id username profilePic' },
                 {
                     path: 'comments.userId',
                     select: '_id username profilePic'
@@ -232,7 +227,7 @@ posts.patch('/like/:postId', verifyToken, async (req, res, next) => {
             ])
 
             res.status(200)
-                .send({ message: 'Post liked' })
+                .send({ message: 'liked' })
         } else {
             await Promise.all([
                 post.updateOne({ $pull: { likes: token.id } }),
@@ -242,7 +237,7 @@ posts.patch('/like/:postId', verifyToken, async (req, res, next) => {
             ])
 
             res.status(200)
-                .send({ message: 'Post unliked' })
+                .send({ message: 'unliked' })
         }
     } catch (error) {
         next(error)
@@ -271,8 +266,10 @@ posts.patch('/comment/:postId', verifyToken, async (req, res, next) => {
             $push: { comments: comment }
         })
 
+        const updatedPost = await UserPostModel.findById(postId)
+
         res.status(200)
-            .send({ message: 'Comment added' })
+            .json(updatedPost.comments)
     } catch (error) {
         next(error)
     }
