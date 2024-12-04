@@ -266,7 +266,7 @@ posts.patch('/comment/:postId', verifyToken, async (req, res, next) => {
             $push: { comments: comment }
         })
 
-        const updatedPost = await UserPostModel.findById(postId)
+        const updatedPost = await UserPostModel.findById(postId).populate({path: 'comments.userId', select: '_id username profilePic'})
 
         res.status(200)
             .json(updatedPost.comments)

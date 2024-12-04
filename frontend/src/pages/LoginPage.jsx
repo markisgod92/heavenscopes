@@ -39,7 +39,7 @@ export const LoginPage = () => {
 
     const redirect = () => {
         setTimeout(() => {
-            navigate('/home')
+            navigate('/feed')
         }, 500)
     }
 

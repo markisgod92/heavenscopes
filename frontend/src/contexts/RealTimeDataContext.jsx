@@ -34,8 +34,10 @@ export const RealTimeDataProvider = ({ children }) => {
                 now: nowData,
                 threeH: threeHData,
                 sixH: sixHData,
-                twelveH: twelveHData
+                twelveH: twelveHData,
+                timeOffsets: timeOffsets
             })
+            
         } catch (error) {
             setError('Real time data not available.')
         } finally {

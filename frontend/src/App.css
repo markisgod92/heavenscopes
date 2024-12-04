@@ -11,6 +11,24 @@
     max-width: 600px;
 }
 
+.time-offset-selector > div {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.time-offset-selector button {
+    flex-grow: 1;
+    background-color: black !important;
+    color: yellow !important;
+    border-color: var(--detail) !important;
+}
+
+.time-offset-selector .Mui-selected {
+    background-color: var(--detail) !important;
+    color: black !important;
+    border-color: black !important;
+}
+
 .bio-textarea {
     resize: none;
 }

@@ -1,0 +1,16 @@
+.skymap-container {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding-top: 10px;
+}
+
+.skymap-canvas {
+    cursor: grab;
+    width: 100%;
+    height: auto;
+}
+
+.skymap-canvas:active {
+    cursor: grabbing;
+}

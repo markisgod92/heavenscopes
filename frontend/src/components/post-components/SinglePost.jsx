@@ -1,10 +1,11 @@
 import { Avatar } from '@mui/material'
-import {Button, Form} from 'react-bootstrap'
+import { Button, Form, Spinner } from 'react-bootstrap'
 import './singlepost.css'
 import { Link } from 'react-router-dom'
 import { convertUTCString } from '../../utils/date-conversion'
-import {useSession} from '../../custom-hooks/useSession'
+import { useSession } from '../../custom-hooks/useSession'
 import { useEffect, useState } from 'react'
+import { PostComments } from './PostComments'
 
 export const SinglePost = ({ postData }) => {
     const { _id, userId, reference, textContent, media, likes, comments, createdAt } = postData
@@ -12,11 +13,19 @@ export const SinglePost = ({ postData }) => {
     const [isLiked, setLiked] = useState(likes.includes(session.id))
     const [commentsList, setCommentsList] = useState(comments)
     const [commentInput, setCommentInput] = useState('')
+    const [isSendingComment, setSendingComment] = useState(false)
+    const [isSendFailed, setSendFailed] = useState(false)
+    const [isShowingComments, setShowingComments] = useState(false)
 
     const handleCommentInput = (e) => {
         setCommentInput(e.target.value)
     }
-    
+
+    const toggleShowComments = () => {
+        if (commentsList.length > 0) {
+            setShowingComments(prev => !prev)
+        }
+    }
 
     const likePost = async () => {
         const token = JSON.parse(localStorage.getItem('Authorization'))
@@ -30,23 +39,24 @@ export const SinglePost = ({ postData }) => {
             })
             const data = await response.json()
 
-            if(data.message === 'liked') {
+            if (data.message === 'liked') {
                 setLiked(true)
             } else {
                 setLiked(false)
             }
         } catch (error) {
-            console.error(error)
+            return
         }
     }
 
     const addComment = async (e) => {
         e.preventDefault()
 
-        if(!commentInput) {
+        if (!commentInput) {
             return
         }
 
+        setSendingComment(true)
         const token = JSON.parse(localStorage.getItem('Authorization'))
 
         try {
@@ -56,22 +66,21 @@ export const SinglePost = ({ postData }) => {
                     'Authorization': token,
                     'Content-type': 'application/json'
                 },
-                body: JSON.stringify({comment: commentInput})
+                body: JSON.stringify({ comment: commentInput })
             })
-            console.log(response)
             const data = await response.json()
-            console.log(data)
             setCommentsList(data)
         } catch (error) {
-            console.error(error)
+            setSendFailed(true)
         } finally {
+            setSendingComment(false)
             setCommentInput('')
         }
     }
 
 
     return (
-        <div className="single-post rounded-2 p-3 d-flex flex-column gap-3">
+        <div className="single-post rounded-3 p-3 d-flex flex-column gap-3">
             <div className='d-flex gap-3'>
                 <Avatar
                     src={userId.profilePic}
@@ -116,26 +125,50 @@ export const SinglePost = ({ postData }) => {
                     ) : (
                         <i className="bi bi-heart"></i>
                     )}
-                    <span className='ps-2'>{likes.length}</span>
                 </Button>
 
-                <Button className='btn-link'>
-                    Show comments ({commentsList.length})
+                <Button className='btn-link' onClick={toggleShowComments}>
+                    {isShowingComments ? (
+                        <span>Hide comments</span>
+                    ) : (
+                        commentsList.length > 0 ? (
+                            <span>Show comments ({commentsList.length})</span>
+                        ) : (
+                            <span>No comments</span>
+                        )
+                    )}
                 </Button>
             </div>
 
+            {isShowingComments && <PostComments comments={commentsList} />}
+
             <div>
-                <Form className='d-flex gap-3' onSubmit={addComment}>
-                    <Form.Control 
-                        type='text'
-                        placeholder='Leave a comment'
-                        value={commentInput}
-                        onChange={handleCommentInput}
-                    />
-                    <Button type='submit' className='add-comment-btn'>
-                        <i className="bi bi-send"></i>
-                    </Button>
-                </Form>
+                {isSendFailed ? (
+                    <div className='d-flex gap-3 align-items-center'>
+                        <span className='text-danger'>Error sending comment.</span>
+                        <Button className='btn-link' onClick={() => setSendFailed(false)}>Try again</Button>
+                    </div>
+                ) : (
+                    <Form className='d-flex gap-3' onSubmit={addComment}>
+                        <Form.Control
+                            type='text'
+                            placeholder='Leave a comment'
+                            value={commentInput}
+                            onChange={handleCommentInput}
+                        />
+                        <Button type='submit' className='add-comment-btn' disabled={isSendingComment}>
+                            {isSendingComment ? (
+                                <Spinner
+                                    role='status'
+                                    animation='grow'
+                                    size='sm'
+                                />
+                            ) : (
+                                <i className="bi bi-send"></i>
+                            )}
+                        </Button>
+                    </Form>
+                )}
             </div>
         </div>
     )

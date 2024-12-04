@@ -1,6 +1,6 @@
 :root {
     --background: #082032;
-    --container: #334756;
+    --container: #353535;
     --detail: #E3CCAE;
     --text-input-bg: white;
 }
@@ -17,11 +17,6 @@ html, body {
 }
 
 body {
-    background-color: var(--background) !important;
-    color: var(--detail) !important;
-}
-
-.main-content {
-    margin-top: 93px;
-    margin-bottom: 24px;
+    background-color: #212529 !important;
+    color: white !important;
 }

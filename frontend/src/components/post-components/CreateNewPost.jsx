@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSession } from '../../custom-hooks/useSession'
-import { Button, Form, Row } from 'react-bootstrap'
+import { Button, Col, Form, Row } from 'react-bootstrap'
 import './createnewpost.css'
 
 export const CreateNewPost = ({ bodyId }) => {
@@ -70,10 +70,23 @@ export const CreateNewPost = ({ bodyId }) => {
     }, [bodyId])
 
     return (
-        <div className='p-3 new-post-div'>
+        <div className='rounded-3 p-3 new-post-div border border-1 border-light'>
 
-            <Form onSubmit={submitPost} className='d-flex flex-column gap-2'>
+            <Form onSubmit={submitPost} className='d-flex flex-column gap-3'>
+                <Form.Control
+                    as='textarea'
+                    placeholder='What did you observe tonight?'
+                    rows={3}
+                    value={inputData.textContent}
+                    onChange={(e) => setInputData({
+                        ...inputData,
+                        textContent: e.target.value
+                    })}
+                />
+
                 <Form.Group as={Row}>
+                    <Form.Label column sm={1}>Tag:</Form.Label>
+                    <Col sm={11}>
                     {celestialBodies && (
                         <ul className='d-flex gap-3 align-items-center flex-wrap list-unstyled'>
                             {celestialBodies.map(body => (
@@ -91,21 +104,11 @@ export const CreateNewPost = ({ bodyId }) => {
                             ))}
                         </ul>
                     )}
+                    </Col>
                 </Form.Group>
 
-                <Form.Control
-                    as='textarea'
-                    placeholder='What did you observe tonight?'
-                    rows={3}
-                    value={inputData.textContent}
-                    onChange={(e) => setInputData({
-                        ...inputData,
-                        textContent: e.target.value
-                    })}
-                />
-
-                <div className='text-end'>
-                    <Button type='submit'>Send</Button>
+                <div className='d-flex justify-content-center justify-content-md-end'>
+                    <Button type='submit'>Post</Button>
                 </div>
             </Form>
 
