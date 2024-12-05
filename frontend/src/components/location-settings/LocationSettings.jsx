@@ -2,15 +2,21 @@ import { useEffect, useState } from "react"
 import { useSession } from "../../custom-hooks/useSession"
 import { coordDecimalToString, mtToFt } from "../../utils/location-conversions"
 import './locationsettings.css'
+import { SettingsModal } from "./SettingsModal"
 
 export const LocationSettings = () => {
     const [sessionLocation, setSessionLocation] = useState({})
     const [sessionElevation, setSessionElevation] = useState(0)
     const { settings: { isMetric, location, elevation } } = useSession()
+    const [isModalShown, setModalShown] = useState(false)
 
     const getDefaultSettings = () => {
         setSessionLocation(location)
         setSessionElevation(elevation)
+    }
+
+    const toggleModal = () => {
+        setModalShown(prev => !prev)
     }
 
     useEffect(() => {
@@ -40,7 +46,9 @@ export const LocationSettings = () => {
                 </div>
             </div>
 
-            <button className="link-button">Change settings</button>
+            <button className="link-button" onClick={toggleModal}>Change settings</button>
+
+            <SettingsModal show={isModalShown} onHide={toggleModal}/>
         </div>
     )
 }

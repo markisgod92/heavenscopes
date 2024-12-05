@@ -114,17 +114,18 @@ export const LoginPage = () => {
                         <Form.Text className="text-danger text-end">{formMessages.password}</Form.Text>
                     )}
                     <div className="d-flex justify-content-center">
-                        <Button type='Submit'>
-                            {isLoading && (
+                        <button type='Submit' className="form-button">
+                            {isLoading ? (
                                 <Spinner
                                     as="span"
                                     animation="grow"
                                     size="sm"
                                     role="status"
                                 />
+                            ) : (
+                                <span>Login</span>
                             )}
-                            <span>Login</span>
-                        </Button>
+                        </button>
                     </div>
                     {formMessages && formMessages.fetch && (
                         <Form.Text className="text-danger text-center">{formMessages.fetch}</Form.Text>

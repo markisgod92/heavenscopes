@@ -10,7 +10,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { NavAndFooterProvider } from './contexts/NavAndFooterContext';
 import { CreateAccount } from './pages/CreateAccount';
 import { AccountCreated } from './pages/AccountCreated';
-import { Feed } from './pages/HomePage';
+import { Feed } from './pages/Feed';
 import { UserPage } from './pages/UserPage';
 import { VisibleNow } from './pages/VisibleNow';
 

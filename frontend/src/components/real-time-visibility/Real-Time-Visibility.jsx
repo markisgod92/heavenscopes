@@ -12,7 +12,7 @@ export const RealTimeVisibility = ({ data }) => {
         <div className="h-100 d-flex flex-column">
             <TableContainer component={Paper} className='real-time-visibility'>
                 <Table sx={{ minWidth: 650 }} size="small">
-                    <caption>
+                    <caption className='text-light'>
                         <span>Powered by </span>
                         <a href="https://github.com/csymlstd/visible-planets-api.git">csymlstd / visible-planets-api</a>
                     </caption>

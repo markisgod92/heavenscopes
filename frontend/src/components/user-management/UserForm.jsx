@@ -118,12 +118,12 @@ export const UserForm = () => {
                 },
                 body: JSON.stringify(postFormData)
             })
-            
-            if(!response.ok) {
+
+            if (!response.ok) {
                 const data = await response.json()
                 throw new Error(data.message || 'Error creating user.')
             }
-            
+
             const token = response.headers.get('Authorization')
             localStorage.setItem('Authorization', JSON.stringify(token))
             navigate('/new-user-redirect')
@@ -147,8 +147,8 @@ export const UserForm = () => {
                         onChange={handleInputChange}
                     />
                     <Form.Control.Feedback type="invalid">
-                    {validationErrors.username}
-                </Form.Control.Feedback>
+                        {validationErrors.username}
+                    </Form.Control.Feedback>
                 </Col>
             </Form.Group>
 
@@ -165,8 +165,8 @@ export const UserForm = () => {
                         onChange={handleInputChange}
                     />
                     <Form.Control.Feedback type="invalid">
-                    {validationErrors.email}
-                </Form.Control.Feedback>
+                        {validationErrors.email}
+                    </Form.Control.Feedback>
                 </Col>
             </Form.Group>
 
@@ -183,8 +183,8 @@ export const UserForm = () => {
                         onChange={handleInputChange}
                     />
                     <Form.Control.Feedback type="invalid">
-                    {validationErrors.password}
-                </Form.Control.Feedback>
+                        {validationErrors.password}
+                    </Form.Control.Feedback>
                 </Col>
             </Form.Group>
 
@@ -216,8 +216,8 @@ export const UserForm = () => {
                         onChange={handleInputChange}
                     />
                     <Form.Control.Feedback type="invalid">
-                    {validationErrors.bio}
-                </Form.Control.Feedback>
+                        {validationErrors.bio}
+                    </Form.Control.Feedback>
                 </Col>
                 <Form.Text className={`text-end ${formData.bio.length > 100 ? 'text-danger' : ''}`}>
                     {formData.bio.length}/100
@@ -230,7 +230,9 @@ export const UserForm = () => {
 
             <SettingsForm onUpdate={handleSettingsUpdate} />
 
-            <Button type="submit" onClick={createUser}>Crea account</Button>
+            <div className="d-flex justify-content-center p-5">
+                <button type="submit" onClick={createUser} className="form-button">Crea account</button>
+            </div>
         </Form>
     )
 }

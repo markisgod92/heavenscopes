@@ -1,6 +1,9 @@
 import { useRef, useEffect, useState } from 'react';
-import starData from '../../data/BSC.json'
+import starData from '../../data/BSC.json';
 import './skymap.css';
+
+const toRadians = (deg) => (deg * Math.PI) / 180;
+const toDegrees = (rad) => (rad * 180) / Math.PI;
 
 const parseRA = (ra) => {
     const [hours, minutes, seconds] = ra.split(":").map(parseFloat);
@@ -14,19 +17,16 @@ const parseDEC = (dec) => {
 };
 
 const calculateStarPositions = (stars, lat, lon, date) => {
-    const toRadians = (deg) => (deg * Math.PI) / 180;
-    const toDegrees = (rad) => (rad * 180) / Math.PI;
-
     const jd = 2440587.5 + date.getTime() / 86400000;
     const jd2000 = jd - 2451545.0;
     const gmst = (18.697374558 + 24.06570982441908 * jd2000) % 24;
     const lst = (gmst * 15 + lon) % 360;
 
     return stars
+        .filter((star) => parseFloat(star.MAG) < 6)
         .map((star) => {
-            if(parseFloat(star.MAG) < 6) {
-            const raDeg = parseRA(star.RA)
-            const decDeg = parseDEC(star.DEC)
+            const raDeg = parseRA(star.RA);
+            const decDeg = parseDEC(star.DEC);
             const ha = (lst - raDeg + 360) % 360;
 
             const haRad = toRadians(ha);
@@ -43,28 +43,39 @@ const calculateStarPositions = (stars, lat, lon, date) => {
             let az = toDegrees(Math.acos(cosAz));
 
             let azimuth = ha > 180 ? 360 - az : az;
-
             azimuth = (azimuth + 180) % 360;
 
             return {
                 name: star["Title HD"],
-                magnitude: star.MAG,
-                azimuth: azimuth * (- 1) + 180,
+                magnitude: parseFloat(star.MAG),
+                azimuth: azimuth * -1 + 180,
                 altitude,
-                type: 'star'
+                type: 'star',
             };
-        }
         })
         .filter(Boolean);
-    
 };
 
+const calculateObjectPositions = (objects, lat, lon) => {
+    return objects.map((obj) => {
+        const { azimuth, altitude, name, magnitude } = obj;
+        if (!obj.aboveHorizon) return null;
+        return {
+            name,
+            magnitude,
+            azimuth,
+            altitude,
+            type: obj.nakedEyeObject ? 'planet' : 'object',
+        };
+    }).filter(Boolean);
+};
 
-export const SkyMap = ({ data, meta }) => {
+export const SkyMap = ({ data, stars, meta }) => {
     const canvasRef = useRef(null);
     const [drag, setDrag] = useState({ isDragging: false, startX: 0, offsetX: 0 });
-    const { latitude, longitude, elevation, time } = meta
-    const date = new Date(time)
+
+    const { latitude, longitude, time } = meta;
+    const date = new Date(time);
 
     const mapHeight = 500;
     const virtualSkyWidth = 360;
@@ -74,47 +85,46 @@ export const SkyMap = ({ data, meta }) => {
     const updateCanvasSize = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-    
+
         const parentWidth = canvas.parentElement.offsetWidth;
         canvas.width = parentWidth;
         canvas.height = mapHeight + marginBottom;
-    
+
         const ctx = canvas.getContext('2d');
         drawMap(ctx, data, drag.offsetX, canvas.width);
     };
-    
 
     useEffect(() => {
         const handleResize = () => updateCanvasSize();
         updateCanvasSize();
-    
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, [data, drag.offsetX]);
-    
 
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-    
+
         const ctx = canvas.getContext('2d');
         const starsWithPosition = calculateStarPositions(starData, latitude, longitude, date);
-    
-        console.log("Stars with position:", starsWithPosition);
-        console.log("Data passed to drawMap:", [...data, ...starsWithPosition]);
-    
-        drawMap(ctx, [...data, ...starsWithPosition], drag.offsetX, canvas.width);
-    }, [data, drag.offsetX]);
-    
+        const objectsWithPosition = calculateObjectPositions(data, latitude, longitude);
+
+        drawMap(ctx, [...objectsWithPosition, ...starsWithPosition], drag.offsetX, canvas.width);
+    }, [data, stars, drag.offsetX]);
 
     const drawMap = (ctx, objects, offsetX, canvasWidth) => {
         const scaleX = canvasWidth / virtualSkyWidth;
-
         ctx.clearRect(0, 0, canvasWidth, mapHeight + marginBottom);
 
         ctx.fillStyle = '#000';
         ctx.fillRect(marginLeft, 0, canvasWidth - marginLeft, mapHeight);
 
+        drawAltitudeMarkers(ctx);
+        drawCardinalPoints(ctx, offsetX, scaleX);
+        drawObjects(ctx, objects, offsetX, scaleX);
+    };
+
+    const drawAltitudeMarkers = (ctx) => {
         ctx.font = '12px Arial';
         ctx.fillStyle = 'white';
         ctx.textAlign = 'right';
@@ -128,7 +138,9 @@ export const SkyMap = ({ data, meta }) => {
             ctx.stroke();
             ctx.closePath();
         }
+    };
 
+    const drawCardinalPoints = (ctx, offsetX, scaleX) => {
         const cardinalPoints = [
             { label: 'N', az: 0 },
             { label: 'E', az: 90 },
@@ -143,54 +155,47 @@ export const SkyMap = ({ data, meta }) => {
             const x = marginLeft + ((point.az + offsetX + virtualSkyWidth) % virtualSkyWidth) * scaleX;
             ctx.fillText(point.label, x, mapHeight + 20);
         });
+    };
 
+    const drawObjects = (ctx, objects, offsetX, scaleX) => {
         objects.forEach((obj) => {
             const azAdjusted = ((obj.azimuth + offsetX + virtualSkyWidth) % virtualSkyWidth) * scaleX;
             const y = mapHeight - (obj.altitude / 90) * mapHeight;
-
             drawObject(ctx, obj, marginLeft + azAdjusted, y);
         });
     };
 
     const drawObject = (ctx, obj, x, y) => {
-        const baseSize = 2;
-    
         let size;
+        let color;
     
-        if (obj.name === 'Moon') {
-            size = 8;
+        if (obj.type === 'star') {
+            size = Math.max(0.4, 3 - obj.magnitude);
+            color = 'white';
         } else if (obj.name === 'Sun') {
-            size = 10;
-        } else if (obj.type === 'star') {
-            size = Math.max(0.4 , 3 - obj.magnitude); 
+            size = 15;
+            color = 'yellow';
+        } else if (obj.name === 'Moon') {
+            size = 13;
+            color = 'lightgray';
         } else {
-            size = Math.max(baseSize + 1, baseSize + 1 - obj.magnitude * 0.2);  
+            size = Math.max(2, 3 - obj.magnitude )
+            color = 'orange';
         }
     
         ctx.beginPath();
         ctx.arc(x, y, size, 0, Math.PI * 2);
-        
-        if (obj.name === 'Moon') {
-            ctx.fillStyle = 'lightgray';
-        } else if (obj.name === 'Sun') {
-            ctx.fillStyle = 'yellow';
-        } else if (obj.type === 'star') {
-            ctx.fillStyle = 'white';
-        } else {
-            ctx.fillStyle = 'orange';
-        }
-    
+        ctx.fillStyle = color;
         ctx.fill();
         ctx.closePath();
     
-        if(obj.type !== 'star') {
+        if (obj.type !== 'star' && obj.name !== 'Moon' && obj.name !== 'Sun') {
             ctx.font = '12px Arial';
             ctx.fillStyle = 'white';
             ctx.textAlign = 'center';
-            ctx.fillText(obj.name, x, y - 10);
+            ctx.fillText(obj.name, x + size + 30, y + (size / 2));
         }
     };
-    
     
 
     const handleMouseDown = (e) => {

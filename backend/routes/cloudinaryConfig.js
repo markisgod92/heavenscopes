@@ -23,6 +23,20 @@ const userPicsCloud = multer({
     storage: userPicsStorage
 })
 
+const userMediaStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'heavenscopes/user-media',
+        allowed_formats: ['jpg', 'png', 'gif', 'mp4'],
+		format: async (req, file) => 'png',
+		public_id: (req, file) => file.name
+    }
+})
+
+const userMediaCloud = multer({
+    storage: userMediaStorage
+})
+
 const licensedMediaStorage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
@@ -37,4 +51,4 @@ const licensedMediaCloud = multer({
     storage: licensedMediaStorage
 })
 
-module.exports = {userPicsCloud, licensedMediaCloud}
+module.exports = {userPicsCloud, userMediaCloud, licensedMediaCloud}

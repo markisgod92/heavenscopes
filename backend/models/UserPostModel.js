@@ -16,8 +16,6 @@ const UserPostSchema = new mongoose.Schema({
     },
     media: [
         {
-            /* type: mongoose.Schema.Types.ObjectId,
-            ref: 'userMediaModel' */
             type: String
         }
     ],

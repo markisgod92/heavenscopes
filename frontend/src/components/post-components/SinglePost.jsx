@@ -1,10 +1,10 @@
-import { Avatar } from '@mui/material'
-import { Button, Form, Spinner } from 'react-bootstrap'
+import { Avatar} from '@mui/material'
+import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 import './singlepost.css'
 import { Link } from 'react-router-dom'
 import { convertUTCString } from '../../utils/date-conversion'
 import { useSession } from '../../custom-hooks/useSession'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { PostComments } from './PostComments'
 
 export const SinglePost = ({ postData }) => {
@@ -80,7 +80,7 @@ export const SinglePost = ({ postData }) => {
 
 
     return (
-        <div className="single-post rounded-3 p-3 d-flex flex-column gap-3">
+        <div className="single-post rounded-3 p-3 d-flex flex-column gap-3 my-3">
             <div className='d-flex gap-3'>
                 <Avatar
                     src={userId.profilePic}
@@ -118,14 +118,28 @@ export const SinglePost = ({ postData }) => {
                 </div>
             </div>
 
+            {media && (
+                <Row xs={2} md={3} className='g-3'>
+                    {media.map((item, i) => (
+                        <Col>
+                            <img 
+                                src={item}
+                                alt={`${_id}-image-${i}`}
+                                className='w-100 h-100 ratio-1x1 object-fit-cover'
+                            />
+                        </Col>
+                    ))}
+                </Row> 
+            )}
+
             <div className='d-flex justify-content-between'>
-                <Button onClick={likePost} className='like-btn'>
+                <button onClick={likePost} className='form-button'>
                     {isLiked ? (
                         <i className="bi bi-heart-fill"></i>
                     ) : (
                         <i className="bi bi-heart"></i>
                     )}
-                </Button>
+                </button>
 
                 <Button className='btn-link' onClick={toggleShowComments}>
                     {isShowingComments ? (
@@ -156,7 +170,7 @@ export const SinglePost = ({ postData }) => {
                             value={commentInput}
                             onChange={handleCommentInput}
                         />
-                        <Button type='submit' className='add-comment-btn' disabled={isSendingComment}>
+                        <button type='submit' className='form-button' disabled={isSendingComment}>
                             {isSendingComment ? (
                                 <Spinner
                                     role='status'
@@ -166,7 +180,7 @@ export const SinglePost = ({ postData }) => {
                             ) : (
                                 <i className="bi bi-send"></i>
                             )}
-                        </Button>
+                        </button>
                     </Form>
                 )}
             </div>

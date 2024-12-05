@@ -11,6 +11,21 @@
     max-width: 600px;
 }
 
+.form-button {
+    padding: 0.5rem 0.8rem;
+    background-color: var(--detail);
+    color: var(--container);
+    border: none;
+    border-radius: 50px;
+    transition: all 100ms ease-in-out;
+}
+
+.form-button:hover {
+    background-color: white;
+    font-weight: bold;
+    box-shadow: 0 0 10px 5px rgb(255, 255, 225);
+}
+
 .time-offset-selector > div {
     display: flex;
     justify-content: space-evenly;

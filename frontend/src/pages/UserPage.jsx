@@ -116,10 +116,6 @@ export const UserPage = () => {
         </Row>
 
         <Row className="p-3">
-            <CreateNewPost />
-        </Row>
-
-        <Row className="p-3">
             <PostFeed type={'by-user'} id={userId}/>
         </Row>
         </>

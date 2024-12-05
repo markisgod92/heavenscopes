@@ -61,7 +61,7 @@ export const ModifyAvatarModal = ({ userId, show, handleClose }) => {
     }
 
     return (
-        <Modal centered show={show} onHide={handleClose} className='modify-avatar-modal'>
+        <Modal centered show={show} onHide={handleClose} data-bs-theme='dark'>
             <Modal.Header closeButton>
                 <Modal.Title>
                     Change profile picture
@@ -76,16 +76,17 @@ export const ModifyAvatarModal = ({ userId, show, handleClose }) => {
                         onChange={handleFileChange}
                     />
                     {error && <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>}
-                    <Button 
+                    <button 
                         type="submit"
                         disabled={!file}
+                        className="form-button"
                     >
                         {isLoading ? (
                             <Spinner animation="border" role="status" variant="primary" size="sm"/>
                         ) : (
                             <span>Save</span>
                         )}
-                    </Button>
+                    </button>
                 </Form>
             </Modal.Body>
         </Modal>

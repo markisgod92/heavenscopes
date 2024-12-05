@@ -56,12 +56,6 @@ export const CelestialBodyPage = () => {
             )}
 
             <Row className="p-3">
-                {celestialBodyData && (
-                <CreateNewPost bodyId={celestialBodyData._id}/>
-            )}
-            </Row>
-
-            <Row className="p-3">
             {celestialBodyData && (
                 <PostFeed type={'by-body'} id={celestialBodyData._id}/>
             )}

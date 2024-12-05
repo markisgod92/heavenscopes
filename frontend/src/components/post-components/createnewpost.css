@@ -23,9 +23,3 @@
 .new-post-div textarea {
     resize: none;
 }
-
-.new-post-div button {
-    background-color: var(--detail) !important;
-    border-color: var(--detail) !important;
-    color: var(--container) !important;
-}

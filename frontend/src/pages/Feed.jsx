@@ -13,10 +13,6 @@ export const Feed = () => {
             </Row>
 
             <Row className="p-3">
-                <CreateNewPost />
-            </Row>
-
-            <Row className="p-3">
                 <PostFeed type={'feed'} />
             </Row>
 

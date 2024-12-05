@@ -77,6 +77,7 @@ export const SettingsForm = ({ onUpdate }) => {
                     lon: data[0].lon
                 }
             })
+            toggleManualSetting()
         } catch (error) {
             setSearchError(true)
         }
@@ -88,7 +89,6 @@ export const SettingsForm = ({ onUpdate }) => {
                 lat: coordDecimalToDMS(formData.location.lat),
                 lon: coordDecimalToDMS(formData.location.lon)
             })
-            toggleManualSetting()
         }
     }, [formData.location, isManual])
 
@@ -115,7 +115,7 @@ export const SettingsForm = ({ onUpdate }) => {
 
     return (
         <>
-            <Form.Group as={Row}>
+            <Form.Group as={Row} className="d-flex align-items-center pb-3">
                 <Form.Label column sm={12} md={3}>
                     Set coordinates
                 </Form.Label>
@@ -127,8 +127,8 @@ export const SettingsForm = ({ onUpdate }) => {
                         onChange={toggleManualSetting}
                     />
                 </Col>
-                <Form.Text>
-                    Coordinates and elevation are used to get visibility data from your position. You can always change them from your account settings.
+                <Form.Text className="text-light">
+                    Coordinates and elevation are used to get visibility data from your position.
                 </Form.Text>
             </Form.Group>
 
@@ -241,7 +241,10 @@ export const SettingsForm = ({ onUpdate }) => {
                             />
                         </Col>
                     </Form.Group>
-                    <Button onClick={handleSearch}>Search</Button>
+
+                    <div className="d-flex justify-content-center">
+                        <button onClick={handleSearch} className="form-button">Search</button>
+                    </div>
                 </>
             )}
 

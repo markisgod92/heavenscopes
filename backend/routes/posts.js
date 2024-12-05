@@ -1,6 +1,8 @@
 const express = require('express')
 const UserModel = require('../models/UserModel')
 const UserPostModel = require('../models/UserPostModel')
+const UserMediaModel = require('../models/UserMediaModel')
+const { userMediaCloud } = require('./cloudinaryConfig')
 const posts = express.Router()
 const verifyToken = require('../middlewares/verifyToken')
 const verifyOwner = require('../middlewares/verifyOwner')
@@ -36,6 +38,7 @@ posts.get('/single/:postId', verifyToken, async (req, res, next) => {
 
 posts.get('/by-user/:userId', verifyToken, async (req, res, next) => {
     const { userId } = req.params
+    const { page } = req.query || 1
 
     try {
         const user = await UserModel.findById(userId)
@@ -58,6 +61,8 @@ posts.get('/by-user/:userId', verifyToken, async (req, res, next) => {
                     select: '_id username profilePic'
                 }
             ])
+            .limit(10)
+            .skip((page - 1) * 10)
 
         if (posts.length === 0) {
             const error = new Error('No posts found')
@@ -65,15 +70,23 @@ posts.get('/by-user/:userId', verifyToken, async (req, res, next) => {
             return next(error)
         }
 
+        const totalPosts = await UserPostModel.countDocuments({ userId: userId })
+        const hasMore = (page - 1) * 10 + posts.length < totalPosts
+
         res.status(200)
-            .json(posts)
+            .json({
+                posts: posts,
+                totalPosts: totalPosts,
+                hasMore: hasMore
+            })
     } catch (error) {
         next(error)
     }
 })
 
 posts.get('/by-body/:bodyId', verifyToken, async (req, res, next) => {
-    const {bodyId} = req.params
+    const { bodyId } = req.params
+    const { page } = req.query || 1
 
     try {
         const posts = await UserPostModel.find({ reference: { $in: [bodyId] } })
@@ -87,6 +100,8 @@ posts.get('/by-body/:bodyId', verifyToken, async (req, res, next) => {
                     select: '_id username profilePic'
                 }
             ])
+            .limit(10)
+            .skip((page - 1) * 10)
 
         if (posts.length === 0) {
             const error = new Error('No posts found')
@@ -94,8 +109,15 @@ posts.get('/by-body/:bodyId', verifyToken, async (req, res, next) => {
             return next(error)
         }
 
+        const totalPosts = await UserPostModel.countDocuments({ reference: { $in: [bodyId] } })
+        const hasMore = (page - 1) * 10 + posts.length < totalPosts
+
         res.status(200)
-            .json(posts)
+            .json({
+                posts: posts,
+                totalPosts: totalPosts,
+                hasMore: hasMore
+            })
     } catch (error) {
         next(error)
     }
@@ -103,9 +125,11 @@ posts.get('/by-body/:bodyId', verifyToken, async (req, res, next) => {
 
 posts.get('/feed', verifyToken, async (req, res, next) => {
     const token = req.user
+    const { page } = req.query || 1
 
     try {
-        const user = await UserModel.findById(token.id).select('following')
+        const user = await UserModel.findById(token.id)
+            .select('following')
 
         if (!user) {
             const error = new Error('User not found')
@@ -130,6 +154,8 @@ posts.get('/feed', verifyToken, async (req, res, next) => {
                     select: '_id username profilePic'
                 }
             ])
+            .limit(10)
+            .skip((page - 1) * 10)
 
         if (posts.length === 0) {
             const error = new Error('Posts not found')
@@ -137,8 +163,21 @@ posts.get('/feed', verifyToken, async (req, res, next) => {
             return next(error)
         }
 
+        const totalPosts = await UserPostModel.countDocuments({
+            $or: [
+                { isPublic: true },
+                { userId: { $in: user.following } },
+                { userId: token.id }
+            ]
+        })
+        const hasMore = (page - 1) * 10 + posts.length < totalPosts
+
         res.status(200)
-            .json(posts)
+            .json({
+                posts: posts,
+                totalPosts: totalPosts,
+                hasMore: hasMore
+            })
     } catch (error) {
         next(error)
     }
@@ -146,6 +185,7 @@ posts.get('/feed', verifyToken, async (req, res, next) => {
 
 posts.get('/following', verifyToken, async (req, res, next) => {
     const token = req.user
+    const { page } = req.query || 1
 
     try {
         const user = await UserModel.findById(token.id).select('following')
@@ -167,6 +207,8 @@ posts.get('/following', verifyToken, async (req, res, next) => {
                     select: '_id username profilePic'
                 }
             ])
+            .limit(10)
+            .skip((page - 1) * 10)
 
         if (posts.length === 0) {
             const error = new Error('Posts not found')
@@ -174,8 +216,26 @@ posts.get('/following', verifyToken, async (req, res, next) => {
             return next(error)
         }
 
+        const totalPosts = await UserPostModel.countDocuments({ userId: { $in: user.following } })
+        const hasMore = (page - 1) * 10 + posts.length < totalPosts
+
         res.status(200)
-            .json(posts)
+            .json({
+                posts: posts,
+                totalPosts: totalPosts,
+                hasMore: hasMore
+            })
+    } catch (error) {
+        next(error)
+    }
+})
+
+posts.post('/upload', verifyToken, userMediaCloud.array('img', 6), async (req, res, next) => {
+    try {
+        const imgUrls = req.files.map(file => file.path)
+
+        res.status(200)
+            .json({ images: imgUrls })
     } catch (error) {
         next(error)
     }
@@ -266,7 +326,7 @@ posts.patch('/comment/:postId', verifyToken, async (req, res, next) => {
             $push: { comments: comment }
         })
 
-        const updatedPost = await UserPostModel.findById(postId).populate({path: 'comments.userId', select: '_id username profilePic'})
+        const updatedPost = await UserPostModel.findById(postId).populate({ path: 'comments.userId', select: '_id username profilePic' })
 
         res.status(200)
             .json(updatedPost.comments)
