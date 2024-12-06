@@ -1,14 +1,13 @@
 import { useContext, useState } from "react"
-import { useSession } from "../custom-hooks/useSession"
 import { RealTimeDataContext } from "../contexts/RealTimeDataContext"
-import { Button, ButtonGroup, Row } from "react-bootstrap"
+import { Row } from "react-bootstrap"
 import { ToggleButtonGroup, ToggleButton } from '@mui/material'
 import { SkyMap } from "../components/sky-map/SkyMap"
 import { RealTimeVisibility } from "../components/real-time-visibility/Real-Time-Visibility"
 import { convertUTCString } from "../utils/date-conversion"
+import { Meteo } from "../components/meteo/Meteo"
 
 export const VisibleNow = () => {
-    const session = useSession()
     const { data, isLoading, error, forceReload } = useContext(RealTimeDataContext)
     const [selectedTimeOffset, setSelectedTimeOffset] = useState('now')
 
@@ -52,6 +51,12 @@ export const VisibleNow = () => {
 
                     <Row>
                         <SkyMap data={data[selectedTimeOffset].data} meta={data[selectedTimeOffset].meta} />
+
+                        <div className="p-3 text-center">The map does not represent the current lighting or weather conditions.</div>
+                    </Row>
+
+                    <Row className="p-3">
+                        <Meteo data={data.meteo}/>
                     </Row>
 
                     <Row className="pt-3 pb-5">

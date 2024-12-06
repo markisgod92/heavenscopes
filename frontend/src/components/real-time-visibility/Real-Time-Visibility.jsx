@@ -6,6 +6,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import './realtimevisibility.css'
+import {Link} from 'react-router-dom'
 
 export const RealTimeVisibility = ({ data }) => {
     return (
@@ -28,13 +29,15 @@ export const RealTimeVisibility = ({ data }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map(body => (
+                        {data.filter(body => body.name !== 'Pluto').map(body => (
                             <TableRow
                                 key={body.name}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 className={body.aboveHorizon ? 'green-text' : 'red-text'}
                             >
-                                <TableCell component='th' scope='row'>{body.name}</TableCell>
+                                <TableCell component='th' scope='row'>
+                                    <Link to={`/feed/${body.name}`}>{body.name}</Link>
+                                </TableCell>
                                 <TableCell align="right">
                                     {body.aboveHorizon ? 'visible' : 'not visible'}
                                 </TableCell>
@@ -43,14 +46,14 @@ export const RealTimeVisibility = ({ data }) => {
                                 <TableCell align="right">
                                     {body.rightAscension.negative ? <span>-</span> : null}
                                     <span>{body.rightAscension.hours}h</span>
-                                    <span>{body.rightAscension.minutes}'</span>
-                                    <span>{body.rightAscension.seconds}''</span>
+                                    <span> {body.rightAscension.minutes}'</span>
+                                    <span> {body.rightAscension.seconds}''</span>
                                 </TableCell>
                                 <TableCell align="right">
                                     {body.declination.negative ? <span>-</span> : null}
                                     <span>{body.declination.degrees}°</span>
-                                    <span>{body.declination.arcminutes}'</span>
-                                    <span>{body.declination.arcseconds}''</span>
+                                    <span> {body.declination.arcminutes}'</span>
+                                    <span> {body.declination.arcseconds}''</span>
                                 </TableCell>
                                 <TableCell align="right">{body.magnitude.toFixed(2)}</TableCell>
                             </TableRow>

@@ -8,11 +8,18 @@ export const RealTimeDataProvider = ({ children }) => {
     const [data, setData] = useState(null)
     const [isLoading, setLoading] = useState(false)
     const [error, setError] = useState(null)
-    const { settings: {location, elevation} } = useSession()
+    const { settings: {isMetric, location, elevation} } = useSession()
 
     const fetchData = async (time) => {
         const response = await fetch(`https://api.visibleplanets.dev/v3?latitude=${location.lat}&longitude=${location.lon}&elevation=${elevation}&aboveHorizon=false&time=${time}`)
         const data = await response.json()
+        return data
+    }
+
+    const fetchMeteo = async () => {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}&units=${isMetric ? 'metric' : 'imperial'}`)
+        const data = await response.json()
+        console.log('meteo', data)
         return data
     }
 
@@ -22,11 +29,12 @@ export const RealTimeDataProvider = ({ children }) => {
         const timeOffsets = makeTimeOffsets()
 
         try {
-            const [ nowData, threeHData, sixHData, twelveHData ] = await Promise.all([
+            const [ nowData, threeHData, sixHData, twelveHData, meteo ] = await Promise.all([
                 fetchData(timeOffsets.now),
                 fetchData(timeOffsets.plus3h),
                 fetchData(timeOffsets.plus6h),
-                fetchData(timeOffsets.plus12h)
+                fetchData(timeOffsets.plus12h),
+                fetchMeteo()
             ])
 
             setData({
@@ -35,7 +43,8 @@ export const RealTimeDataProvider = ({ children }) => {
                 threeH: threeHData,
                 sixH: sixHData,
                 twelveH: twelveHData,
-                timeOffsets: timeOffsets
+                timeOffsets: timeOffsets,
+                meteo: meteo
             })
             
         } catch (error) {

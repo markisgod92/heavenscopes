@@ -58,7 +58,8 @@ export const SettingsForm = ({ onUpdate }) => {
         }
     }
 
-    const handleSearch = async () => {
+    const handleSearch = async (e) => {
+        e.preventDefault()
         setSearchError(false)
 
         if (!searchInput) {
@@ -77,7 +78,8 @@ export const SettingsForm = ({ onUpdate }) => {
                     lon: data[0].lon
                 }
             })
-            toggleManualSetting()
+            
+            setSearchInput('')
         } catch (error) {
             setSearchError(true)
         }
@@ -89,8 +91,9 @@ export const SettingsForm = ({ onUpdate }) => {
                 lat: coordDecimalToDMS(formData.location.lat),
                 lon: coordDecimalToDMS(formData.location.lon)
             })
+            toggleManualSetting()
         }
-    }, [formData.location, isManual])
+    }, [formData.location])
 
     useEffect(() => {
         if (isManual) {

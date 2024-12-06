@@ -1,4 +1,4 @@
-import { Avatar} from '@mui/material'
+import { Avatar } from '@mui/material'
 import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
 import './singlepost.css'
 import { Link } from 'react-router-dom'
@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { PostComments } from './PostComments'
 
 export const SinglePost = ({ postData }) => {
-    const { _id, userId, reference, textContent, media, likes, comments, createdAt } = postData
+    const { _id, userId, reference, textContent, media, likes, comments, createdAt, isPublic } = postData
     const session = useSession()
     const [isLiked, setLiked] = useState(likes.includes(session.id))
     const [commentsList, setCommentsList] = useState(comments)
@@ -89,7 +89,7 @@ export const SinglePost = ({ postData }) => {
                 />
 
                 <div className="flex-grow-1 d-flex flex-column gap-2">
-                    <div className='d-flex justify-content-between flex-wrap'>
+                    <div className='d-flex flex-column flex-md-row gap-2 justify-content-between flex-wrap'>
                         <div className='d-flex gap-2'>
                             <Link to={`/profile/${userId._id}`}>
                                 {userId.username}
@@ -111,7 +111,10 @@ export const SinglePost = ({ postData }) => {
                             )}
                         </div>
 
-                        <div className='fst-italic'>{convertUTCString(createdAt)}</div>
+                        <div className='d-flex align-items-center gap-3'>
+                            <div>{isPublic ? (<i className="bi bi-globe2"></i>) : (<i className="bi bi-people-fill"></i>)}</div>
+                            <div className='fst-italic'>{convertUTCString(createdAt)}</div>
+                        </div>
                     </div>
 
                     <div>{textContent}</div>
@@ -122,14 +125,14 @@ export const SinglePost = ({ postData }) => {
                 <Row xs={2} md={3} className='g-3'>
                     {media.map((item, i) => (
                         <Col>
-                            <img 
+                            <img
                                 src={item}
                                 alt={`${_id}-image-${i}`}
                                 className='w-100 h-100 ratio-1x1 object-fit-cover'
                             />
                         </Col>
                     ))}
-                </Row> 
+                </Row>
             )}
 
             <div className='d-flex justify-content-between'>

@@ -6,7 +6,6 @@ import { useSession } from "../../custom-hooks/useSession"
 export const SettingsModal = ({show, onHide}) => {
     const session = useSession()
     const [updatedSettings, setUpdatedSettings] = useState({})
-    console.log(updatedSettings)
 
     const handleSettingsUpdate = (newSettings) => {
         setUpdatedSettings(newSettings)

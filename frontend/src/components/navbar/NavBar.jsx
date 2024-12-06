@@ -17,7 +17,7 @@ export const NavBar = () => {
             <Container fluid>
                 <Row >
                     <div className="p-3 d-flex justify-content-between align-items-center">
-                        <Link to={'/home'}>
+                        <Link to={'/feed'}>
                             <img
                                 src={isNightModeOn ? '/heavenscope-high-resolution-logo-grayscale-transparent.png' : '/heavenscope-high-resolution-logo-transparent.png'}
                                 alt="heavenscopes-logo"
