@@ -1,25 +1,38 @@
 import { useEffect, useRef, useState } from 'react'
-import { useSession } from '../../custom-hooks/useSession'
-import { Button, Col, Form, Row, Spinner } from 'react-bootstrap'
+import { Col, Form, Row, Spinner } from 'react-bootstrap'
 import './createnewpost.css'
 
 export const CreateNewPost = ({ bodyId, refresh }) => {
-    const session = useSession()
     const [celestialBodies, setCelestialBodies] = useState(null)
+    const [isLoadingBodies, setLoadingBodies] = useState(false)
+    const [isFaileBodies, setFailedBodies] = useState(false)
+    const [isExpanded, setExpanded] = useState(false)
     const [inputData, setInputData] = useState({
         reference: [bodyId && bodyId],
-        textContent: ''
+        textContent: '',
+        isPublic: true
     })
     const [files, setFiles] = useState([])
     const fileInputRef = useRef()
     const [isLoading, setLoading] = useState(false)
     const [isFailed, setFailed] = useState(false)
 
-    const handleFileChange = (e) => {
-        setFiles([...e.target.files])
+    const handleExpand = () => setExpanded(true)
+    const handleCollapse = () => setExpanded(false)
+
+    const handleFileChange = (e) => setFiles([...e.target.files])
+
+    const handleVisibilityOption = (e) => {
+        setInputData({
+            ...inputData,
+            isPublic: e.target.value === 'true'
+        })
     }
 
     const getCelestialBodies = async () => {
+        setFailedBodies(false)
+        setLoadingBodies(true)
+
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/celestial-bodies/all`, {
                 headers: {
@@ -29,7 +42,9 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
             const data = await response.json()
             setCelestialBodies(data)
         } catch (error) {
-            console.error(error)
+            setFailedBodies(true)
+        } finally {
+            setLoadingBodies(false)
         }
     }
 
@@ -81,7 +96,7 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
         e.preventDefault()
         setFailed(false)
 
-        if(!validatePost()) {
+        if (!validatePost()) {
             return
         }
 
@@ -89,7 +104,7 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
 
         let post = inputData
 
-        if(files.length > 0) {
+        if (files.length > 0) {
             const pictures = await uploadMedia(files)
             post = {
                 ...post,
@@ -98,7 +113,7 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
         }
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/post/new`, {
+                await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/post/new`, {
                 method: 'POST',
                 headers: {
                     'Authorization': JSON.parse(localStorage.getItem('Authorization')),
@@ -106,8 +121,7 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
                 },
                 body: JSON.stringify(post)
             })
-            const data = await response.json()
-            
+
             setInputData({
                 reference: [bodyId && bodyId],
                 textContent: ''
@@ -135,21 +149,22 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
     }, [bodyId])
 
     return (
-        <div className='rounded-3 p-3 new-post-div border border-1 border-light'>
+        <div className={`rounded-3 p-3 new-post-div border border-1 border-light ${isExpanded ? 'expanded' : ''}`}>
 
-            <Form onSubmit={submitPost} className='d-flex flex-column gap-3'>
+            <Form onSubmit={submitPost} className={`d-flex flex-column ${isExpanded ? 'gap-3' : ''}`}>
                 <Form.Control
                     as='textarea'
                     placeholder='What did you observe tonight?'
-                    rows={3}
+                    rows={isExpanded ? 3 : 1}
                     value={inputData.textContent}
                     onChange={(e) => setInputData({
                         ...inputData,
                         textContent: e.target.value
                     })}
+                    onClick={handleExpand}
                 />
 
-                <Form.Control 
+                <Form.Control
                     type='file'
                     multiple
                     onChange={handleFileChange}
@@ -160,34 +175,60 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
                 <Form.Group as={Row}>
                     <Form.Label column sm={1}>Tag:</Form.Label>
                     <Col sm={11}>
-                    {celestialBodies && (
-                        <ul className='d-flex gap-3 align-items-center flex-wrap list-unstyled'>
-                            {celestialBodies.map(body => (
-                                <li key={body._id}>
-                                    <label className='tag-selector'>
-                                        <input
-                                            type='checkbox'
-                                            value={body._id}
-                                            checked={inputData.reference.includes(body._id)}
-                                            onChange={() => handleReferenceSelect(body._id)}
-                                        />
-                                        {body.primaryName}
-                                    </label>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                        {isLoadingBodies && !isFaileBodies && (
+                            <div className='text-center'>
+                                <Spinner 
+                                    animation='grow'
+                                    role='status'
+                                    size='sm'
+                                />
+                            </div>
+                        )}
+
+                        {!isLoadingBodies && isFaileBodies && (
+                            <div className='text-center'>
+                                <span>Failed to load celestial bodies data.</span>
+                                <button className='btn btn-link' onClick={getCelestialBodies}>Try again</button>
+                            </div>
+                        )}
+
+                        {!isLoadingBodies && !isFaileBodies && celestialBodies && (
+                            <ul className='d-flex gap-3 align-items-center flex-wrap list-unstyled'>
+                                {celestialBodies.map(body => (
+                                    <li key={body._id}>
+                                        <label className='tag-selector'>
+                                            <input
+                                                type='checkbox'
+                                                value={body._id}
+                                                checked={inputData.reference.includes(body._id)}
+                                                onChange={() => handleReferenceSelect(body._id)}
+                                            />
+                                            {body.primaryName}
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </Col>
                 </Form.Group>
 
-                <div className='d-flex justify-content-center justify-content-md-end align-items-center gap-3'>
+                <div className='d-flex justify-content-between align-items-center gap-2'>
+                    <Form.Select
+                        style={{ maxWidth: '130px' }}
+                        value={inputData.isPublic.toString()}
+                        onChange={handleVisibilityOption}
+                    >
+                        <option value="true">Public</option>
+                        <option value="false">Followers</option>
+                    </Form.Select>
+
                     {isFailed && (
-                        <div className='text-danger'>Error sending your post. Please try again.</div>
+                        <div className='text-danger'>Error. Try again.</div>
                     )}
 
                     <button type='submit' disabled={isLoading} className='form-button'>
                         {isLoading ? (
-                            <Spinner 
+                            <Spinner
                                 animation='grow'
                                 size='sm'
                                 role='status'
@@ -197,8 +238,13 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
                         )}
                     </button>
                 </div>
-            </Form>
 
+                <div className='p-0 text-center'>
+                    <button className='menu-arrow-button' onClick={handleCollapse}>
+                        <i className="bi bi-caret-up-fill"></i>
+                    </button>
+                </div>
+            </Form>
         </div>
     )
 } 

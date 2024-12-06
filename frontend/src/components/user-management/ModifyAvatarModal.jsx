@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Button, Form, Modal, Spinner } from "react-bootstrap"
+import { Form, Modal, Spinner } from "react-bootstrap"
 import './modifyavatarmodal.css'
 import { CustomError } from "../../utils/custom-error"
 

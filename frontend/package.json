@@ -13,8 +13,6 @@
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@mui/material": "^6.1.8",
-    "@react-three/drei": "^9.116.0",
-    "@react-three/fiber": "^8.17.10",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "jwt-decode": "^4.0.0",

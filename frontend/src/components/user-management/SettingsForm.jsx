@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Form, Row, Col, InputGroup, Button } from "react-bootstrap"
+import { Form, Row, Col, InputGroup } from "react-bootstrap"
 import { coordDecimalToDMS, coordDMSToDecimal } from "../../utils/location-conversions"
 
 export const SettingsForm = ({ onUpdate }) => {

@@ -1,4 +1,4 @@
-import { Form, Modal, Button } from "react-bootstrap"
+import { Form, Modal } from "react-bootstrap"
 import { SettingsForm } from "../user-management/SettingsForm"
 import { useState } from "react"
 import { useSession } from "../../custom-hooks/useSession"

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useSession } from "../custom-hooks/useSession"
-import { Row, Col, Button, Form } from "react-bootstrap"
+import { Row, Col, Button } from "react-bootstrap"
 import { Avatar, CircularProgress, IconButton } from "@mui/material"
 import { ModifyAvatarModal } from "../components/user-management/ModifyAvatarModal"
 import { BioForm } from "../components/user-management/BioForm"
-import { CreateNewPost } from "../components/post-components/CreateNewPost"
 import { PostFeed } from '../components/post-components/PostFeed'
 
 export const UserPage = () => {
@@ -15,8 +14,7 @@ export const UserPage = () => {
     const [isLoading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [showAvatarModal, setShowAvatarModal] = useState(false)
-    const [isModifyBioOn, setModifyBioOn] = useState(false)
-    const [bioInputValue, setBioInputValue] = useState('')
+    const navigate = useNavigate()
 
     const getUserData = async (isCurrentUser) => {
         setLoading(true)
@@ -52,6 +50,11 @@ export const UserPage = () => {
         setShowAvatarModal(prev => !prev)
     }
 
+    const logout = () => {
+        localStorage.removeItem('Authorization')
+        navigate('/')
+    }
+
     useEffect(() => {
         const isCurrentUser = userId === session.id
         getUserData(isCurrentUser)
@@ -59,65 +62,74 @@ export const UserPage = () => {
 
     return (
         <>
-        <Row className="pt-5">
-            {isLoading && !error && (
-                <div className="h-100 d-flex flex-column gap-3 align-items-center align-items-center">
-                    <CircularProgress />
-                    <span>Loading user data...</span>
+            <Row className="pt-2">
+                <div className="text-end">
+                    <button className="form-button" onClick={logout}>
+                        <i className="bi bi-box-arrow-left"></i>
+                        <span className="ps-2">Logout</span>
+                    </button>
                 </div>
-            )}
+            </Row>
 
-            {!isLoading && error && (
-                <div className="h-100 d-flex flex-column gap-1 align-items-center align-items-center">
-                    {error}
-                    <IconButton onClick={forceReload}>
-                        <i className="bi bi-arrow-clockwise text-white"></i>
-                    </IconButton>
-                    <span>Try again</span>
-                </div>
-            )}
+            <Row className="pt-1">
+                {isLoading && !error && (
+                    <div className="h-100 d-flex flex-column gap-3 align-items-center align-items-center">
+                        <CircularProgress />
+                        <span>Loading user data...</span>
+                    </div>
+                )}
 
-            {!isLoading && !error && userData && (
-                <>
-                    <Col xs={12} md={6} lg={3}>
-                        <div className="position-relative p-3 d-flex justify-content-center justify-content-md-start">
-                            <Avatar
-                                src={userData.profilePic}
-                                alt={userData.username}
-                                sx={{ width: 200, height: 200 }}
-                            />
-                            <Button
-                                variant="outline-secondary"
-                                className="modify-avatar-button rounded-circle"
-                                onClick={handleShowAvatarModal}
-                            >
-                                <i className="bi bi-pencil-square"></i>
-                            </Button>
+                {!isLoading && error && (
+                    <div className="h-100 d-flex flex-column gap-1 align-items-center align-items-center">
+                        {error}
+                        <IconButton onClick={forceReload}>
+                            <i className="bi bi-arrow-clockwise text-white"></i>
+                        </IconButton>
+                        <span>Try again</span>
+                    </div>
+                )}
 
-                            <ModifyAvatarModal userId={userId} show={showAvatarModal} handleClose={handleShowAvatarModal} />
-                        </div>
-                    </Col>
+                {!isLoading && !error && userData && (
+                    <>
+                        <Col xs={12} md={6} lg={3}>
+                            <div className="position-relative p-3 d-flex justify-content-center justify-content-md-start">
+                                <Avatar
+                                    src={userData.profilePic}
+                                    alt={userData.username}
+                                    sx={{ width: 200, height: 200 }}
+                                />
+                                <Button
+                                    variant="outline-secondary"
+                                    className="modify-avatar-button rounded-circle"
+                                    onClick={handleShowAvatarModal}
+                                >
+                                    <i className="bi bi-pencil-square"></i>
+                                </Button>
 
-                    <Col xs={12} md={6} lg={9}>
-                        <div className="h-100 py-4 d-flex flex-column justify-content-between gap-5 gap-md-0 border-bottom border-1">
-                            <div className="d-flex flex-column gap-2">
-                                <h3>{userData.username}</h3>
-                                <div>{userData.followers.length} followers</div>
-                                <div>{userData.following.length} following</div>
+                                <ModifyAvatarModal userId={userId} show={showAvatarModal} handleClose={handleShowAvatarModal} />
                             </div>
+                        </Col>
 
-                            <div>
-                                <BioForm userId={userId} isCurrentUser={userId === session.id} bio={userData.bio || ''}/>
+                        <Col xs={12} md={6} lg={9}>
+                            <div className="h-100 py-4 d-flex flex-column justify-content-between gap-5 gap-md-0 border-bottom border-1">
+                                <div className="d-flex flex-column gap-2">
+                                    <h3>{userData.username}</h3>
+                                    <div>{userData.followers.length} followers</div>
+                                    <div>{userData.following.length} following</div>
+                                </div>
+
+                                <div>
+                                    <BioForm userId={userId} isCurrentUser={userId === session.id} bio={userData.bio || ''} />
+                                </div>
                             </div>
-                        </div>
-                    </Col>
-                </>
-            )}
-        </Row>
+                        </Col>
+                    </>
+                )}
+            </Row>
 
-        <Row className="p-3">
-            <PostFeed type={'by-user'} id={userId}/>
-        </Row>
+            <Row className="p-3">
+                <PostFeed type={'by-user'} id={userId} />
+            </Row>
         </>
     )
 }

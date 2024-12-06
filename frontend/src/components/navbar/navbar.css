@@ -21,3 +21,47 @@
 .nav-logo {
     width: 300px;
 }
+
+.nav-menu a,
+.nav-icons-menu a {
+    text-decoration: none;
+}
+
+.nav-menu button {
+    width: 130px;
+    height: 100%;
+    padding: 10px 0.5rem ;
+    background-color: transparent;
+    color: var(--detail);
+    box-shadow: none;
+    border: none;
+    transition: all 150ms ease-in-out;
+}
+
+.nav-menu button:hover,
+.nav-icons-menu .icon-button:hover {
+    background-color: white;
+    font-weight: bold;
+    box-shadow: 0 0 10px 5px rgb(255, 255, 225);
+}
+
+.nav-icons-menu .icon-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 100px;
+    height: 100%;
+    padding: 0.5rem 0;
+    background-color: transparent;
+    color: var(--detail);
+    box-shadow: none;
+    border: none;
+}
+
+.nav-icons-menu .icon-button img {
+    width: 50px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}

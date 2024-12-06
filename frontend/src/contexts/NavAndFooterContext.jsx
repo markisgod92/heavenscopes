@@ -1,8 +1,6 @@
 import { createContext } from "react"
 import { NavBar } from "../components/navbar/NavBar"
-import { LocationSettings } from "../components/location-settings/LocationSettings"
-import { Col, Container, Row } from "react-bootstrap"
-import { SideBar } from "../components/sidebar/SideBar"
+import { Container } from "react-bootstrap"
 import { Footer } from "../components/footer/Footer"
 
 const NavAndFooterContext = createContext()

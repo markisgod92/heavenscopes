@@ -6,6 +6,7 @@ import './navbar.css'
 import { Avatar } from "@mui/material"
 import { useSession } from "../../custom-hooks/useSession"
 import { LocationSettings } from "../location-settings/LocationSettings"
+import { NavMenu } from "./NavMenu"
 
 export const NavBar = () => {
     const { isNightModeOn } = useContext(ThemeContext)
@@ -38,18 +39,8 @@ export const NavBar = () => {
                     <LocationSettings />
                 </Row>
 
-                <Row>
-                    <div className="pt-3 px-5">
-                        <ul className="list-unstyled d-flex align-items-center gap-3 text-light">
-                            <li>
-                                <Link to={'/feed'}>Feed</Link>
-                            </li>
-                            <li>
-                                <Link to={'/visiblenow'}>Visible Now</Link>
-                            </li>
-                            <li>Objects</li>
-                        </ul>
-                    </div>
+                <Row className="pb-0">
+                    <NavMenu />
                 </Row>
             </Container>
         </nav>

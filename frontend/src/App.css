@@ -17,13 +17,27 @@
     color: var(--container);
     border: none;
     border-radius: 50px;
-    transition: all 100ms ease-in-out;
+    transition: all 150ms ease-in-out;
 }
 
 .form-button:hover {
     background-color: white;
     font-weight: bold;
     box-shadow: 0 0 10px 5px rgb(255, 255, 225);
+}
+
+.menu-arrow-button {
+    border: none;
+    background-color: transparent;
+    color: var(--detail);
+    outline: none;
+    padding: 0 15px;
+    font-size: 1.7rem;
+    transition: all 150ms ease-in-out;
+}
+
+.menu-arrow-button:hover {
+    text-shadow: 0 0 15px rgb(255, 255, 225);
 }
 
 .time-offset-selector > div {
