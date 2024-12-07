@@ -14,7 +14,7 @@ export const CreateAccount = () => {
                 <p>Enjoy a more personalized experience and connect with fellow enthusiasts!</p>
             </Row>
 
-            <Row>
+            <Row className="p-1">
                 <UserForm />
             </Row>
         </Container>

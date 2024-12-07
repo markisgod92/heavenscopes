@@ -231,7 +231,7 @@ export const UserForm = () => {
             <SettingsForm onUpdate={handleSettingsUpdate} />
 
             <div className="d-flex justify-content-center p-5">
-                <button type="submit" onClick={createUser} className="form-button">Crea account</button>
+                <button type="submit" onClick={createUser} className="form-button">Register</button>
             </div>
         </Form>
     )

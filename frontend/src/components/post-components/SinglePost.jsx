@@ -88,38 +88,37 @@ export const SinglePost = ({ postData }) => {
                     sx={{ width: 56, height: 56 }}
                 />
 
-                <div className="flex-grow-1 d-flex flex-column gap-2">
-                    <div className='d-flex flex-column flex-md-row gap-2 justify-content-between flex-wrap'>
-                        <div className='d-flex gap-2'>
-                            <Link to={`/profile/${userId._id}`}>
-                                {userId.username}
-                            </Link>
-                            {reference.length !== 0 && (
-                                <div className='d-flex gap-1'>
-                                    <span>observing: </span>
-                                    {reference.map((body, i) => (
-                                        <>
-                                            <span key={`${_id}-ref-${i}`}>
-                                                <Link to={`/feed/${body.primaryName}`}>
-                                                    {body.primaryName}
-                                                </Link>
-                                            </span>
-                                            {i < reference.length - 1 && <span>, </span>}
-                                        </>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
 
-                        <div className='d-flex align-items-center gap-3'>
-                            <div>{isPublic ? (<i className="bi bi-globe2"></i>) : (<i className="bi bi-people-fill"></i>)}</div>
-                            <div className='fst-italic'>{convertUTCString(createdAt)}</div>
-                        </div>
+                <div className='flex-grow-1 d-flex flex-column flex-md-row gap-1 justify-content-between flex-wrap align-items-md-center'>
+                    <div className='d-flex flex-column flex-md-row gap-md-2'>
+                        <Link to={`/profile/${userId._id}`}>
+                            {userId.username}
+                        </Link>
+                        {reference.length !== 0 && (
+                            <div className='d-flex gap-1'>
+                                <span>observing: </span>
+                                {reference.map((body, i) => (
+                                    <>
+                                        <span key={`${_id}-ref-${i}`}>
+                                            <Link to={`/feed/${body.primaryName}`}>
+                                                {body.primaryName}
+                                            </Link>
+                                        </span>
+                                        {i < reference.length - 1 && <span>, </span>}
+                                    </>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
-                    <div>{textContent}</div>
+                    <div className='d-flex align-items-center gap-3 post-info'>
+                        <div>{isPublic ? (<i className="bi bi-globe2"></i>) : (<i className="bi bi-people-fill"></i>)}</div>
+                        <div className='fst-italic'>{convertUTCString(createdAt)}</div>
+                    </div>
                 </div>
             </div>
+
+            <div>{textContent}</div>
 
             {media && (
                 <Row xs={2} md={3} className='g-3'>

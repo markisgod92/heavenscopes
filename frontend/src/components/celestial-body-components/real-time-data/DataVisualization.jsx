@@ -20,7 +20,7 @@ export const DataVisualization = ({ data }) => {
     }
 
     return (
-        <div className='h-100 p-3 d-flex flex-column justify-content-between body-data-visualization'>
+        <div className='h-100 p-3 d-flex flex-column justify-content-between gap-3 body-data-visualization'>
 
             <div className="d-flex flex-column gap-2">
                 {body.name === 'Moon' && (

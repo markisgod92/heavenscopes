@@ -79,7 +79,7 @@ export const SkyMap = ({ data, stars, meta }) => {
 
     const mapHeight = 500;
     const virtualSkyWidth = 360;
-    const marginLeft = 50;
+    const marginLeft = 30;
     const marginBottom = 30;
 
     const updateCanvasSize = () => {

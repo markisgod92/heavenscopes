@@ -1,3 +1,7 @@
 .single-post {
     background-color: var(--container);
 }
+
+.single-post .post-info {
+    font-size: 0.7rem;
+}

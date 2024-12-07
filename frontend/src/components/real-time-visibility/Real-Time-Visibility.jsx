@@ -23,6 +23,7 @@ export const RealTimeVisibility = ({ data }) => {
                             <TableCell align="center">Visibility</TableCell>
                             <TableCell align="center">Altitude</TableCell>
                             <TableCell align="center">Azimuth</TableCell>
+                            <TableCell align="center">Constellation</TableCell>
                             <TableCell align="center">RA</TableCell>
                             <TableCell align="center">Dec</TableCell>
                             <TableCell align="center">Magnitude</TableCell>
@@ -43,6 +44,7 @@ export const RealTimeVisibility = ({ data }) => {
                                 </TableCell>
                                 <TableCell align="right">{body.altitude.toFixed(2)}°</TableCell>
                                 <TableCell align="right">{body.azimuth.toFixed(2)}°</TableCell>
+                                <TableCell align="right">{body.constellation}</TableCell>
                                 <TableCell align="right">
                                     {body.rightAscension.negative ? <span>-</span> : null}
                                     <span>{body.rightAscension.hours}h</span>
