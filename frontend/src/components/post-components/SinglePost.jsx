@@ -123,7 +123,7 @@ export const SinglePost = ({ postData }) => {
             {media && (
                 <Row xs={2} md={3} className='g-3'>
                     {media.map((item, i) => (
-                        <Col>
+                        <Col key={`${_id}-media-${i}`}>
                             <img
                                 src={item}
                                 alt={`${_id}-image-${i}`}

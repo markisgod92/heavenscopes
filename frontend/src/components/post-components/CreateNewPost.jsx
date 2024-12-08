@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Col, Form, Row, Spinner } from 'react-bootstrap'
 import './createnewpost.css'
 
-export const CreateNewPost = ({ bodyId, refresh }) => {
+export const CreateNewPost = ({ bodyId, onCreatePost }) => {
     const [celestialBodies, setCelestialBodies] = useState(null)
     const [isLoadingBodies, setLoadingBodies] = useState(false)
     const [isFaileBodies, setFailedBodies] = useState(false)
@@ -123,14 +123,15 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
             })
             const data = await response.json()
 
+            onCreatePost(data.populatedPost)
+
             setInputData({
                 reference: [bodyId && bodyId],
                 textContent: ''
             })
             setFiles([])
             fileInputRef.current.value = ''
-
-            refresh(data.savedPost)
+            setExpanded(false)
         } catch (error) {
             setFailed(true)
         } finally {

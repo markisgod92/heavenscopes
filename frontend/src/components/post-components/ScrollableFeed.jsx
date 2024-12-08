@@ -2,19 +2,14 @@ import { useEffect, useState } from "react"
 import { SinglePost } from "./SinglePost"
 import { Spinner } from "react-bootstrap"
 
-export const ScrollableFeed = ({ type, id }) => {
+export const ScrollableFeed = ({ type, id, newPost }) => {
     const [posts, setPosts] = useState([])
     const [page, setPage] = useState(1)
     const [hasMore, setHasMore] = useState(true)
     const [isLoading, setLoading] = useState(false)
     const [isFailed, setFailed] = useState(false)
 
-    const getPosts = async (newPost = null) => {
-        if (newPost) {
-            setPosts((prev) => [newPost, ...prev])
-            return
-        }
-
+    const getPosts = async () => {
         if (isLoading || !hasMore && page > 1) return
 
         setFailed(false)
@@ -80,6 +75,12 @@ export const ScrollableFeed = ({ type, id }) => {
             }
         }
     }
+
+    useEffect(() => {
+        if(newPost) {
+            setPosts(prev => [newPost, ...prev])
+        }
+    }, [newPost])
 
     useEffect(() => {
         setPosts([])
