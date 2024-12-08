@@ -23,6 +23,9 @@ server.use('/celestial-bodies', celestialBodiesRoutes)
 const postRoutes = require('./routes/posts')
 server.use('/post', postRoutes)
 
+const mediaRoutes = require('./routes/media')
+server.use('/media', mediaRoutes)
+
 // ERROR MW
 const notFoundErrorHandler = require('./middlewares/notFoundErrorHandler')
 server.use(notFoundErrorHandler)

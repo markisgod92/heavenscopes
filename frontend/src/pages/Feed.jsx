@@ -1,7 +1,8 @@
-import { Row } from "react-bootstrap"
+import { Row, Col } from "react-bootstrap"
 import { useSession } from "../custom-hooks/useSession"
 import { CreateNewPost } from "../components/post-components/CreateNewPost"
 import { PostFeed } from "../components/post-components/PostFeed"
+import { LatestUploads } from "../components/mediaVisualization/LatestUploads"
 
 export const Feed = () => {
     const session = useSession()
@@ -10,6 +11,12 @@ export const Feed = () => {
         <>
             <Row className="pt-3">
                 <h3>Welcome {session.username}</h3>
+            </Row>
+
+            <Row className="p-3">
+                <Col sm={12}>
+                    <LatestUploads />
+                </Col>
             </Row>
 
             <Row className="p-3">

@@ -254,7 +254,8 @@ posts.post('/new', verifyToken, async (req, res, next) => {
             const media = postMedia.map(item => ({
                     userId: token.id,
                     reference: newPost.reference,
-                    contentUrl: item
+                    contentUrl: item,
+                    isPublic: newPost.isPublic
                 })
             )
 

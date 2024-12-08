@@ -18,7 +18,12 @@ const UserMediaSchema = new mongoose.Schema({
     contentUrl: {
         type: String,
         required: true
+    },
+    isPublic: {
+        type: Boolean,
+        required: true,
+        default: true
     }
-})
+}, { timestamps: true, strict: true })
 
 module.exports = mongoose.model('userMediaModel', UserMediaSchema, 'user-media')
