@@ -34,11 +34,11 @@ export const NavMenu = () => {
                 <ul className="m-0 list-unstyled d-flex align-items-center nav-icons-menu">
                     <li>
                         <button onClick={toggleObjectMenu} className="menu-arrow-button">
-                            <i class="bi bi-caret-left-fill"></i>
+                            <i className="bi bi-caret-left-fill"></i>
                         </button>
                     </li>
                     {pagelist.map(item => (
-                        <li>
+                        <li key={`nav-icon-${item.title}`}>
                             <Link to={item.url}>
                                 <button className="icon-button">
                                     <img src={item.icon} />

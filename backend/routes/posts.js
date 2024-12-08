@@ -243,17 +243,44 @@ posts.post('/upload', verifyToken, userMediaCloud.array('img', 6), async (req, r
 
 posts.post('/new', verifyToken, async (req, res, next) => {
     const token = req.user
+    const {media: postMedia, ...postData} = req.body
     const newPost = new UserPostModel({
-        ...req.body,
+        ...postData,
         userId: token.id
     })
 
     try {
+        if (postMedia && postMedia.length > 0) {
+            const media = postMedia.map(item => ({
+                    userId: token.id,
+                    reference: newPost.reference,
+                    contentUrl: item
+                })
+            )
+
+            const savedMedia = await UserMediaModel.insertMany(media)
+            newPost.media = savedMedia.map(media => media._id)
+
+        }
         const savedPost = await newPost.save()
 
         await UserModel.findByIdAndUpdate(token.id, {
             $push: { posts: savedPost._id }
         })
+
+        if (postMedia && postMedia.length > 0) {
+            const mediaIds = savedPost.media.map(item => item._id)
+
+            await UserMediaModel.updateMany(
+                { _id: { $in: mediaIds } },
+                { postRef: savedPost._id }
+            )
+
+            await UserModel.findByIdAndUpdate(
+                token.id,
+                { $push: { media: { $each: mediaIds } } }
+            )
+        }
 
         const populatedPost = await UserPostModel.findById(savedPost._id)
             .populate([

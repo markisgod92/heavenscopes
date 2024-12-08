@@ -120,12 +120,12 @@ export const SinglePost = ({ postData }) => {
 
             <div>{textContent}</div>
 
-            {media && (
+            {media && media.length > 0 && (
                 <Row xs={2} md={3} className='g-3'>
                     {media.map((item, i) => (
                         <Col key={`${_id}-media-${i}`}>
                             <img
-                                src={item}
+                                src={item.contentUrl}
                                 alt={`${_id}-image-${i}`}
                                 className='w-100 h-100 ratio-1x1 object-fit-cover'
                             />
