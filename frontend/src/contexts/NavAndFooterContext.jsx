@@ -12,7 +12,7 @@ export const NavAndFooterProvider = ({ children }) => {
         >
             <NavBar />
 
-            <Container>
+            <Container fluid='lg'>
 
                 {children}
 

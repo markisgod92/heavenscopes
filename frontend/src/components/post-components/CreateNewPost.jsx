@@ -113,7 +113,7 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
         }
 
         try {
-                await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/post/new`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/post/new`, {
                 method: 'POST',
                 headers: {
                     'Authorization': JSON.parse(localStorage.getItem('Authorization')),
@@ -121,6 +121,7 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
                 },
                 body: JSON.stringify(post)
             })
+            const data = await response.json()
 
             setInputData({
                 reference: [bodyId && bodyId],
@@ -129,7 +130,7 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
             setFiles([])
             fileInputRef.current.value = ''
 
-            refresh()
+            refresh(data.savedPost)
         } catch (error) {
             setFailed(true)
         } finally {
@@ -177,7 +178,7 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
                     <Col sm={11}>
                         {isLoadingBodies && !isFaileBodies && (
                             <div className='text-center'>
-                                <Spinner 
+                                <Spinner
                                     animation='grow'
                                     role='status'
                                     size='sm'
@@ -215,7 +216,7 @@ export const CreateNewPost = ({ bodyId, refresh }) => {
                 <div className='d-flex justify-content-between align-items-center gap-2'>
                     <Form.Select
                         style={{ maxWidth: '130px' }}
-                        value={inputData.isPublic.toString()}
+                        value={inputData.isPublic}
                         onChange={handleVisibilityOption}
                     >
                         <option value="true">Public</option>

@@ -250,6 +250,15 @@ posts.post('/new', verifyToken, async (req, res, next) => {
 
     try {
         const savedPost = await newPost.save()
+        .populate([
+            { path: 'userId', select: '_id username profilePic' },
+            { path: 'reference', select: '_id primaryName' },
+            { path: 'media' },
+            {
+                path: 'comments.userId',
+                select: '_id username profilePic'
+            }
+        ])
 
         await UserModel.findByIdAndUpdate(token.id, {
             $push: { posts: savedPost._id }
