@@ -6,6 +6,7 @@ import { convertUTCString } from '../../utils/date-conversion'
 import { useSession } from '../../custom-hooks/useSession'
 import { useState } from 'react'
 import { PostComments } from './PostComments'
+import { MediaModal } from '../mediaVisualization/MediaModal'
 
 export const SinglePost = ({ postData }) => {
     const { _id, userId, reference, textContent, media, likes, comments, createdAt, isPublic } = postData
@@ -16,6 +17,8 @@ export const SinglePost = ({ postData }) => {
     const [isSendingComment, setSendingComment] = useState(false)
     const [isSendFailed, setSendFailed] = useState(false)
     const [isShowingComments, setShowingComments] = useState(false)
+    const [isMediaModalOpen, setMediaModalOpen] = useState(false)
+    const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
 
     const handleCommentInput = (e) => {
         setCommentInput(e.target.value)
@@ -26,6 +29,13 @@ export const SinglePost = ({ postData }) => {
             setShowingComments(prev => !prev)
         }
     }
+
+    const openMediaModal = (i) => {
+        setSelectedMediaIndex(i)
+        setMediaModalOpen(true)
+    }
+
+    const closeMediaModal = () => setMediaModalOpen(false)
 
     const likePost = async () => {
         const token = JSON.parse(localStorage.getItem('Authorization'))
@@ -127,10 +137,13 @@ export const SinglePost = ({ postData }) => {
                             <img
                                 src={item.contentUrl}
                                 alt={`${_id}-image-${i}`}
-                                className='w-100 h-100 ratio-1x1 object-fit-cover'
+                                className='w-100 h-100 ratio-1x1 object-fit-cover post-image'
+                                onClick={() => openMediaModal(i)}
                             />
                         </Col>
                     ))}
+
+                    <MediaModal show={isMediaModalOpen} onHide={closeMediaModal} media={media} index={selectedMediaIndex}/>
                 </Row>
             )}
 

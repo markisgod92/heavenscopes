@@ -9,11 +9,14 @@ export const Feed = () => {
 
     return (
         <>
-            <Row className="pt-3">
-                <h3>Welcome {session.username}</h3>
+            <Row className="py-3">
+                <h3>Welcome, {session.username}!</h3>
             </Row>
 
             <Row className="p-3">
+                <Col sm={12}>
+                    <h5>Latest uploads</h5>
+                </Col>
                 <Col sm={12}>
                     <LatestUploads />
                 </Col>

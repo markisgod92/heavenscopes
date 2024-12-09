@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { RealTimeDataContext } from "../contexts/RealTimeDataContext"
 import { Row } from "react-bootstrap"
 import { ToggleButtonGroup, ToggleButton } from '@mui/material'
@@ -14,6 +14,10 @@ export const VisibleNow = () => {
     const changeTimeOffset = (event, value) => {
         setSelectedTimeOffset(value)
     }
+
+    useEffect(() => {
+        forceReload()
+    }, [])
 
     return (
         <>

@@ -48,6 +48,7 @@ const userMediaStorage = new CloudinaryStorage({
 const userMediaCloud = multer({
     storage: userMediaStorage,
     fileFilter: (req, file, cb) => {
+        console.log(file.mimetype)
         const allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'video/mp4']
         if (allowedFormats.includes(file.mimetype)) {
             cb(null, true)

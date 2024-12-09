@@ -13,6 +13,7 @@ import { AccountCreated } from './pages/AccountCreated';
 import { Feed } from './pages/Feed';
 import { UserPage } from './pages/UserPage';
 import { VisibleNow } from './pages/VisibleNow';
+import { Media } from './pages/Media';
 
 function App() {
   return (
@@ -30,7 +31,8 @@ function App() {
           </RealTimeDataProvider>
         }>
           <Route exact path='/feed' element={<Feed />} />
-          <Route path='visiblenow' element={<VisibleNow />} />
+          <Route path='/media/:paramId?' element={<Media />} />
+          <Route path='/visiblenow' element={<VisibleNow />} />
           <Route path='/feed/:bodyName' element={<CelestialBodyPage />} />
           <Route path='/new-user-redirect' element={<AccountCreated />} />
           <Route path='/profile/:userId' element={<UserPage />} />

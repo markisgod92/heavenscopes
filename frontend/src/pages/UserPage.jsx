@@ -6,6 +6,7 @@ import { Avatar, CircularProgress, IconButton } from "@mui/material"
 import { ModifyAvatarModal } from "../components/user-management/ModifyAvatarModal"
 import { BioForm } from "../components/user-management/BioForm"
 import { PostFeed } from '../components/post-components/PostFeed'
+import { LatestUploads } from "../components/mediaVisualization/LatestUploads"
 
 export const UserPage = () => {
     const [userData, setUserData] = useState(null)
@@ -125,6 +126,15 @@ export const UserPage = () => {
                         </Col>
                     </>
                 )}
+            </Row>
+
+            <Row className="p-3 pt-5">
+                <Col sm={12}>
+                    <h5>Latest uploads</h5>
+                </Col>
+                <Col sm={12}>
+                    <LatestUploads type={'userId'} id={userId} />
+                </Col>
             </Row>
 
             <Row className="p-3">

@@ -1,21 +1,28 @@
 import { useEffect, useState } from "react"
-import { Col, Row } from "react-bootstrap"
-import { Link } from "react-router-dom"
+import { Row, Col } from "react-bootstrap"
+import { useParams, useSearchParams } from "react-router-dom"
+import { MediaCard } from "../components/mediaVisualization/MediaCard"
 
-export const LatestUploads = ({ type, id }) => {
+export const Media = () => {
+    const { paramId} = useParams()
+    const [searchParams] = useSearchParams()
     const [media, setMedia] = useState([])
     const [isLoading, setLoading] = useState(false)
     const [isFailed, setFailed] = useState(false)
+    const [page, setPage] = useState(1)
+    const [hasMore, setHasMore] = useState(true)
 
     const makeQueryParams = () => {
-        if(type && id) return `&${type}=${id}`
+        const type = searchParams.get('type')
+        if (type === 'body' && paramId) return `&bodyId=${paramId}`
+        if (type === 'user' && paramId) return `&userId=${paramId}`
         return ''
     }
 
     const getMedia = async () => {
         try {
             const queryParams = makeQueryParams()
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/media/feed?limit=4${queryParams}`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/media/feed?page=${page}${queryParams}`, {
                 headers: {
                     'Authorization': JSON.parse(localStorage.getItem('Authorization'))
                 }
@@ -23,6 +30,7 @@ export const LatestUploads = ({ type, id }) => {
             const data = await response.json()
 
             setMedia(data.media)
+            setHasMore(data.hasMore)
         } catch (error) {
             console.error(error)
         }
@@ -33,10 +41,10 @@ export const LatestUploads = ({ type, id }) => {
     }, [])
 
     return (
-        <Row xs={2} md={4}>
+        <Row className="p-3 g-5">
             {media && media.length > 0 && media.map((item, i) => (
-                <Col key={`latest-${i}`} className="border border-1 border-light p-0">
-                    <img src={item.contentUrl} alt={`latest-${i}`} className="w-100 h-100 ratio-1x1 object-fit-cover" />
+                <Col sm={12} key={`media-${i}`}>
+                   <MediaCard item={item} />
                 </Col>
             ))}
         </Row>
