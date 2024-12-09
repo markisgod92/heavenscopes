@@ -29,13 +29,7 @@ userMedia.get('/feed', verifyToken, getFollows, async (req, res, next) => {
             filters.reference = bodyId
         }
 
-        const media = await UserMediaModel.find({
-            $or: [
-                { isPublic: true },
-                { userId: { $in: following } },
-                { userId: token.id }
-            ]
-        })
+        const media = await UserMediaModel.find(filters)
             .sort({ createdAt: -1 })
             .populate([
                 { path: 'userId', select: '_id username profilePic' },

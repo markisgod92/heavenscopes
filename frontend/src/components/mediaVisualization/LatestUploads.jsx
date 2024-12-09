@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Col, Row } from "react-bootstrap"
+import { Col, Row, Spinner } from "react-bootstrap"
 import { Link } from "react-router-dom"
 
 export const LatestUploads = ({ type, id }) => {
@@ -7,12 +7,17 @@ export const LatestUploads = ({ type, id }) => {
     const [isLoading, setLoading] = useState(false)
     const [isFailed, setFailed] = useState(false)
 
+    
+
     const makeQueryParams = () => {
         if(type && id) return `&${type}=${id}`
         return ''
     }
 
     const getMedia = async () => {
+        setFailed(false)
+        setLoading(true)
+
         try {
             const queryParams = makeQueryParams()
             const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/media/feed?limit=4${queryParams}`, {
@@ -24,21 +29,45 @@ export const LatestUploads = ({ type, id }) => {
 
             setMedia(data.media)
         } catch (error) {
-            console.error(error)
+            setFailed(true)
+        } finally {
+            setLoading(false)
+            console.log(media.length)
         }
     }
 
     useEffect(() => {
         getMedia()
-    }, [])
+    }, [type, id])
 
     return (
         <Row xs={2} md={4}>
-            {media && media.length > 0 && media.map((item, i) => (
+            {isLoading && !isFailed && (
+                <div className="p-3 d-flex justify-content-center">
+                    <Spinner 
+                        animation="grow"
+                        size="lg"
+                        role="status"
+                    />
+                </div>
+            )}
+
+            {!isLoading && isFailed && (
+                <div className="p-3 d-flex flex-column justify-content-center align-items-center gap-2">
+                    <span>Error loading media.</span>
+                    <button className="form-button" onClick={getMedia}>Try again</button>
+                </div>
+            )}
+
+            {!isLoading && !isFailed && media && media.length > 0 && media.map((item, i) => (
                 <Col key={`latest-${i}`} className="border border-1 border-light p-0">
                     <img src={item.contentUrl} alt={`latest-${i}`} className="w-100 h-100 ratio-1x1 object-fit-cover" />
                 </Col>
             ))}
+
+            {!isLoading && !isFailed && !media && (
+                <div className="p-3 w-100 text-center">There isn't any media yet.</div>
+            )}
         </Row>
     )
 }
