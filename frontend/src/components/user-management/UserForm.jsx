@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Row, Col, Form } from "react-bootstrap"
 import { ftToMt } from "../../utils/location-conversions"
 import { SettingsForm } from "./SettingsForm"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 export const UserForm = () => {
     const [formData, setFormData] = useState({
@@ -21,7 +21,13 @@ export const UserForm = () => {
     })
     const [profilePic, setProfilePic] = useState(null)
     const [validationErrors, setValidationErrors] = useState({})
+    const [termsAccepted, setTermsAccepted] = useState({
+        service: false,
+        privacy: false,
+        cookie: false
+    })
     const navigate = useNavigate()
+    console.log(termsAccepted)
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -41,6 +47,16 @@ export const UserForm = () => {
             settings: settings
         })
     }
+
+    const handleCheckboxChange = (e) => {
+        const {name, checked} = e.target
+        setTermsAccepted((prev) => ({
+            ...prev,
+            [name]: checked
+        }))
+    }
+
+    const allTermsAccepted = Object.values(termsAccepted).every((value) => value)
 
     const validateForm = () => {
         const errors = {}
@@ -230,8 +246,33 @@ export const UserForm = () => {
 
             <SettingsForm onUpdate={handleSettingsUpdate} />
 
+            <Form.Group className="pt-5">
+                <Form.Label>Please read and accept the following:</Form.Label>
+                <Form.Check
+                    type="checkbox"
+                    name="service"
+                    label={<Link to={'/terms-of-service'} target="_blank">Terms of Service</Link>}
+                    value={termsAccepted.service}
+                    onChange={handleCheckboxChange}
+                />
+                <Form.Check
+                    type="checkbox"
+                    name="privacy"
+                    label={<Link to={'/privacy'} target="_blank">Privacy Policy</Link>}
+                    value={termsAccepted.privacy}
+                    onChange={handleCheckboxChange}
+                />
+                <Form.Check
+                    type="checkbox"
+                    name="cookie"
+                    label={<Link to={'/cookie-policy'} target="_blank">Cookie Policy</Link>}
+                    value={termsAccepted.cookie}
+                    onChange={handleCheckboxChange}
+                />
+            </Form.Group>
+
             <div className="d-flex justify-content-center p-5">
-                <button type="submit" onClick={createUser} className="form-button">Register</button>
+                <button type="submit" onClick={createUser} className="form-button" disabled={!allTermsAccepted}>Register</button>
             </div>
         </Form>
     )

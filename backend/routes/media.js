@@ -9,25 +9,34 @@ const userMedia = express.Router()
 userMedia.get('/feed', verifyToken, getFollows, async (req, res, next) => {
     const token = req.user
     const following = req.followingList
-    const {page = 1, limit = 10, bodyId, userId} = req.query
+    const { page = 1, limit = 10, bodyId, userId } = req.query
 
     try {
-        let filters = {
-            $or: [
+        let filters = {}
+
+        if (!bodyId && !userId) {
+            filters.$or = [
                 { isPublic: true },
-                { userId: { $in: following } }
+                { userId: { $in: following } },
+                { userId: token.id }
             ]
-        }
-
-        if (userId) {
-            filters.$or.push({ userId: userId })
-        } else {
-            filters.$or.push({ userId: token.id })
-        }
-
-        if (bodyId) {
+        } else if (bodyId) {
             filters.reference = bodyId
-        }
+            filters.$or = [
+                { isPublic: true },
+                { userId: { $in: following } },
+                { userId: token.id }
+            ]
+        } else if (userId) {
+            if (userId === token.id) {
+                filters.userId = userId
+            } else {
+                filters.$or = [
+                    { isPublic: true, userId: userId },
+                    { isPublic: false, userId: userId, userId: { $in: following } }
+                ]
+            }
+        }        
 
         const media = await UserMediaModel.find(filters)
             .sort({ createdAt: -1 })
@@ -39,7 +48,7 @@ userMedia.get('/feed', verifyToken, getFollows, async (req, res, next) => {
             .limit(limit)
             .skip((page - 1) * limit)
 
-        if(media.length === 0) {
+        if (media.length === 0) {
             const error = new Error('Media not found')
             error.status = 404
             return next(error)

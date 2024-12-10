@@ -40,6 +40,10 @@
     box-shadow: 0 0 10px 5px rgb(255, 255, 225);
 }
 
+.form-button:disabled {
+    background-color: grey;
+}
+
 .menu-arrow-button {
     border: none;
     background-color: transparent;
