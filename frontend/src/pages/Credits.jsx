@@ -12,7 +12,7 @@ export const Credits = () => {
                     <li>
                         <h5>Visible Planets API</h5>
                         <p>
-                            Provided by Casey Milstead. Visit on github: <a href="https://github.com/csymlstd">csymlstd</a>
+                            Created by Casey Milstead. Visit on github: <a href="https://github.com/csymlstd">csymlstd</a>
                         </p>
                         <p>This useful API returns the position data of the planets of the Solar System in the sky, based on time, location coordinates and elevation.</p>
                         <p>The observer can easily use this data to point an observation device, such as a binocular or a telescope, to the object.</p>
@@ -31,7 +31,7 @@ export const Credits = () => {
                         <p>
                             <a href="https://www.solarsystemscope.com">www.solarsystemscope.com</a>
                         </p>
-                        <p>The Solar System Scope project provides high resolution textures for the planets of the Solar System, based on NASA imagery data.</p>
+                        <p>The Solar System Scope project provides high resolution textures for the Sun, the Moon and the planets of the Solar System, based on NASA imagery data.</p>
                     </li>
                 </ul>
             </Col>

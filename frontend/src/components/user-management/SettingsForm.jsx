@@ -273,7 +273,7 @@ export const SettingsForm = ({ onUpdate }) => {
                 <Form.Label column sm={12} md={3}>
                     Elevation
                 </Form.Label>
-                <Col sm={10} md={7}>
+                <Col xs={10} md={7}>
                     <Form.Control
                         type="number"
                         name="elevation"
@@ -284,7 +284,7 @@ export const SettingsForm = ({ onUpdate }) => {
                         })}
                     />
                 </Col>
-                <Form.Label column sm={2}>
+                <Form.Label column xs={2}>
                     {formData.isMetric ? 'mt' : 'ft'}
                 </Form.Label>
             </Form.Group>

@@ -6,13 +6,20 @@ export const LatestUploads = ({ type, id }) => {
     const [media, setMedia] = useState([])
     const [isLoading, setLoading] = useState(false)
     const [isFailed, setFailed] = useState(false)
-
-    
+    const [isMediaModalOpen, setMediaModalOpen] = useState(false)
+    const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
 
     const makeQueryParams = () => {
         if(type && id) return `&${type}=${id}`
         return ''
     }
+
+    const openMediaModal = (i) => {
+        setSelectedMediaIndex(i)
+        setMediaModalOpen(true)
+    }
+
+    const closeMediaModal = () => setMediaModalOpen(false)
 
     const getMedia = async () => {
         setFailed(false)
@@ -61,7 +68,7 @@ export const LatestUploads = ({ type, id }) => {
 
             {!isLoading && !isFailed && media && media.length > 0 && media.map((item, i) => (
                 <Col key={`latest-${i}`} className="border border-1 border-light p-0">
-                    <img src={item.contentUrl} alt={`latest-${i}`} className="w-100 h-100 ratio-1x1 object-fit-cover" />
+                    <img src={item.contentUrl} alt={`latest-${i}`} className="w-100 h-100 ratio-1x1 object-fit-cover post-image" />
                 </Col>
             ))}
 

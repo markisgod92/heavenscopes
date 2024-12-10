@@ -5,12 +5,3 @@
 .single-post .post-info {
     font-size: 0.7rem;
 }
-
-.single-post .post-image {
-    transition: all 0.1s ease-in-out;
-}
-
-.single-post .post-image:hover {
-    cursor: pointer;
-    scale: 1.05;
-}

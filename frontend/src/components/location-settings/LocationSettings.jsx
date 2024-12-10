@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { useSession } from "../../custom-hooks/useSession"
 import { coordDecimalToString, mtToFt } from "../../utils/location-conversions"
-import './locationsettings.css'
 import { SettingsModal } from "./SettingsModal"
 
 export const LocationSettings = () => {
@@ -24,29 +23,34 @@ export const LocationSettings = () => {
     }, [])
 
     return (
-        <div className='location-settings bg-dark text-light p-1 px-3 d-flex justify-content-between'>
+        <div className='p-3 bg-dark d-flex justify-content-between'>
             <div className="d-flex gap-3 align-items-center">
                 <div>
                     <i className="bi bi-compass"></i>
                 </div>
 
                 <div className="d-flex flex-wrap gap-md-2">
-                    <div>Latitude:</div>
+                    <div className="d-none d-md-block">Latitude:</div>
                     <div>{coordDecimalToString(sessionLocation.lat, true)}</div>
                 </div>
 
                 <div className="d-flex flex-wrap gap-md-2">
-                    <div>Longitude:</div>
+                    <div className="d-none d-md-block">Longitude:</div>
                     <div>{coordDecimalToString(sessionLocation.lon, false)}</div>
                 </div>
 
                 <div className="d-flex flex-wrap gap-md-2">
-                    <div>Elevation:</div>
+                    <div className="d-none d-md-block">Elevation:</div>
                     <div>{isMetric ? `${sessionElevation}m` : `${parseInt(mtToFt(sessionElevation))}ft`}</div>
                 </div>
             </div>
 
-            <button className="link-button" onClick={toggleModal}>Change settings</button>
+            <button className="custom-link-button" onClick={toggleModal}>
+                <span className="d-none d-md-block">Change settings</span>
+                <span className="d-md-none">
+                    <i className="bi bi-pencil-square"></i>
+                </span>
+            </button>
 
             <SettingsModal show={isModalShown} onHide={toggleModal}/>
         </div>

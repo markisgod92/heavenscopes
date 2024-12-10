@@ -156,7 +156,7 @@ export const SinglePost = ({ postData }) => {
                     )}
                 </button>
 
-                <Button className='btn-link' onClick={toggleShowComments}>
+                <button className='custom-link-button' onClick={toggleShowComments}>
                     {isShowingComments ? (
                         <span>Hide comments</span>
                     ) : (
@@ -166,7 +166,7 @@ export const SinglePost = ({ postData }) => {
                             <span>No comments</span>
                         )
                     )}
-                </Button>
+                </button>
             </div>
 
             {isShowingComments && <PostComments comments={commentsList} />}
@@ -175,7 +175,7 @@ export const SinglePost = ({ postData }) => {
                 {isSendFailed ? (
                     <div className='d-flex gap-3 align-items-center'>
                         <span className='text-danger'>Error sending comment.</span>
-                        <Button className='btn-link' onClick={() => setSendFailed(false)}>Try again</Button>
+                        <button className='form-button' onClick={() => setSendFailed(false)}>Try again</button>
                     </div>
                 ) : (
                     <Form className='d-flex gap-3' onSubmit={addComment}>
@@ -185,7 +185,7 @@ export const SinglePost = ({ postData }) => {
                             value={commentInput}
                             onChange={handleCommentInput}
                         />
-                        <button type='submit' className='form-button' disabled={isSendingComment}>
+                        <button type='submit' className='form-button' disabled={!commentInput || isSendingComment}>
                             {isSendingComment ? (
                                 <Spinner
                                     role='status'
