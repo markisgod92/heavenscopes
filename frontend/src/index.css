@@ -1,14 +1,16 @@
 :root {
-    --background: #082032;
+    --background: #212529;
     --container: #353535;
     --detail: #E3CCAE;
+    --text: rgb(227, 227, 227);
     --text-input-bg: white;
 }
 
 .night-mode {
     --background: black;
-    --container: black;
+    --container: #181b1e;
     --detail: red;
+    --text: red;
     --text-input-bg: rgb(34, 34, 34);
 }
 
@@ -24,8 +26,22 @@ html, body {
 }
 
 body {
-    background-color: #212529 !important;
-    color: white !important;
+    background-color: var(--background) !important;
+    color: var(--text) !important;
+    transition: all 500ms ease-in-out;
+}
+
+img {
+    position: relative;
+}
+
+body.night-mode img {
+    filter: brightness(50%);
+}
+
+input[type='text'],
+textarea {
+    background-color: var(--text-input-bg);
 }
 
 footer {
@@ -33,5 +49,5 @@ footer {
 }
 
 a {
-    color: rgb(227, 227, 227) !important;
+    color: var(--text) !important;
 }

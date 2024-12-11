@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { RealTimeDataContext } from "../contexts/RealTimeDataContext"
-import { Row } from "react-bootstrap"
+import { Row, Spinner } from "react-bootstrap"
 import { ToggleButtonGroup, ToggleButton } from '@mui/material'
 import { SkyMap } from "../components/sky-map/SkyMap"
 import { RealTimeVisibility } from "../components/real-time-visibility/Real-Time-Visibility"
@@ -21,7 +21,23 @@ export const VisibleNow = () => {
 
     return (
         <>
-            {data && (
+            {isLoading && !error && (
+                <div className="p-5 d-flex justify-content-center align-items-center">
+                    <Spinner 
+                        animation="grow"
+                        size="lg"
+                        role="status"
+                    />
+                </div>
+            )}
+
+            {!isLoading && error && (
+                <div className="p-5 d-flex flex-column gap-4 align-items-center">
+                    <span>{error || 'Data not available.'}</span>
+                    <button className="form-button" onClick={forceReload}>Reload</button>
+                </div>
+            )}
+            {!isLoading && !error && data && (
                 <>
                     <Row className="p-3 time-offset-selector">
                         <ToggleButtonGroup

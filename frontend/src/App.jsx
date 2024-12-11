@@ -2,12 +2,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import "bootstrap-icons/font/bootstrap-icons.css";
 import './App.css'
 import { CelestialBodyPage } from './pages/CelestialBodyPage';
-import { RealTimeDataProvider } from './contexts/RealTimeDataContext';
 import { LoginPage } from './pages/LoginPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ProtectedRoutes } from './middlewares/ProtectedRoutes';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { NavAndFooterProvider } from './contexts/NavAndFooterContext';
 import { CreateAccount } from './pages/CreateAccount';
 import { AccountCreated } from './pages/AccountCreated';
 import { Feed } from './pages/Feed';
@@ -29,13 +26,7 @@ function App() {
         <Route path='/cookie-policy' element={<CookiePolicy />} />
 
         <Route element={
-          <RealTimeDataProvider>
-            <ThemeProvider>
-              <NavAndFooterProvider>
-                <ProtectedRoutes></ProtectedRoutes>
-              </NavAndFooterProvider>
-            </ThemeProvider>
-          </RealTimeDataProvider>
+                <ProtectedRoutes />
         }>
           <Route exact path='/feed' element={<Feed />} />
           <Route path='/visiblenow' element={<VisibleNow />} />

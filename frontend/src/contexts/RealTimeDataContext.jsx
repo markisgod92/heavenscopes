@@ -23,8 +23,9 @@ export const RealTimeDataProvider = ({ children }) => {
     }
 
     const loadData = async () => {
-        setLoading(true)
         setError(null)
+        setLoading(true)
+        
         const timeOffsets = makeTimeOffsets()
 
         try {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Col, Row, Spinner } from "react-bootstrap"
 import { Link } from "react-router-dom"
+import { MediaModal } from "./MediaModal"
 
 export const LatestUploads = ({ type, id }) => {
     const [media, setMedia] = useState([])
@@ -10,7 +11,7 @@ export const LatestUploads = ({ type, id }) => {
     const [selectedMediaIndex, setSelectedMediaIndex] = useState(0)
 
     const makeQueryParams = () => {
-        if(type && id) return `&${type}=${id}`
+        if (type && id) return `&${type}=${id}`
         return ''
     }
 
@@ -39,7 +40,6 @@ export const LatestUploads = ({ type, id }) => {
             setFailed(true)
         } finally {
             setLoading(false)
-            console.log(media.length)
         }
     }
 
@@ -51,7 +51,7 @@ export const LatestUploads = ({ type, id }) => {
         <Row xs={2} md={4}>
             {isLoading && !isFailed && (
                 <div className="p-3 d-flex justify-content-center">
-                    <Spinner 
+                    <Spinner
                         animation="grow"
                         size="lg"
                         role="status"
@@ -68,7 +68,14 @@ export const LatestUploads = ({ type, id }) => {
 
             {!isLoading && !isFailed && media && media.length > 0 && media.map((item, i) => (
                 <Col key={`latest-${i}`} className="border border-1 border-light p-0">
-                    <img src={item.contentUrl} alt={`latest-${i}`} className="w-100 h-100 ratio-1x1 object-fit-cover post-image" />
+                    <img
+                        src={item.contentUrl}
+                        alt={`latest-${i}`}
+                        className="w-100 h-100 ratio-1x1 object-fit-cover post-image"
+                        onClick={() => openMediaModal(i)}
+                    />
+
+                    <MediaModal show={isMediaModalOpen} onHide={closeMediaModal} media={media} index={selectedMediaIndex} />
                 </Col>
             ))}
 
