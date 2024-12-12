@@ -1,10 +1,83 @@
 .custom-navbar {
-    background-color: var(--container);
-    position: fixed;
-    top: 0;
     width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.custom-navbar::before {
+    content: '';
+    background-image: url("/2k_stars_milky_way.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
 .nav-logo {
     width: 300px;
+}
+
+.nav-menu a,
+.nav-icons-menu a {
+    text-decoration: none;
+}
+
+.nav-menu button {
+    width: 130px;
+    height: 100%;
+    padding: 10px 0.5rem ;
+    background-color: transparent;
+    color: var(--detail);
+    box-shadow: none;
+    border: none;
+    transition: all 150ms ease-in-out;
+}
+
+.nav-menu button:hover,
+.nav-icons-menu .icon-button:hover {
+    background-color: white;
+    font-weight: bold;
+    box-shadow: 0 0 10px 5px rgb(255, 255, 225);
+}
+
+.nav-icons-menu .icon-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 100px;
+    height: 100%;
+    padding: 0.5rem 0;
+    background-color: transparent;
+    color: var(--detail);
+    box-shadow: none;
+    border: none;
+}
+
+.nav-icons-menu .icon-button img {
+    width: 50px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+
+.night-mode-toggle {
+    height: 100%;
+    padding: 10px 1rem;
+    background-color: transparent;
+    color: var(--detail);
+    box-shadow: none;
+    border: none;
+    border-radius: 50%;
+    transition: all 300ms ease-in-out;
+}
+
+.night-mode-toggle:hover {
+    background-color: var(--detail);
+    color: white;
 }

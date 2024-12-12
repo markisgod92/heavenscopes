@@ -1,4 +1,5 @@
 const express = require('express')
+const verifyToken = require('../middlewares/verifyToken')
 const CelestialBodyModel = require('../models/CelestialBodyModel')
 const celestialBodies = express.Router()
 const celestialBodyTypes = require('../data/celestial-body-types.json')
@@ -7,7 +8,7 @@ const LicensedMediaModel = require('../models/LicensedMediaModel')
 const isAdmin = require('../middlewares/isAdmin')
 const InfoChapterModel = require('../models/InfoChapters')
 
-celestialBodies.get('/all', async (req, res, next) => {
+celestialBodies.get('/all', verifyToken, async (req, res, next) => {
     const { type } = req.query
 
     if(type && !celestialBodyTypes.includes(type)) {
@@ -34,7 +35,7 @@ celestialBodies.get('/all', async (req, res, next) => {
     }
 })
 
-celestialBodies.get('/:bodyId', async (req, res, next) => {
+celestialBodies.get('/:bodyId', verifyToken, async (req, res, next) => {
     const { bodyId } = req.params
     const { moons, media, info } = req.query
 
@@ -59,7 +60,7 @@ celestialBodies.get('/:bodyId', async (req, res, next) => {
     }
 })
 
-celestialBodies.get('/by-name/:bodyName', async (req, res, next) => {
+celestialBodies.get('/by-name/:bodyName', verifyToken, async (req, res, next) => {
     const { bodyName } = req.params
     const { moons, media, info } = req.query
 

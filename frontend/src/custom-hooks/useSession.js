@@ -5,7 +5,8 @@ import { isTokenExpired } from "../utils/isTokenExpired"
 
 
 const getAuth = () => {
-    return JSON.parse(localStorage.getItem('Authorization'))
+    const token = localStorage.getItem('Authorization')
+    return token ? JSON.parse(token) : null
 }
 
 
@@ -16,14 +17,14 @@ export const useSession = () => {
 
     const logout = () => {
         localStorage.removeItem('Auth')
-        navigate('/')
+        navigate('/', {replace: true})
     }
 
     useEffect(() => {
-        if (isTokenExpired(decodedsession?.exp)) {
+        if (!session || isTokenExpired(decodedsession?.exp)) {
             logout()
         }
-    }, [navigate, session])
+    }, [decodedsession?.exp, session, navigate])
 
     return decodedsession
 }

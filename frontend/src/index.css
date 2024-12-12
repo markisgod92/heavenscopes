@@ -1,25 +1,66 @@
 :root {
-    --background: #082032;
-    --container: #334756;
-    --detail: #E3CCAE; 
+    --background: #212529;
+    --container: #353535;
+    --detail: #E3CCAE;
+    --text: rgb(227, 227, 227);
+    --text-input: black;
+    --input-placeholder: #212529;
+    --text-input-bg: white;
 }
 
 .night-mode {
     --background: black;
-    --container: black;
+    --container: #181b1e;
     --detail: red;
+    --text: red;
+    --text-input: red;
+    --input-placeholder: rgb(196, 86, 86);
+    --text-input-bg: rgb(34, 34, 34);
 }
 
 html, body {
-    height: 100vh;
+    height: 100dvh;
+}
+
+#root {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 body {
     background-color: var(--background) !important;
-    color: var(--detail) !important;
+    color: var(--text) !important;
+    transition: all 500ms ease-in-out;
 }
 
-.main-content {
-    margin-top: 93px;
-    margin-bottom: 24px;
+img {
+    position: relative;
+}
+
+body.night-mode img {
+    filter: brightness(50%);
+}
+
+input[type='text'],
+textarea,
+input[type='file'],
+select {
+    background-color: var(--text-input-bg) !important;
+    color: var(--text-input) !important;
+}
+
+input[type='text']::placeholder,
+textarea::placeholder {
+    color: var(--input-placeholder) !important;
+}
+
+footer {
+    margin-top: auto;
+    background-color: var(--container);
+}
+
+a {
+    color: var(--text) !important;
 }

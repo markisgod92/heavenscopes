@@ -1,0 +1,16 @@
+.weather-day {
+    background-color: #87CEEB;
+    color: #333333;
+    border-color: #333333;
+}
+
+.weather-night {
+    background-color: #121255;
+    color: white;
+    border-color: white;
+}
+
+.credit {
+    font-size: small;
+    font-style: italic;
+}

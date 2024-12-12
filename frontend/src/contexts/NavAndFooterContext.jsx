@@ -1,8 +1,6 @@
 import { createContext } from "react"
 import { NavBar } from "../components/navbar/NavBar"
-import { LocationSettings } from "../components/location-settings/LocationSettings"
-import { Col, Container, Row } from "react-bootstrap"
-import { SideBar } from "../components/sidebar/SideBar"
+import { Container } from "react-bootstrap"
 import { Footer } from "../components/footer/Footer"
 
 const NavAndFooterContext = createContext()
@@ -12,31 +10,16 @@ export const NavAndFooterProvider = ({ children }) => {
         <NavAndFooterContext.Provider
             value={''}
         >
-            <div className="vh-100 d-flex flex-column">
+            <NavBar />
 
-                <NavBar />
-                <div className="main-content flex-grow-1 d-flex flex-column overflow-hidden">
+            <Container fluid='lg'>
 
-                    <LocationSettings />
+                {children}
 
-                    <Container fluid className="h-100 ps-0 flex-grow-1">
-                        <Row className="h-100 overflow-auto">
+            </Container>
 
-                            <Col xs={2} className="h-100 d-flex">
-                                <SideBar />
-                            </Col>
+            <Footer />
 
-                            <Col xs={10} className="h-100 overflow-y-scroll pb-5">
-                                {children}
-                            </Col>
-
-                        </Row>
-                    </Container>
-                </div>
-
-                <Footer />
-
-            </div>
         </NavAndFooterContext.Provider>
     )
 }

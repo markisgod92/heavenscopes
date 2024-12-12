@@ -165,4 +165,43 @@ users.patch('/:userId', verifyToken, verifyOwner, async (req, res, next) => {
     }
 })
 
+users.patch('/follow/:userId', verifyToken, async (req, res, next) => {
+    const {userId} = req.params
+    const token = req.user
+
+    try {
+        const userToFollow = await UserModel.findById(userId)
+
+        if(!userToFollow) {
+            const error = new Error('User not found.')
+            error.status = 400
+            return next(error)
+        }
+
+        if(!userToFollow.followers.includes(token.id)) {
+            await Promise.all([
+                userToFollow.updateOne({ $push: { followers: token.id } }),
+                UserModel.findByIdAndUpdate(token.id, {
+                    $push: { following: userToFollow._id }
+                })
+            ])
+
+            res.status(200)
+                .send({ message: 'followed' })
+        } else {
+            await Promise.all([
+                userToFollow.updateOne({ $pull: { followers: token.id } }),
+                UserModel.findByIdAndUpdate(token.id, {
+                    $pull: { following: userToFollow._id }
+                })
+            ])
+
+            res.status(200)
+                .send({ message: 'unfollowed' })
+        }
+    } catch (error) {
+        next(error)
+    }
+})
+
 module.exports = users

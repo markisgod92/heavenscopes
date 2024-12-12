@@ -1,11 +1,23 @@
-import { Outlet } from 'react-router-dom'
-import { LoginPage } from '../pages/LoginPage'
-
-const checkToken = () => {
-    return JSON.parse(localStorage.getItem('Authorization'))
-}
+import { Navigate, Outlet } from 'react-router-dom'
+import { useSession } from '../custom-hooks/useSession'
+import { RealTimeDataProvider } from '../contexts/RealTimeDataContext'
+import { ThemeProvider } from '../contexts/ThemeContext'
+import { NavAndFooterProvider } from '../contexts/NavAndFooterContext'
 
 export const ProtectedRoutes = () => {
-    const isAuthorized = checkToken()
-    return isAuthorized ? <Outlet /> : <LoginPage />
+    const session = useSession()
+
+    if(!session) {
+        return <Navigate to={'/'} replace />
+    }
+
+    return (
+        <RealTimeDataProvider>
+            <ThemeProvider>
+                <NavAndFooterProvider>
+                    <Outlet />
+                </NavAndFooterProvider>
+            </ThemeProvider>
+        </RealTimeDataProvider>
+    )
 }

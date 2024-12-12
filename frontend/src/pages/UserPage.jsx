@@ -1,25 +1,27 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useSession } from "../custom-hooks/useSession"
-import { Row, Col, Button, Form } from "react-bootstrap"
+import { Row, Col, Button, Badge } from "react-bootstrap"
 import { Avatar, CircularProgress, IconButton } from "@mui/material"
 import { ModifyAvatarModal } from "../components/user-management/ModifyAvatarModal"
 import { BioForm } from "../components/user-management/BioForm"
+import { PostFeed } from '../components/post-components/PostFeed'
+import { LatestUploads } from "../components/mediaVisualization/LatestUploads"
 
 export const UserPage = () => {
     const [userData, setUserData] = useState(null)
     const { userId } = useParams()
     const session = useSession()
+    const [isCurrentUser, setCurrentUser] = useState(userId === session.id)
+    const [isFollowed, setFollowed] = useState(false)
     const [isLoading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [showAvatarModal, setShowAvatarModal] = useState(false)
-    const [isModifyBioOn, setModifyBioOn] = useState(false)
-    const [bioInputValue, setBioInputValue] = useState('')
+    const navigate = useNavigate()
 
-    const getUserData = async (isCurrentUser) => {
+    const getUserData = async () => {
         setLoading(true)
 
-        const auth = JSON.parse(localStorage.getItem('Authorization'))
         const endpoint = isCurrentUser
             ? `${import.meta.env.VITE_BACKEND_BASE_URL}/user/me/${userId}`
             : `${import.meta.env.VITE_BACKEND_BASE_URL}/user/${userId}`
@@ -27,7 +29,7 @@ export const UserPage = () => {
         try {
             const response = await fetch(endpoint, {
                 headers: {
-                    'Authorization': auth
+                    'Authorization': JSON.parse(localStorage.getItem('Authorization'))
                 }
             })
 
@@ -39,6 +41,7 @@ export const UserPage = () => {
             }
 
             setUserData(data)
+            if(!isCurrentUser) setFollowed(data.followers.includes(session.id))
         } catch (error) {
             setError(error)
         } finally {
@@ -46,70 +49,142 @@ export const UserPage = () => {
         }
     }
 
+    const followUser = async () => {
+        try {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/user/follow/${userId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': JSON.parse(localStorage.getItem('Authorization'))
+                }
+            })
+            const data = await response.json()
+
+            if(!response.ok) return
+
+            if(data.message === 'followed') {
+                setFollowed(true)
+            } else if (data.message === 'unfollowed') {
+                setFollowed(false)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     const handleShowAvatarModal = () => {
         setShowAvatarModal(prev => !prev)
     }
 
+    const logout = () => {
+        localStorage.removeItem('Authorization')
+        navigate('/')
+    }
+
     useEffect(() => {
-        const isCurrentUser = userId === session.id
-        getUserData(isCurrentUser)
+        setCurrentUser(userId === session.id)
     }, [userId])
 
+    useEffect(() => {
+        getUserData()
+    }, [isCurrentUser])
+
     return (
-        <Row className="pt-5">
-            {isLoading && !error && (
-                <div className="h-100 d-flex flex-column gap-3 align-items-center align-items-center">
-                    <CircularProgress />
-                    <span>Loading user data...</span>
-                </div>
+        <>
+            {isCurrentUser && (
+                <Row className="pt-2">
+                    <div className="text-end">
+                        <button className="form-button" onClick={logout}>
+                            <i className="bi bi-box-arrow-left"></i>
+                            <span className="ps-2">Logout</span>
+                        </button>
+                    </div>
+                </Row>
             )}
 
-            {!isLoading && error && (
-                <div className="h-100 d-flex flex-column gap-1 align-items-center align-items-center">
-                    {error}
-                    <IconButton onClick={forceReload}>
-                        <i className="bi bi-arrow-clockwise text-white"></i>
-                    </IconButton>
-                    <span>Try again</span>
-                </div>
-            )}
+            <Row className="pt-1">
+                {isLoading && !error && (
+                    <div className="h-100 d-flex flex-column gap-3 align-items-center align-items-center">
+                        <CircularProgress />
+                        <span>Loading user data...</span>
+                    </div>
+                )}
 
-            {!isLoading && !error && userData && (
-                <>
-                    <Col xs={12} md={6} lg={3}>
-                        <div className="position-relative p-3 d-flex justify-content-center justify-content-md-start">
-                            <Avatar
-                                src={userData.profilePic}
-                                alt={userData.username}
-                                sx={{ width: 200, height: 200 }}
-                            />
-                            <Button
-                                variant="outline-secondary"
-                                className="modify-avatar-button rounded-circle"
-                                onClick={handleShowAvatarModal}
-                            >
-                                <i className="bi bi-pencil-square"></i>
-                            </Button>
+                {!isLoading && error && (
+                    <div className="h-100 d-flex flex-column gap-1 align-items-center align-items-center">
+                        {error}
+                        <IconButton onClick={forceReload}>
+                            <i className="bi bi-arrow-clockwise text-white"></i>
+                        </IconButton>
+                        <span>Try again</span>
+                    </div>
+                )}
 
-                            <ModifyAvatarModal userId={userId} show={showAvatarModal} handleClose={handleShowAvatarModal} />
-                        </div>
-                    </Col>
+                {!isLoading && !error && userData && (
+                    <>
+                        <Col xs={12} md={6} lg={3}>
+                            <div className="position-relative p-3 d-flex justify-content-center justify-content-md-start">
+                                <Avatar
+                                    src={userData.profilePic}
+                                    alt={userData.username}
+                                    sx={{ width: 200, height: 200 }}
+                                />
 
-                    <Col xs={12} md={6} lg={9}>
-                        <div className="h-100 py-4 d-flex flex-column justify-content-between gap-5 gap-md-0 border-bottom border-1">
-                            <div className="d-flex flex-column gap-2">
-                                <h3>{userData.username}</h3>
-                                <div>{userData.followers.length} followers</div>
-                                <div>{userData.following.length} following</div>
+                                {isCurrentUser && (
+                                    <>
+                                        <Button
+                                            variant="outline-secondary"
+                                            className="modify-avatar-button rounded-circle"
+                                            onClick={handleShowAvatarModal}
+                                        >
+                                            <i className="bi bi-pencil-square"></i>
+                                        </Button>
+
+                                        <ModifyAvatarModal userId={userId} show={showAvatarModal} handleClose={handleShowAvatarModal} />
+                                    </>
+                                )}
                             </div>
+                        </Col>
 
-                            <div>
-                                <BioForm userId={userId} isCurrentUser={userId === session.id} bio={userData.bio || ''}/>
+                        <Col xs={12} md={6} lg={9}>
+                            <div className="h-100 py-4 d-flex flex-column justify-content-between gap-5 gap-md-0 border-bottom border-1">
+                                <div className="d-flex flex-column gap-2">
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <h3>
+                                            {userData.username}
+                                            {userData.isAdmin && <Badge bg='danger' pill className="ms-2">Admin</Badge>}
+                                        </h3>
+                                        {!isCurrentUser && (
+                                            <button className="form-button" onClick={followUser}>
+                                                {isFollowed ? 'Unfollow' : 'Follow'}
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    <div>{userData.followers.length} followers</div>
+                                    <div>{userData.following.length} following</div>
+                                </div>
+
+                                <div>
+                                    <BioForm userId={userId} isCurrentUser={isCurrentUser} bio={userData.bio || ''} />
+                                </div>
                             </div>
-                        </div>
-                    </Col>
-                </>
-            )}
-        </Row>
+                        </Col>
+                    </>
+                )}
+            </Row>
+
+            <Row className="p-3 pt-5">
+                <Col sm={12}>
+                    <h5>Latest uploads</h5>
+                </Col>
+                <Col sm={12}>
+                    <LatestUploads type={'userId'} id={userId} />
+                </Col>
+            </Row>
+
+            <Row className="p-3">
+                <PostFeed type={'by-user'} id={userId} />
+            </Row>
+        </>
     )
 }

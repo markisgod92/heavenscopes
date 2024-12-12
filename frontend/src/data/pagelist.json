@@ -1,68 +1,47 @@
 [
     {
-        "title": "Home",
-        "icon": "bi bi-house",
-        "symbol": "",
-        "url": "/home"
-    },
-    {
         "title": "Sun",
-        "icon": "",
-        "symbol": "☉",
+        "icon": "/nav-menu-icons/sun-icon.png",
         "url": "/feed/Sun"
     },
     {
         "title": "Moon",
-        "icon": "",
-        "symbol": "☽",
+        "icon": "/nav-menu-icons/moon-icon.png",
         "url": "/feed/Moon"
     },
     {
         "title": "Mercury",
-        "icon": "",
-        "symbol": "☿",
+        "icon": "/nav-menu-icons/mercury-icon.png",
         "url": "/feed/Mercury"
     },
     {
         "title": "Venus",
-        "icon": "",
-        "symbol": "♀",
+        "icon": "/nav-menu-icons/venus-icon.png",
         "url": "/feed/Venus"
     },
     {
         "title": "Mars",
-        "icon": "",
-        "symbol": "♂",
+        "icon": "/nav-menu-icons/mars-icon.png",
         "url": "/feed/Mars"
     },
     {
         "title": "Jupiter",
-        "icon": "",
-        "symbol": "♃",
+        "icon": "/nav-menu-icons/jupiter-icon.png",
         "url": "/feed/Jupiter"
     },
     {
         "title": "Saturn",
-        "icon": "",
-        "symbol": "♄",
+        "icon": "/nav-menu-icons/saturn-icon.png",
         "url": "/feed/Saturn"
     },
     {
         "title": "Uranus",
-        "icon": "",
-        "symbol": "♅",
+        "icon": "/nav-menu-icons/uranus-icon.png",
         "url": "/feed/Uranus"
     },
     {
         "title": "Neptune",
-        "icon": "",
-        "symbol": "♆",
+        "icon": "/nav-menu-icons/neptune-icon.png",
         "url": "/feed/Neptune"
-    },
-    {
-        "title": "Pluto",
-        "icon": "",
-        "symbol": "♇",
-        "url": "#"
     }
 ]

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Form, Row, Col, InputGroup, Button } from "react-bootstrap"
+import { Form, Row, Col, InputGroup } from "react-bootstrap"
 import { coordDecimalToDMS, coordDMSToDecimal } from "../../utils/location-conversions"
 
 export const SettingsForm = ({ onUpdate }) => {
@@ -58,7 +58,8 @@ export const SettingsForm = ({ onUpdate }) => {
         }
     }
 
-    const handleSearch = async () => {
+    const handleSearch = async (e) => {
+        e.preventDefault()
         setSearchError(false)
 
         if (!searchInput) {
@@ -77,6 +78,8 @@ export const SettingsForm = ({ onUpdate }) => {
                     lon: data[0].lon
                 }
             })
+            
+            setSearchInput('')
         } catch (error) {
             setSearchError(true)
         }
@@ -90,7 +93,7 @@ export const SettingsForm = ({ onUpdate }) => {
             })
             toggleManualSetting()
         }
-    }, [formData.location, isManual])
+    }, [formData.location])
 
     useEffect(() => {
         if (isManual) {
@@ -115,7 +118,7 @@ export const SettingsForm = ({ onUpdate }) => {
 
     return (
         <>
-            <Form.Group as={Row}>
+            <Form.Group as={Row} className="d-flex align-items-center pb-3">
                 <Form.Label column sm={12} md={3}>
                     Set coordinates
                 </Form.Label>
@@ -127,8 +130,8 @@ export const SettingsForm = ({ onUpdate }) => {
                         onChange={toggleManualSetting}
                     />
                 </Col>
-                <Form.Text>
-                    Coordinates and elevation are used to get visibility data from your position. You can always change them from your account settings.
+                <Form.Text className="text-light">
+                    Coordinates and elevation are used to get visibility data from your position.
                 </Form.Text>
             </Form.Group>
 
@@ -241,7 +244,10 @@ export const SettingsForm = ({ onUpdate }) => {
                             />
                         </Col>
                     </Form.Group>
-                    <Button onClick={handleSearch}>Search</Button>
+
+                    <div className="d-flex justify-content-center">
+                        <button onClick={handleSearch} className="form-button">Search</button>
+                    </div>
                 </>
             )}
 
@@ -267,7 +273,7 @@ export const SettingsForm = ({ onUpdate }) => {
                 <Form.Label column sm={12} md={3}>
                     Elevation
                 </Form.Label>
-                <Col sm={10} md={7}>
+                <Col xs={10} md={7}>
                     <Form.Control
                         type="number"
                         name="elevation"
@@ -278,7 +284,7 @@ export const SettingsForm = ({ onUpdate }) => {
                         })}
                     />
                 </Col>
-                <Form.Label column sm={2}>
+                <Form.Label column xs={2}>
                     {formData.isMetric ? 'mt' : 'ft'}
                 </Form.Label>
             </Form.Group>

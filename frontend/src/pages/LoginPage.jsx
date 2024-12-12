@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom"
 
 export const LoginPage = () => {
     const [loginData, setLoginData] = useState({
-        username: import.meta.env.VITE_TEST_USERNAME,
-        password: import.meta.env.VITE_TEST_PASSWORD
+        username: '',
+        password: ''
     })
     const [isLoading, setLoading] = useState(false)
     const [formMessages, setFormMessages] = useState(null)
@@ -39,7 +39,7 @@ export const LoginPage = () => {
 
     const redirect = () => {
         setTimeout(() => {
-            navigate('/home')
+            navigate('/feed')
         }, 500)
     }
 
@@ -84,11 +84,28 @@ export const LoginPage = () => {
     }
 
     return (
-        <div className="login-page vh-100 d-flex flex-column justify-content-between align-items-center py-5">
+        <div className="login-page d-flex flex-column align-items-center py-5">
 
             <img src="/heavenscope-high-resolution-logo-transparent.png" alt="heavenscopes-logo" className="login-page-logo" />
 
-            <div className="h-100 d-flex flex-column justify-content-center align-items-center gap-5">
+            <div className="d-flex flex-column align-items-center gap-5 welcome-message">
+                <div className="d-flex flex-column align-items-center">
+                    <span>TRACK</span>
+                    <span>Plan your next celestial observation with real-time planetary data.</span>
+                </div>
+
+                <div className="d-flex flex-column align-items-center">
+                    <span>CAPTURE</span>
+                    <span>Showcase the cosmos with your stunning astrophotography.</span>
+                </div>
+
+                <div className="d-flex flex-column align-items-center">
+                    <span>CONNECT</span>
+                    <span>Share your passion and media with a fellow stargazers.</span>
+                </div>
+            </div>
+
+            <div className="h-100 d-flex flex-column align-items-center gap-5">
                 <Form
                     onSubmit={login}
                     className="d-flex flex-column gap-3"
@@ -114,17 +131,18 @@ export const LoginPage = () => {
                         <Form.Text className="text-danger text-end">{formMessages.password}</Form.Text>
                     )}
                     <div className="d-flex justify-content-center">
-                        <Button type='Submit'>
-                            {isLoading && (
+                        <button type='submit' className="form-button">
+                            {isLoading ? (
                                 <Spinner
                                     as="span"
                                     animation="grow"
                                     size="sm"
                                     role="status"
                                 />
+                            ) : (
+                                <span>Login</span>
                             )}
-                            <span>Login</span>
-                        </Button>
+                        </button>
                     </div>
                     {formMessages && formMessages.fetch && (
                         <Form.Text className="text-danger text-center">{formMessages.fetch}</Form.Text>

@@ -4,11 +4,86 @@
     background-position: center;
     background-repeat: no-repeat;
     width: 100vw;
+    min-height: 100vh;
+    gap: 150px;
 }
 
 .login-page-logo {
     width: 50%;
     max-width: 600px;
+}
+
+.login-page .welcome-message > div > span:first-of-type {
+    font-weight: 800;
+    font-size: 1.2rem;
+}
+
+.login-page .welcome-message > div > span:nth-child(2) {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.form-button {
+    padding: 0.5rem 0.8rem;
+    background-color: var(--detail);
+    color: var(--container);
+    border: none;
+    border-radius: 50px;
+    transition: all 150ms ease-in-out;
+}
+
+.form-button:hover {
+    background-color: white;
+    font-weight: bold;
+    box-shadow: 0 0 10px 5px rgb(255, 255, 225);
+}
+
+.form-button:disabled {
+    background-color: grey;
+}
+
+.menu-arrow-button {
+    border: none;
+    background-color: transparent;
+    color: var(--detail);
+    outline: none;
+    padding: 0 15px;
+    font-size: 1.7rem;
+    transition: all 150ms ease-in-out;
+}
+
+.custom-link-button {
+    border: none;
+    background-color: transparent;
+    color: var(--detail);
+    outline: none;
+    padding: 0 15px;
+    transition: all 150ms ease-in-out;
+}
+
+.menu-arrow-button:hover,
+.custom-link-button:hover {
+    text-shadow: 0 0 15px rgb(255, 255, 225);
+}
+
+.time-offset-selector > div {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.time-offset-selector button {
+    flex-grow: 1;
+    background-color: black !important;
+    color: yellow !important;
+    border-color: var(--detail) !important;
+}
+
+.time-offset-selector .Mui-selected {
+    background-color: var(--detail) !important;
+    color: black !important;
+    border-color: black !important;
 }
 
 .bio-textarea {
@@ -20,4 +95,13 @@
     bottom: 0;
     left: 50%;
     color: lightgrey;
+}
+
+.post-image {
+    transition: all 0.1s ease-in-out;
+}
+
+.post-image:hover {
+    cursor: pointer;
+    scale: 1.05;
 }

@@ -3,17 +3,24 @@
     border: 1px solid var(--detail);
 }
 
-.real-time-visibility caption {
-    color: var(--detail) !important;
-    font-style: italic;
+.real-time-visibility tr {
+    border: 1px solid var(--detail) !important;
 }
 
-.real-time-visibility .MuiTableCell-head, 
-.real-time-visibility .MuiTableCell-body {
-    color: var(--detail) !important;
-    border-color: var(--detail) !important;
+.real-time-visibility thead th{
+    color: white !important;
 }
 
-.real-time-visibility .MuiTableCell-head {
-    font-weight: bold !important;
+.real-time-visibility th {
+    font-weight: bold;
+}
+
+.real-time-visibility .green-text td,
+.real-time-visibility .green-text th {
+    color: green;
+}
+
+.real-time-visibility .red-text td,
+.real-time-visibility .red-text th {
+    color: red;
 }
