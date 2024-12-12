@@ -2,10 +2,11 @@ const express = require('express')
 const UserModel = require('../models/UserModel')
 const UserPostModel = require('../models/UserPostModel')
 const UserMediaModel = require('../models/UserMediaModel')
-const { userMediaCloud } = require('./cloudinaryConfig')
+const { cloudinary, userMediaCloud, extractPublicId } = require('./cloudinaryConfig')
 const posts = express.Router()
 const verifyToken = require('../middlewares/verifyToken')
 const verifyOwner = require('../middlewares/verifyOwner')
+const bcrypt = require('bcrypt')
 require('dotenv').config()
 
 posts.get('/single/:postId', verifyToken, async (req, res, next) => {
@@ -369,6 +370,53 @@ posts.patch('/comment/:postId', verifyToken, async (req, res, next) => {
 
         res.status(200)
             .json(updatedPost.comments)
+    } catch (error) {
+        next(error)
+    }
+})
+
+posts.delete('/:postId', verifyToken, async (req, res, next) => {
+    const { postId } = req.params
+    const token = req.user
+
+    try {
+        const postToDelete = await UserPostModel.findById(postId)
+
+        if(!postToDelete) {
+            const error = new Error('Post not found')
+            error.status = 404
+            return next(error)
+        }
+
+        if(postToDelete.userId.toString() !== token.id) {
+            const error = new Error('Unauthorized')
+            error.status = 401
+            return next(error)
+        }
+
+        if(postToDelete.media && postToDelete.media.length > 0) {
+            await Promise.all(
+                postToDelete.media.map(async (mediaId) => {
+                   const media = await UserMediaModel.findById(mediaId)
+                   if(media) {
+                    const publicId = extractPublicId(media.contentUrl)
+                    await cloudinary.uploader.destroy(publicId)
+                    await UserModel.findByIdAndUpdate(postToDelete.userId, {
+                        $pull: { media: mediaId }
+                    })
+                    await UserMediaModel.findByIdAndDelete(mediaId)
+                   }
+                })
+            )
+        }
+
+        await UserModel.findByIdAndUpdate(postToDelete.userId, {
+            $pull: { posts: postId }
+        })
+        await UserPostModel.findByIdAndDelete(postId)
+
+        res.status(200)
+            .json({message: 'Post and associated media deleted.'})
     } catch (error) {
         next(error)
     }

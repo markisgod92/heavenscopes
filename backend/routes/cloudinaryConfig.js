@@ -58,6 +58,12 @@ const userMediaCloud = multer({
     }
 })
 
+const extractPublicId = (url) => {
+    const regex = /\/upload\/(?:v\d+\/)?([^\.]+)/
+    const match = url.match(regex)
+    return match ? match[1] : null
+}
+
 
 const licensedMediaStorage = new CloudinaryStorage({
     cloudinary: cloudinary,
@@ -73,4 +79,4 @@ const licensedMediaCloud = multer({
     storage: licensedMediaStorage
 })
 
-module.exports = { userPicsCloud, userMediaCloud, licensedMediaCloud }
+module.exports = { cloudinary, userPicsCloud, userMediaCloud, extractPublicId, licensedMediaCloud }

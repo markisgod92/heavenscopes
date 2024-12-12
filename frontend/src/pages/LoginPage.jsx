@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom"
 
 export const LoginPage = () => {
     const [loginData, setLoginData] = useState({
-        username: import.meta.env.VITE_TEST_USERNAME,
-        password: import.meta.env.VITE_TEST_PASSWORD
+        username: '',
+        password: ''
     })
     const [isLoading, setLoading] = useState(false)
     const [formMessages, setFormMessages] = useState(null)

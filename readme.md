@@ -26,11 +26,19 @@ This project was built entirely from scratch as part of a web development course
 
 ---
 
+## **Screenshots**
+![Login Page Screenshot](/screenshots/Screenshot%202024-12-12%20alle%2023.42.43.png)
+![Sky Map Screenshot](/screenshots/Screenshot%202024-12-12%20alle%2023.43.19.png)
+![Body Page Screenshot](/screenshots/Screenshot%202024-12-12%20alle%2023.44.44.png)
+
+---
+
 ## **Tech Stack**
 ### **Frontend**:
 - React, React Router DOM
 - Bootstrap, Material-UI
-- Three.js  
+- Three.js
+- D3
 
 ### **Backend**:
 - Node.js, Express
