@@ -27,9 +27,11 @@ This project was built entirely from scratch as part of a web development course
 ---
 
 ## **Screenshots**
-![Login Page Screenshot](/screenshots/Screenshot%202024-12-12%20alle%2023.42.43.png)
-![Sky Map Screenshot](/screenshots/Screenshot%202024-12-12%20alle%2023.43.19.png)
-![Body Page Screenshot](/screenshots/Screenshot%202024-12-12%20alle%2023.44.44.png)
+<div style='display: flex; justify-content: space-between; gap: 10px;'>
+  <img src='/screenshots/Screenshot%202024-12-12%20alle%2023.42.43.png' alt='Login Page Screenshot' style='width: 100%; object-fit: cover;'/>
+  <img src='/screenshots/Screenshot%202024-12-12%20alle%2023.43.19.png' alt='Sky Map Screenshot' style='width: 100%; object-fit: cover;'/>
+  <img src='/screenshots/Screenshot%202024-12-12%20alle%2023.44.44.png' alt='Body Page Screenshot' style='width: 100%; object-fit: cover;'/>
+</div>
 
 ---
 
