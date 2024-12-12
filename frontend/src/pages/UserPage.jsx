@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useSession } from "../custom-hooks/useSession"
-import { Row, Col, Button } from "react-bootstrap"
+import { Row, Col, Button, Badge } from "react-bootstrap"
 import { Avatar, CircularProgress, IconButton } from "@mui/material"
 import { ModifyAvatarModal } from "../components/user-management/ModifyAvatarModal"
 import { BioForm } from "../components/user-management/BioForm"
@@ -149,7 +149,10 @@ export const UserPage = () => {
                             <div className="h-100 py-4 d-flex flex-column justify-content-between gap-5 gap-md-0 border-bottom border-1">
                                 <div className="d-flex flex-column gap-2">
                                     <div className="d-flex justify-content-between align-items-center">
-                                        <h3>{userData.username}</h3>
+                                        <h3>
+                                            {userData.username}
+                                            {userData.isAdmin && <Badge bg='danger' pill className="ms-2">Admin</Badge>}
+                                        </h3>
                                         {!isCurrentUser && (
                                             <button className="form-button" onClick={followUser}>
                                                 {isFollowed ? 'Unfollow' : 'Follow'}

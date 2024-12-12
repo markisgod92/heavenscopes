@@ -46,6 +46,7 @@ textarea {
 
 footer {
     margin-top: auto;
+    background-color: var(--container);
 }
 
 a {
