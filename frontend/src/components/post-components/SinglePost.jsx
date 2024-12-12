@@ -114,7 +114,7 @@ export const SinglePost = ({ postData }) => {
                                                 {body.primaryName}
                                             </Link>
                                         </span>
-                                        {i < reference.length - 1 && <span>, </span>}
+                                        {i < reference.length - 1 && <span key={`${i}+`}>, </span>}
                                     </>
                                 ))}
                             </div>

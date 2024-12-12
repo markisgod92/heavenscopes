@@ -3,6 +3,8 @@
     --container: #353535;
     --detail: #E3CCAE;
     --text: rgb(227, 227, 227);
+    --text-input: black;
+    --input-placeholder: #212529;
     --text-input-bg: white;
 }
 
@@ -11,6 +13,8 @@
     --container: #181b1e;
     --detail: red;
     --text: red;
+    --text-input: red;
+    --input-placeholder: rgb(196, 86, 86);
     --text-input-bg: rgb(34, 34, 34);
 }
 
@@ -40,8 +44,16 @@ body.night-mode img {
 }
 
 input[type='text'],
-textarea {
-    background-color: var(--text-input-bg);
+textarea,
+input[type='file'],
+select {
+    background-color: var(--text-input-bg) !important;
+    color: var(--text-input) !important;
+}
+
+input[type='text']::placeholder,
+textarea::placeholder {
+    color: var(--input-placeholder) !important;
 }
 
 footer {

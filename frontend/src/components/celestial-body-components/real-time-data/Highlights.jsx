@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { RealTimeDataContext } from "../../../contexts/RealTimeDataContext"
+import {SkyRadar} from '../../sky-radar/SkyRadar'
 import pagelist from '../../../data/pagelist.json'
 
 export const Highlights = () => {
@@ -15,13 +16,7 @@ export const Highlights = () => {
     return (
         <>
         {visibleNow && (
-            <ul className="list-unstyled d-flex gap-3">
-                {visibleNow.map((body, i) => (
-                    <li key={`highlight-${i}`}>
-                        <img src={pagelist.find(item => item.title === body.name).icon} />
-                    </li>
-                ))}
-            </ul>
+            <SkyRadar planets={visibleNow}/>
         )}
         </>
     )

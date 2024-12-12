@@ -3,7 +3,7 @@ import { Col, Row, Spinner } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import { MediaModal } from "./MediaModal"
 
-export const LatestUploads = ({ type, id }) => {
+export const LatestUploads = ({ type, id, mode }) => {
     const [media, setMedia] = useState([])
     const [isLoading, setLoading] = useState(false)
     const [isFailed, setFailed] = useState(false)
@@ -28,7 +28,7 @@ export const LatestUploads = ({ type, id }) => {
 
         try {
             const queryParams = makeQueryParams()
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/media/feed?limit=4${queryParams}`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_BASE_URL}/media/feed?limit=${mode === 'home' ? '6' : '4'}${queryParams}`, {
                 headers: {
                     'Authorization': JSON.parse(localStorage.getItem('Authorization'))
                 }
@@ -48,7 +48,7 @@ export const LatestUploads = ({ type, id }) => {
     }, [type, id])
 
     return (
-        <Row xs={2} md={4}>
+        <Row xs={2} md={mode === 'home' ? '' : 4}>
             {isLoading && !isFailed && (
                 <div className="p-3 d-flex justify-content-center">
                     <Spinner

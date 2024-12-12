@@ -100,4 +100,4 @@ This project serves as the capstone for a web development course. It has been de
 ---
 
 ## **Contact**
-For any inquiries about the project, feel free to contact me at [[github.com/markisgod92](https://github.com/markisgod92)].
+For any inquiries about the project, feel free to contact me at [github.com/markisgod92](https://github.com/markisgod92).

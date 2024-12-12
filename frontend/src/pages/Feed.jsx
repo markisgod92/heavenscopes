@@ -13,21 +13,27 @@ export const Feed = () => {
                 <h3>Welcome, {session.username}!</h3>
             </Row>
 
-            <Row className="p-3">
-                <Col sm={12}>
-                    <h5>Visible now from your location</h5>
+            <Row>
+                <Col sm={12} md={6}>
+                    <Row className="p-3">
+                        <Col sm={12}>
+                            <h5>Visible now from your location</h5>
+                        </Col>
+                        <Col sm={12}>
+                            <Highlights />
+                        </Col>
+                    </Row>
                 </Col>
-                <Col sm={12}>
-                    <Highlights />
-                </Col>
-            </Row>
 
-            <Row className="p-3">
-                <Col sm={12}>
-                    <h5>Latest uploads</h5>
-                </Col>
-                <Col sm={12}>
-                    <LatestUploads />
+                <Col sm={12} md={6}>
+                    <Row className="p-3">
+                        <Col sm={12}>
+                            <h5>Latest uploads</h5>
+                        </Col>
+                        <Col sm={12}>
+                            <LatestUploads mode='home'/>
+                        </Col>
+                    </Row>
                 </Col>
             </Row>
 
