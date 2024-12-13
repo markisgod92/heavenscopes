@@ -47,6 +47,16 @@ export const SettingsForm = ({ onUpdate }) => {
     }
 
     const handleCoordsChange = (name, field, value) => {
+        if(field === 'isNegative') {
+            setDmsCoords({
+                ...dmsCoords,
+                [name]: {
+                    ...dmsCoords[name],
+                    [field]: value
+                }
+            })
+        }
+        
         if (validateField(name, field, value)) {
             setDmsCoords({
                 ...dmsCoords,
@@ -171,11 +181,11 @@ export const SettingsForm = ({ onUpdate }) => {
                             />
                             <Form.Select
                                 name="isNegative"
-                                value={dmsCoords.lat.isNegative}
+                                value={dmsCoords.lat.isNegative ? 'true' : 'false'}
                                 onChange={(e) => handleCoordsChange('lat', 'isNegative', e.target.value === 'true')}
                             >
-                                <option value={false}>N</option>
-                                <option value={true}>S</option>
+                                <option value="false">N</option>
+                                <option value="true">S</option>
                             </Form.Select>
 
                             <Form.Control.Feedback type='invalid'>
@@ -242,6 +252,9 @@ export const SettingsForm = ({ onUpdate }) => {
                                 isInvalid={searchError}
                                 onChange={(e) => setSearchInput(e.target.value)}
                             />
+                            <Form.Control.Feedback type="invalid">
+                                {searchError && <>Error fetching location data.</>}
+                            </Form.Control.Feedback>
                         </Col>
                     </Form.Group>
 

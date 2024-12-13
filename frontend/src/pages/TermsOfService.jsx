@@ -1,10 +1,13 @@
 import { Col, Container, Row } from "react-bootstrap"
+import {useNavigate} from 'react-router-dom'
 
 export const TermsOfService = () => {
+    const navigate = useNavigate()
+
     return (
         <Container>
             <Row className="d-flex justify-content-center p-5">
-                <img src="/heavenscope-high-resolution-logo-transparent.png" alt="heavenscopes-logo" className="login-page-logo" />
+                <img src="/heavenscope-high-resolution-logo-transparent.png" alt="heavenscopes-logo" className="login-page-logo" role='button' onClick={() => navigate('/feed')}/>
             </Row>
             
             <Row className="pt-3">

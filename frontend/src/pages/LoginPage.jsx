@@ -84,7 +84,7 @@ export const LoginPage = () => {
     }
 
     return (
-        <div className="login-page d-flex flex-column align-items-center py-5">
+        <div className="login-page py-5">
 
             <img src="/heavenscope-high-resolution-logo-transparent.png" alt="heavenscopes-logo" className="login-page-logo" />
 
