@@ -5,7 +5,9 @@
 ## **Introduction**
 Heavenscopes is a web application designed for enthusiasts of amateur astronomy and astrophotography. It fosters a community of users who want to share their knowledge, images, and experiences of observing the Solar System. The app provides real-time astronomical data to help users locate and observe planets through telescopes or cameras.  
 
-This project was built entirely from scratch as part of a web development course, with the exception of external APIs for astronomical and weather data. The goal is to inspire users to share the wonder of seeing planets through a telescope, just as I have been inspired.  
+This project was built entirely from scratch as part of a web development course, with the exception of external APIs for astronomical and weather data. The goal is to inspire users to share the wonder of seeing planets through a telescope, just as I have been inspired.
+
+Heavenscopes is live on [heavenscopes.vercel.app](https://heavenscopes.vercel.app/).
 
 ---
 
