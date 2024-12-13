@@ -62,18 +62,18 @@ export const LoginPage = () => {
             })
             const data = await response.json()
 
-            if (!response.ok) {
+            if (response.ok) {
+                const authToken = JSON.stringify(response.headers.get('Authorization'))
+                localStorage.setItem('Authorization', authToken)
                 setFormMessages({
-                    fetch: data.message
+                    login: 'Login successful. Redirecting...'
+                })
+                redirect()
+            } else {
+                setFormMessages({
+                    fetch: data.message || 'Login failed.'
                 })
             }
-
-            const authToken = JSON.stringify(response.headers.get('Authorization'))
-            localStorage.setItem('Authorization', authToken)
-            setFormMessages({
-                login: 'Login successful. Redirecting...'
-            })
-            redirect()
         } catch (error) {
             setFormMessages({
                 fetch: error.message
