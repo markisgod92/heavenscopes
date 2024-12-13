@@ -27,7 +27,6 @@ export const UserForm = () => {
         cookie: false
     })
     const navigate = useNavigate()
-    console.log(termsAccepted)
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -100,7 +99,6 @@ export const UserForm = () => {
 
         const errors = validateForm()
         setValidationErrors(errors)
-        console.log(errors)
 
         if (Object.keys(errors).length > 0) {
             return
@@ -144,7 +142,10 @@ export const UserForm = () => {
             localStorage.setItem('Authorization', JSON.stringify(token))
             navigate('/new-user-redirect')
         } catch (error) {
-            console.error(error)
+            setValidationErrors({
+                ...validationErrors,
+                fetch: error.message || 'Error creating account.'
+            })
         }
     }
 
@@ -271,8 +272,10 @@ export const UserForm = () => {
                 />
             </Form.Group>
 
-            <div className="d-flex justify-content-center p-5">
+            <div className="d-flex flex-column gap-3 justify-content-center p-5">
                 <button type="submit" onClick={createUser} className="form-button" disabled={!allTermsAccepted}>Register</button>
+
+                {validationErrors.fetch && <div className="text-danger text-center">{validationErrors.fetch}</div>}
             </div>
         </Form>
     )

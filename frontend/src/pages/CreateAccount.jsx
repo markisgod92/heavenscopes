@@ -1,12 +1,15 @@
 import { Container, Row } from "react-bootstrap"
 import { UserForm } from "../components/user-management/UserForm"
+import { useNavigate } from "react-router-dom"
 
 
 export const CreateAccount = () => {
+    const navigate = useNavigate()
+
     return (
         <Container>
             <Row className="d-flex justify-content-center p-5">
-                <img src="/heavenscope-high-resolution-logo-transparent.png" alt="heavenscopes-logo" className="login-page-logo" />
+                <img src="/heavenscope-high-resolution-logo-transparent.png" alt="heavenscopes-logo" className="login-page-logo" role='button' onClick={() => navigate('/')}/>
             </Row>
 
             <Row className="pb-5">

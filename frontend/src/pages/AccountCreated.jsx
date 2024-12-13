@@ -7,7 +7,7 @@ export const AccountCreated = () => {
 
     useEffect(() => {
         setTimeout(() => {
-            navigate('/home')
+            navigate('/feed')
         }, 1000)
     }, [])
 
