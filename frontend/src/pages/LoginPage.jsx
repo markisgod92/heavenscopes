@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Form, Button, Spinner } from "react-bootstrap"
+import { Form, Spinner } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 
 export const LoginPage = () => {
@@ -85,6 +85,7 @@ export const LoginPage = () => {
 
     return (
         <div className="login-page py-5">
+            <img src="/2k_stars_milky_way.jpg" alt="milky-way-background" className="login-page-background"/>
 
             <img src="/heavenscope-high-resolution-logo-transparent.png" alt="heavenscopes-logo" className="login-page-logo" />
 

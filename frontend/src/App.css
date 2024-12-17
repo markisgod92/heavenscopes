@@ -1,17 +1,21 @@
 .login-page {
     min-height: 100dvh;
-    background: url("/2k_stars_milky_way.jpg") no-repeat center center;
-    background-size: cover;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 150px;
+    gap: 120px;
+    padding-bottom: 30px;
 }
 
-@media (max-width: 768px) {
-    .login-page {
-        min-height: max-content;
-    }
+.login-page-background {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    min-height: 100dvh;
+    height: 100%;   
+    object-fit: cover;
 }
 
 .login-page-logo {
