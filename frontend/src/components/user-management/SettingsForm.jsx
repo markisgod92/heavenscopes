@@ -78,7 +78,7 @@ export const SettingsForm = ({ onUpdate }) => {
         }
 
         try {
-            const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${searchInput}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`)
+            const response = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${searchInput}&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`)
             const data = await response.json()
 
             setFormData({
